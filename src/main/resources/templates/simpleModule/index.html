@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <!-- custom stylesheets -->
+        <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
+        <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder_editors_v2.js"></script>
+        <title>The Simple One</title>
+    </head>
+    <body>
+        <script>
+            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder_editors"]);
+        
+            demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
+                $scope.widgetSettings = Builder.currentWidget.settings;
+            });
+        
+            demoUIModuleApp.controller('authCtrl', function($scope, $http) {
+                $scope.accessToken = Builder.authManager().getAccessToken();
+                $scope.currentAccountId = Builder.currentAccountId;
+            });
+        
+            demoUIModuleApp.controller('linkManagerCtrl', function($scope){
+                $scope.linkMng = Builder.linkManager().currentLocation();
+                $('#isPathExisting').prop('disabled', !Builder.linkManager().path('/Product Overview').exists());
+            });
+            
+            demoUIModuleApp.controller('notificationCtrl', function($scope){
+                
+                $scope.processing=function(){
+                    Builder.notificationManager.pushProcessing();    
+                    setTimeout(function(){
+                    Builder.notificationManager.popProcessing();
+                    },3000);
+                }
+                
+            });
+        
+            demoUIModuleApp.controller('localizedCtrl', function($scope){
+                $scope.localizedLabel = 'Demo Label';
+        
+                $scope.localizedData = {
+                    en:"english text",
+                    de:"german text",
+                    pl:"polish text"};
+            });
+        </script>
+        <div class="wrapper" ng-App="demoUIModuleApp">
+            <div class="container-fluid" style="margin-left:10px;">
+                <div class="row">
+                    <div class="page-header">
+                        <h1 id="header"></h1>
+                    </div>
+                    <div id="token"></div>
+                    <div>
+                        <h3>NOTIFICATIONS</h3>
+                    </div>
+                    <div ng-controller="notificationCtrl">
+                        <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
+                        <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
+                        <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
+                        <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
+                        <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
+                        <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>LINKMANAGER</h3>
+                    </div>
+                    <div ng-controller="linkManagerCtrl">
+                        <div>
+                            <button class="btn btn-default" onclick="Builder.linkManager().path('/My Profile').open()">Show my Profile</button>
+                            <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/Projects/'+Builder.currentProjectId+'/parent/issue2').open()">Show widget two</button>
+                            <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>LOCALIZED EDITOR</h3>
+                    </div>
+                    <div ng-controller="localizedCtrl">
+                        <div class="panel-body" style="width:50%;">
+                            <h4>Multi Line Editor</h4>
+                            <localized-text-editor ng-form="someForm" builder-editor-type="tab" data="localizedData" label="localizedLabel"
+                            novalidate="novalidate" builder-validate-required-languages="false" builder-locale-type="languages"></localized-text-editor>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>SETTINGS</h3>
+                    </div>
+                    <div ng-controller="settingsCtrl">
+                        <div>EmailServiceUrl : {{widgetSettings.emailServiceUrl}}</div>
+                        <div>API Management Url : {{widgetSettings.apiManagementUrl}}</div>
+                        <div>Example Settings : {{widgetSettings.example_setting}}</div>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>AUTH MANAGER</h3>
+                    </div>
+                    <div ng-controller="authCtrl">
+                        <div>Access Token = {{accessToken}}</div>
+                        <div>Current User : {{currentAccountId}}</div>
+                    </div>
+                    <br>
+                    <div>
+                        <h3>RECOMMENDED STYLE SET</h3>
+                    </div>
+                    <div>Here can you find the
+                        <a href="#" onclick="Builder.linkManager().path('/Home').open()"> recommended yaas styles</a>.</div>
+                </div>
+            </div>
+        </div>
+        <script>
+            Builder.initialize(function(){
+                $("#header").append("Welcome " + Builder.currentAccountId + "!");
+                $("#location").append(Builder.currentLocation);
+                $("#token").append(Builder.authManager);
+            });
+        </script>
+    </body>
+</html>

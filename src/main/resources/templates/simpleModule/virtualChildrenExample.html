@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- custom stylesheets -->
+    <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
+    <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
+    <script src="https://builder.yaas.io/public/js/builder.js"></script>
+    <title>The Simple Two</title>
+</head>
+<script type="text/javascript">
+    var virtualChildrenDemoApp = angular.module('virtualChildrenDemoApp', ["builder"]);
+
+    virtualChildrenDemoApp.controller('virtualChildrenCtrl', function($scope){
+        $scope.showVirtualChildView = function(){
+            Builder.linkManager().currentLocation().path('/virtualChild').open();
+        };
+    });
+
+    virtualChildrenDemoApp.controller('dynamicNodeCtrl', function($scope){
+        $scope.dynamicValue = undefined;
+        $scope.showDynamicNodeView = function(){
+            Builder.linkManager().currentLocation().path($scope.dynamicValue).open();
+        }
+    });
+</script>
+<body>
+<div class="wrapper" ng-app="virtualChildrenDemoApp">
+    <div class="container-fluid" style="margin-left:10px;">
+        <div class="row">
+            <div class="panel-body">
+                <div ng-controller="virtualChildrenCtrl">
+                    <div class="col-xs-12">
+                        <h3>Navigation will not change, it's a <button class="btn btn-default" ng-click="showVirtualChildView()">virtual child</button>.</h3>
+                    </div>
+                </div>
+                <div ng-controller="dynamicNodeCtrl">
+                    <div class="col-xs-12">
+                        <h3>Dynamic node example</h3>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="text" placeholder="search for a product" ng-model="dynamicValue" class="form-control">
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="submit" ng-click="showDynamicNodeView()" value="search" class="btn btn-default">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
