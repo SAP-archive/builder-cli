@@ -1,9 +1,0 @@
-{
-    "_comment": "Do not modify this file if you don't know what you do! PLEASE!!!! ",
-    "bdid": 120,
-    "area": "tech",
-    "bdscan": true,
-    "bdscan-contact": "team-swinka@sap.com",
-    "old-repo-url": "stash.hybris.com/projects/PAAS/repos/baas-cli/browse/repo-properties.json",
-    "old-repo-branch": "develop"
-}
