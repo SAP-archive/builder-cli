@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.hybris.builder-sdk</groupId>
+    <groupId>com.sap.cloud.yaas.builder-sdk</groupId>
     <artifactId>builder-cli</artifactId>
     <version>2.1.1-SNAPSHOT</version>
-    <parent>
-        <groupId>com.hybris.service-sdk.superpoms</groupId>
-        <artifactId>paas-superpom</artifactId>
-        <version>2.3.2</version>
-    </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cli.exename>builder</cli.exename>
