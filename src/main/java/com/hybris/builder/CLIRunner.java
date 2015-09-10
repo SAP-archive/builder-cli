@@ -268,7 +268,7 @@ public class CLIRunner
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2000-2015 hybris AG\n");
         String readReleasedVersion = readReleasedVersion();
-        if(readReleasedVersion.equals(version)){
+        if(!readReleasedVersion.equals(version)){
             System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
         }
 
