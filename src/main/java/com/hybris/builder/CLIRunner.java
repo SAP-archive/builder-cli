@@ -49,8 +49,9 @@ public class CLIRunner
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
     private String javaOpts;
-    private String pomUrl = "https://raw.githubusercontent.com/hybris/builder-cli/master/pom.xml";
+    private String versionUrl = "https://raw.githubusercontent.com/hybris/builder-cli/feature/annaounce_new_builder-cli_version/version.txt";
 
+    private boolean networkConnection = true;
     private boolean appendToLog = false;
 
     public static void main(String [ ] args)
@@ -268,7 +269,7 @@ public class CLIRunner
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2000-2015 hybris AG\n");
         String readReleasedVersion = readReleasedVersion();
-        if(!readReleasedVersion.equals(version)){
+        if(!readReleasedVersion.equals(version) && networkConnection==true){
             System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
         }
 
@@ -713,21 +714,27 @@ public class CLIRunner
      * @return String version
      */
     private String readReleasedVersion(){
+        String newestVersion="";
+        networkConnection=true;
         try {
-            URL u = new URL(pomUrl);
-            InputStream inputStream = u.openStream();
-            if(!inputStream.toString().equals("")) {
-                String[] tmp = inputStream.toString().split("=");
-                if(tmp.length==2) {
-                    return tmp[1];
+            URL url = new URL(versionUrl);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String line;
+            String[] splitedLine;
+            while ((line = bufferedReader.readLine()) != null) {
+                splitedLine = line.split("=");
+                if(splitedLine.length==2){
+                    newestVersion = splitedLine[1];
                 }
             }
+            bufferedReader.close();
         }catch(UnknownHostException unknownHostException){
             System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
+            networkConnection=false;
         }catch(Exception e){
             e.printStackTrace();
         }
-        return "";
+        return newestVersion;
     }
 
 }
