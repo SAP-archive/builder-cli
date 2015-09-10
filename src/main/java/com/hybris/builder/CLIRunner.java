@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import sun.misc.IOUtils;
+
 
 
 public class CLIRunner
@@ -44,7 +47,9 @@ public class CLIRunner
     private String ansi_white = "\u001B[37m";
     private String ansi_reset = "\u001B[0m";
     private String ansi_red = "\u001B[31m";
+    private String ansi_blue = "\u001B[34m";
     private String javaOpts;
+    private String pomUrl = "https://raw.githubusercontent.com/hybris/builder-cli/master/pom.xml";
 
     private boolean appendToLog = false;
 
@@ -62,6 +67,7 @@ public class CLIRunner
                 ansi_red = "";
                 ansi_reset = "";
                 ansi_white = "";
+                ansi_blue = "";
             }
 
             checkPrerequisites();
@@ -261,6 +267,10 @@ public class CLIRunner
     protected void showUsage(String command, boolean error, String errorMsg) throws IOException
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2000-2015 hybris AG\n");
+        String readReleasedVersion = readReleasedVersion();
+        if(readReleasedVersion.equals(version)){
+            System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
+        }
 
         if(error)
         {
@@ -696,6 +706,28 @@ public class CLIRunner
         }
 
         return null;
+    }
+
+    /**
+     * reading the generated version.txt from url
+     * @return String version
+     */
+    private String readReleasedVersion(){
+        try {
+            URL u = new URL(pomUrl);
+            InputStream inputStream = u.openStream();
+            if(!inputStream.toString().equals("")) {
+                String[] tmp = inputStream.toString().split("=");
+                if(tmp.length==2) {
+                    return tmp[1];
+                }
+            }
+        }catch(UnknownHostException unknownHostException){
+            System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }
