@@ -12,4 +12,3 @@ mvn install -PcreateShBin
 
 For generation the Builder installer for Windows run the following maven command
 mvn install -PcreateBuilder4Win
-

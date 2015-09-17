@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import sun.misc.IOUtils;
+
 
 
 public class CLIRunner
@@ -44,8 +47,11 @@ public class CLIRunner
     private String ansi_white = "\u001B[37m";
     private String ansi_reset = "\u001B[0m";
     private String ansi_red = "\u001B[31m";
+    private String ansi_blue = "\u001B[34m";
     private String javaOpts;
+    private String versionUrl = "https://raw.githubusercontent.com/SAP/builder-cli/master/pom.xml/version.txt";
 
+    private boolean networkConnection = true;
     private boolean appendToLog = false;
 
     public static void main(String [ ] args)
@@ -62,6 +68,7 @@ public class CLIRunner
                 ansi_red = "";
                 ansi_reset = "";
                 ansi_white = "";
+                ansi_blue = "";
             }
 
             checkPrerequisites();
@@ -261,6 +268,10 @@ public class CLIRunner
     protected void showUsage(String command, boolean error, String errorMsg) throws IOException
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2000-2015 hybris AG\n");
+        String readReleasedVersion = readReleasedVersion();
+        if(!readReleasedVersion.equals(version) && networkConnection==true){
+            System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
+        }
 
         if(error)
         {
@@ -696,6 +707,34 @@ public class CLIRunner
         }
 
         return null;
+    }
+
+    /**
+     * reading the generated version.txt from url
+     * @return String version
+     */
+    private String readReleasedVersion(){
+        String newestVersion="";
+        networkConnection=true;
+        try {
+            URL url = new URL(versionUrl);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String line;
+            String[] splitedLine;
+            while ((line = bufferedReader.readLine()) != null) {
+                splitedLine = line.split("=");
+                if(splitedLine.length==2){
+                    newestVersion = splitedLine[1];
+                }
+            }
+            bufferedReader.close();
+        }catch(UnknownHostException unknownHostException){
+            System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
+            networkConnection=false;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return newestVersion;
     }
 
 }
