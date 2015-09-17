@@ -49,7 +49,7 @@ public class CLIRunner
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
     private String javaOpts;
-    private String versionUrl = "https://raw.githubusercontent.com/SAP/builder-cli/master/pom.xml/version.txt";
+    private String versionUrl = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
