@@ -10,3 +10,7 @@ cd target/tmpBuilderDir
 tar -cvzf builder/builder.tgz builder/builder
 cd ../..
 cp target/tmpBuilderDir/builder/builder.tgz dist/homebrew-builder/builder.tgz
+
+(shasum dist/homebrew-builder/builder.tgz | grep -Eo '^[^ ]+') > dist/homebrew-builder/builder.sha1
+
+
