@@ -28,7 +28,7 @@ How to use:
 builder
 ```
 
-Possible Problems like...
+Possible problems like...
 ```
 ==> Installing builder from hybris/homebrew-builder
 ==> Downloading file:///usr/local/Library/Taps/hybris/homebrew-builder/builder-sdk-cli/builder.tgz
@@ -46,6 +46,6 @@ To retry an incomplete download, remove the file above.
 brew cleanup
 ```
 
-For more information please take a lokk to the <a href="https://devportal.yaas.io/tools/builder/index.html#HowtoCreateaUIModuleUsingtheBuilderSDKCLI">documenation</a>
+For more information please take a look to the <a href="https://devportal.yaas.io/tools/builder/index.html#HowtoCreateaUIModuleUsingtheBuilderSDKCLI">documenation</a>
 
 

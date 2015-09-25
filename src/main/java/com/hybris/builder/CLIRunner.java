@@ -267,7 +267,7 @@ public class CLIRunner
 
     protected void showUsage(String command, boolean error, String errorMsg) throws IOException
     {
-        System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2000-2015 hybris AG\n");
+        System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2009-2015 SAP SE or an SAP affiliate company\n");
         String readReleasedVersion = readReleasedVersion();
         if(!readReleasedVersion.equals(version) && networkConnection==true){
             System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
@@ -411,7 +411,7 @@ public class CLIRunner
 
                     if(exitValue != 0)
                     {
-                        System.out.println("Could not connect to hybris repository. Please make sure that you have the correct settings.xml in .m2 directory.");
+                        System.out.println("Could not connect to the repository. Please make sure that you have the correct settings.xml in .m2 directory.");
                         System.exit(exitValue);
                     }
                 }
