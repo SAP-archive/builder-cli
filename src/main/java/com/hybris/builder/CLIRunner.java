@@ -59,6 +59,10 @@ public class CLIRunner
         new CLIRunner().initialize(args);
     }
 
+    /**
+     * The initialize method handle the command parameter and the optional parameters.
+     * @param args Command and optional a parameter for the builder cli tool
+     */
     public void initialize(String[] args)
     {
         try
@@ -142,6 +146,9 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Clear the cached libraries.
+     */
     private void clearCommandDependencies()
     {
         System.out.println("Clearing cache");
@@ -167,6 +174,10 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Delete the directories of the cached libraries after clearing the cache
+     * @param path Either this parameter is a file or a directory. It will delete all.
+     */
     private void deleteRecursively(File path)
     {
         if(path.isDirectory())
@@ -179,6 +190,12 @@ public class CLIRunner
         path.delete();
     }
 
+    /**
+     * Creates a directory named of the argument and the ui-module files based on the simple module template.
+     * @param cmdProps Properties of the cmd in the corresponding property file.
+     * @param args Argument for the createModule command.
+     * @throws IOException
+     */
     private void createTemplate(Properties cmdProps, String[] args) throws IOException
     {
         String templateName = cmdProps.getProperty("cmd");
@@ -248,7 +265,12 @@ public class CLIRunner
         }
     }
 
-
+    /**
+     * Convert the inputStream parameter to a string.
+     * @param inputStream Template files as stream
+     * @return InputStream as string.
+     * @throws IOException
+     */
     protected String getString(InputStream inputStream) throws IOException
     {
         int ch;
@@ -260,11 +282,24 @@ public class CLIRunner
         return sb.toString();
     }
 
+    /**
+     * Show usage of the builder cli tool without an error Message.
+     * @param command The command, which the builder cli should perform.
+     * @param error Boolean value, if an error occurred.
+     * @throws IOException
+     */
     protected void showUsage(String command, boolean error) throws IOException
     {
         showUsage(command, error, null);
     }
 
+    /**
+     * Shows the usage of the builder cli tool, either only "builder" was typed in the console or wrong parameter was passed.
+     * @param command The command, which the builder cli should perform.
+     * @param error Boolean value, if an error occurred.
+     * @param errorMsg Print a error message, if something went wrong.
+     * @throws IOException
+     */
     protected void showUsage(String command, boolean error, String errorMsg) throws IOException
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2009-2015 SAP SE or an SAP affiliate company\n");
@@ -309,7 +344,12 @@ public class CLIRunner
         System.out.flush();
     }
 
-
+    /**
+     * Replace the placeholders from the pom_template file with parameters.
+     * @param template Template of the pom file.
+     * @param params Parameters for the pom file.
+     * @return a pom file as string with all replaced parameters.
+     */
     protected String processTemplate(String template, Map<String, String> params)
     {
         String processed = template;
@@ -320,6 +360,13 @@ public class CLIRunner
         return processed;
     }
 
+    /**
+     * Download the corresponding dependencies for the command and save the alias and absolute path of the dependency in a map.
+     * @param command The command, which the builder cli should perform.
+     * @param cmdProps The dependencies which are defined in the corresponding command property file.
+     * @return A map with all maven dependencies which are necessary for the command.
+     * @throws IOException
+     */
     private Map<String, String> downloadDependencies(String command, Properties cmdProps) throws IOException
     {
         Map<String, String> depsMap = new HashMap<String, String>();
@@ -449,6 +496,9 @@ public class CLIRunner
         return depsMap;
     }
 
+    /**
+     * Save the config file.
+     */
     private void saveConfigFile() {
         try {
             FileOutputStream fos = new FileOutputStream(configFile);
@@ -459,7 +509,12 @@ public class CLIRunner
         }
     }
 
-
+    /**
+     * Write the content to a file.
+     * @param content The Content, which should be written to the file.
+     * @param file The file, where the content should be written.
+     * @throws IOException
+     */
     protected void writeStringToFile(String content, File file) throws IOException
     {
         BufferedWriter writer = new BufferedWriter( new FileWriter(file));
@@ -467,7 +522,12 @@ public class CLIRunner
         writer.close();
     }
 
-
+    /**
+     * Load a command and read all properties of the corresponding command.properties file.
+     * @param command The command, where the properties of the corresponding command should be loaded.
+     * @return Return all the properties of the command.properties file.
+     * @throws IOException
+     */
     protected Properties loadCommand(String command) throws IOException {
         String commandSpec = "/commands/" + command + ".properties";
         Properties commandProperties = new Properties();
@@ -480,10 +540,15 @@ public class CLIRunner
         return  commandProperties;
     }
 
-
-
+    /**
+     * Read the cmd property of the command properties file. If there are any dependencies like java or maven they will be resolved.
+     * @param command The command, which the builder cli should perform.
+     * @param depsMap A map of all dependendies of the current command.
+     * @return The command, that should be proccessed.
+     */
     public String processCommand(String command, Map<String, String> depsMap)
     {
+        System.out.println("command" + command);
         try {
             String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin)
                     .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm());
@@ -499,12 +564,19 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Read the cmd and arg property of the command which will be executed. After all dependencies are resolved all commands saved in a List and call the real execute method.
+     * @param cmdProps Properties of the cmd in the corresponding property file.
+     * @param args Additional arguments for the command.
+     * @param depsMap  A map of all dependendies of the current command.
+     * @return Returns the exit value for the subprocess. By convention, the value indicates normal termination.
+     */
     public int execute(Properties cmdProps, String[] args, Map<String, String> depsMap)
     {
         Map<String, String> replacements = new HashMap<String, String>(depsMap);
         for(int i = 0; i<args.length; i++)
         {
-            replacements.put("arg"+i, args[i]);
+            replacements.put("arg" + i, args[i]);
         }
         boolean silent = Boolean.parseBoolean(cmdProps.getProperty("silent"));
         String cmd1 = cmdProps.getProperty("cmd");
@@ -521,6 +593,13 @@ public class CLIRunner
         return 0;
     }
 
+    /**
+     * Execute the commandLine. See the constructor of {@ProccessBuilder}.
+     * @param commandLine The command, that should be executed.
+     * @param workingDir the new working directory.
+     * @param printOutput if output should be printed.
+     * @return Returns the exit value for the subprocess. By convention, the value indicates normal termination.
+     */
     public int execute(List<String> commandLine, File workingDir, boolean printOutput)
     {
         try
@@ -582,6 +661,10 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Check if all prerequisites like java and maven are installed.
+     * @throws Exception, if something went wrong.
+     */
     protected void checkPrerequisites() throws Exception
     {
         javaBin = System.getProperty("java.home") + File.separatorChar + "bin" + File.separatorChar + "java";
@@ -642,6 +725,10 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Save the absolute path of the maven binary to config.properties.
+     * @throws IOException
+     */
     protected void lookupMavenBinary() throws IOException
     {
         mvnBin = configProperties.getProperty("mvnBin");
@@ -671,11 +758,20 @@ public class CLIRunner
         }
     }
 
+    /**
+     * Check if the operating system is a windows machine.
+     * @return true if the operating system is a windows machine.
+     */
     private boolean isWindows()
     {
         return System.getProperty("os.name").contains("indows");
     }
 
+    /**
+     * Check if maven binary is installed independent of the operating system.
+     * @param filename
+     * @return the absolute path to the maven binary.
+     */
     protected String executableExistsWithEnding(String filename)
     {
         String mvn = filename;
@@ -710,7 +806,7 @@ public class CLIRunner
     }
 
     /**
-     * reading the generated version.txt from url
+     * Reading the generated version.txt from url.
      * @return String version
      */
     private String readReleasedVersion(){
