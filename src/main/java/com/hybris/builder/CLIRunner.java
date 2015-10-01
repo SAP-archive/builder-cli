@@ -191,7 +191,7 @@ public class CLIRunner
     }
 
     /**
-     * Creates a directory named of the argument and the ui-module files based on the simple module template.
+     * Creates a directory named of the argument and generate files in the created directory based on the files in the template folder.
      * @param cmdProps Properties of the cmd in the corresponding property file.
      * @param args Argument for the createModule command.
      * @throws IOException
@@ -283,9 +283,9 @@ public class CLIRunner
     }
 
     /**
-     * Show usage of the builder cli tool without an error Message.
-     * @param command The command, which the builder cli should perform.
-     * @param error Boolean value, if an error occurred.
+     * Show usage of the command line tool without an error Message.
+     * @param command The command, which the command line tool should perform.
+     * @param error true, if an error notification should be printed out
      * @throws IOException
      */
     protected void showUsage(String command, boolean error) throws IOException
@@ -565,7 +565,7 @@ public class CLIRunner
     }
 
     /**
-     * Read the cmd and arg property of the command which will be executed. After all dependencies are resolved all commands saved in a List and call the real execute method.
+     * Read the properties {cmd} and {arg} of the command.properties which will be executed. After all dependencies are resolved all single commands saved in a List and return the exit value for the subprocess.
      * @param cmdProps Properties of the cmd in the corresponding property file.
      * @param args Additional arguments for the command.
      * @param depsMap  A map of all dependendies of the current command.
@@ -594,7 +594,7 @@ public class CLIRunner
     }
 
     /**
-     * Execute the commandLine. See the constructor of {@ProccessBuilder}.
+     * Execute the commandLine. See the constructor of {@ProcessBuilder}.
      * @param commandLine The command, that should be executed.
      * @param workingDir the new working directory.
      * @param printOutput if output should be printed.
@@ -768,9 +768,9 @@ public class CLIRunner
     }
 
     /**
-     * Check if maven binary is installed independent of the operating system.
+     * Returns the absolute path of a binary file independent of the operating system.
      * @param filename
-     * @return the absolute path to the maven binary.
+     * @return the absolute path to the binary file as a string.
      */
     protected String executableExistsWithEnding(String filename)
     {
