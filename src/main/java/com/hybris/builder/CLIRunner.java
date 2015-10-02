@@ -548,7 +548,6 @@ public class CLIRunner
      */
     public String processCommand(String command, Map<String, String> depsMap)
     {
-        System.out.println("command" + command);
         try {
             String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin)
                     .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm());
