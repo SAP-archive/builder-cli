@@ -1,31 +1,15 @@
 package com.hybris.builder;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import sun.misc.IOUtils;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import sun.misc.IOUtils;
 
 
 
@@ -302,7 +286,7 @@ public class CLIRunner
      */
     protected void showUsage(String command, boolean error, String errorMsg) throws IOException
     {
-        System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2009-2015 SAP SE or an SAP affiliate company\n");
+        System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2009-2016 SAP SE or an SAP affiliate company\n");
         String readReleasedVersion = readReleasedVersion();
         if(!readReleasedVersion.equals(version) && networkConnection==true){
             System.out.println(ansi_blue + name + " is outdated. Please download the newest "+ readReleasedVersion +" version!!!" + ansi_reset);
