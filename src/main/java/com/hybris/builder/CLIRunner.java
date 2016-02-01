@@ -5,6 +5,7 @@ import sun.misc.IOUtils;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -797,6 +798,8 @@ public class CLIRunner
         networkConnection=true;
         try {
             URL url = new URL(versionUrl);
+            URLConnection connection = url.openConnection();
+            connection.setReadTimeout(5000);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
             String line;
             String[] splitedLine;
