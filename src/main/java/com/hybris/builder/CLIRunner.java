@@ -3,10 +3,7 @@ package com.hybris.builder;
 import sun.misc.IOUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
@@ -34,7 +31,8 @@ public class CLIRunner
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
     private String javaOpts;
-    private String versionUrl = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
+    private static final int TIMEOUT_VALUE = 5000;
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
@@ -797,21 +795,26 @@ public class CLIRunner
         String newestVersion="";
         networkConnection=true;
         try {
-            URL url = new URL(versionUrl);
-            URLConnection connection = url.openConnection();
-            connection.setReadTimeout(5000);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+            HttpURLConnection connection = (HttpURLConnection) new URL(VERSION_URL).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(TIMEOUT_VALUE);
+            connection.connect();
+            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) connection.getContent());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
-            String[] splitedLine;
+            String[] splittedLine;
             while ((line = bufferedReader.readLine()) != null) {
-                splitedLine = line.split("=");
-                if(splitedLine.length==2){
-                    newestVersion = splitedLine[1];
+                splittedLine = line.split("=");
+                if(splittedLine.length==2){
+                    newestVersion = splittedLine[1];
                 }
             }
             bufferedReader.close();
         }catch(UnknownHostException unknownHostException){
             System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
+            networkConnection=false;
+        }catch(SocketTimeoutException ste){
+            System.out.println(ansi_blue + "Info: Connection timed out after " + (int) (TIMEOUT_VALUE / 1000) + " seconds. Cannot check https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt file."+ ansi_reset);
             networkConnection=false;
         }catch(Exception e){
             e.printStackTrace();
