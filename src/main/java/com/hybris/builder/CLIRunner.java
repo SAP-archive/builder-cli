@@ -795,18 +795,15 @@ public class CLIRunner
         String newestVersion="";
         networkConnection=true;
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(VERSION_URL).openConnection();
-            connection.setRequestMethod("GET");
+            URLConnection connection = new URL(VERSION_URL).openConnection();
             connection.setConnectTimeout(TIMEOUT_VALUE);
             connection.connect();
-            InputStreamReader inputStreamReader = new InputStreamReader((InputStream) connection.getContent());
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
-            String[] splittedLine;
             while ((line = bufferedReader.readLine()) != null) {
-                splittedLine = line.split("=");
-                if(splittedLine.length==2){
-                    newestVersion = splittedLine[1];
+                String[] splitLine = line.split("=");
+                if(splitLine.length==2){
+                    newestVersion = splitLine[1];
                 }
             }
             bufferedReader.close();
@@ -814,7 +811,7 @@ public class CLIRunner
             System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
             networkConnection=false;
         }catch(SocketTimeoutException ste){
-            System.out.println(ansi_blue + "Info: Connection timed out after " + (int) (TIMEOUT_VALUE / 1000) + " seconds. Cannot check https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt file."+ ansi_reset);
+            System.out.println(ansi_blue + "Info: Connection timed out after " + (TIMEOUT_VALUE / 1000) + " seconds. Please check your network settings."+ ansi_reset);
             networkConnection=false;
         }catch(Exception e){
             e.printStackTrace();
