@@ -3,9 +3,7 @@ package com.hybris.builder;
 import sun.misc.IOUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
@@ -33,7 +31,8 @@ public class CLIRunner
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
     private String javaOpts;
-    private String versionUrl = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
+    private static final int TIMEOUT_VALUE = 5000;
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
@@ -796,19 +795,23 @@ public class CLIRunner
         String newestVersion="";
         networkConnection=true;
         try {
-            URL url = new URL(versionUrl);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+            URLConnection connection = new URL(VERSION_URL).openConnection();
+            connection.setConnectTimeout(TIMEOUT_VALUE);
+            connection.connect();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
-            String[] splitedLine;
             while ((line = bufferedReader.readLine()) != null) {
-                splitedLine = line.split("=");
-                if(splitedLine.length==2){
-                    newestVersion = splitedLine[1];
+                String[] splitLine = line.split("=");
+                if(splitLine.length==2){
+                    newestVersion = splitLine[1];
                 }
             }
             bufferedReader.close();
         }catch(UnknownHostException unknownHostException){
             System.out.println(ansi_blue + "Info: Cannot find host " + unknownHostException.getMessage() + " to check the " + name + " version."+ ansi_reset);
+            networkConnection=false;
+        }catch(SocketTimeoutException ste){
+            System.out.println(ansi_blue + "Info: Connection timed out after " + (TIMEOUT_VALUE / 1000) + " seconds. Please check your network settings."+ ansi_reset);
             networkConnection=false;
         }catch(Exception e){
             e.printStackTrace();
