@@ -792,8 +792,9 @@ public class CLIRunner
 
 
             System.out.println("ERROR: 'mvn' executable not found. Make sure you have maven 3 or higher installed and added to your PATH environment.");
+            return false;
         }
-        return false;
+        return true;
     }
 
     protected String lookupBinary(final String bin) throws IOException
