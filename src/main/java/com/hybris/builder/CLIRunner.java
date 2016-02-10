@@ -221,18 +221,18 @@ public class CLIRunner
         String templateName = null;
         Properties defaultProperties = new Properties();
         defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
+        Properties templateProps = new Properties();
         String templateList = defaultProperties.getProperty("templates");
         String[] templates = templateList.split(",");
-        String[] singleTemplate = null;
         for(int i = 0; i<templates.length;i++){
-            singleTemplate = templates[i].split("=");
-            System.out.println(i+". - " + singleTemplate[1]);
+            templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
+            String description = templateProps.getProperty("description");
+            System.out.println(i+". - " + description);
         }
+        System.out.print("Please choose a template>");
         String input = System.console().readLine();
 
-        String templateCmd = templates[Integer.parseInt(input)];
-        singleTemplate=templateCmd.split("=");
-        templateName = singleTemplate[0];
+        templateName = templates[Integer.parseInt(input)];
 
         Map<String, String> argsMap = new HashMap<String, String>();
         for(int i = 1; cmdProps.containsKey("arg" + i); i++)
@@ -245,7 +245,6 @@ public class CLIRunner
             argsMap.put("ARG" + i, args[i]);
         }
 
-        Properties templateProps = new Properties();
         templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
