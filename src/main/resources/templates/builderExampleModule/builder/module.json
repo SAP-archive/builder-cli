@@ -1,0 +1,57 @@
+{
+    "widgets": [
+        {
+            "id": "{{ARG1}}",
+            "title": "{{ARG1}}",
+            "settings": {
+                "viewUrl": "index.html",
+                "example_setting": "some value"
+            }
+        },
+        {
+            "id": "settingsExample1",
+            "title": "child node1",
+            "settings": {
+                "viewUrl": "settingsExample.html",
+                "example_setting": "widget#2",
+                "perspectiveDomain": "parent"
+            }
+        },
+        {
+            "id": "settingsExample2",
+            "title": "child node2",
+            "settings": {
+                "viewUrl": "settingsExample.html",
+                "example_setting": "widget#3",
+                "perspectiveDomain": "parent"
+            }
+        },
+        {
+            "id": "virtualChildrenExample",
+            "title": "virtualChildren example",
+            "virtualChildren":"true",
+            "settings": {
+                "viewUrl": "virtualChildrenExample.html",
+                "example_setting": "some value"
+            },
+            "widgets": [
+                {
+                    "id" : "virtualChild",
+                    "title" : "virtualChild",
+                    "settings" : {
+                        "viewUrl":"index.html"
+                    }
+                },
+                {
+                    "id": "dynamicNodeExample",
+                    "title": "dynamicNode example",
+                    "dynamic":"dynamicNodeExampleValue",
+                    "settings": {
+                        "viewUrl": "dynamicNodeExample.html",
+                        "example_setting": "some value"
+                    }
+                }
+            ]
+        }
+    ]
+}

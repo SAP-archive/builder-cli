@@ -218,7 +218,22 @@ public class CLIRunner
      */
     private void createTemplate(Properties cmdProps, String[] args) throws IOException
     {
-        String templateName = cmdProps.getProperty("cmd");
+        String templateName = null;
+        Properties defaultProperties = new Properties();
+        defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
+        String templateList = defaultProperties.getProperty("templates");
+        String[] templates = templateList.split(",");
+        String[] singleTemplate = null;
+        for(int i = 0; i<templates.length;i++){
+            singleTemplate = templates[i].split("=");
+            System.out.println("("+i+") - " + singleTemplate[1]);
+        }
+        String input = System.console().readLine();
+
+        String templateCmd = templates[Integer.parseInt(input)];
+        singleTemplate=templateCmd.split("=");
+        templateName = singleTemplate[0];
+
         Map<String, String> argsMap = new HashMap<String, String>();
         for(int i = 1; cmdProps.containsKey("arg" + i); i++)
         {
