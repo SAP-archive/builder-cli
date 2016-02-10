@@ -108,6 +108,43 @@ public class CLIRunner
                 }
                 else
                 {
+                    String cmd = cmdProps.getProperty("cmd");
+                    String deps = cmdProps.getProperty("dependencies");
+                    if(((cmd != null && cmd.contains("${MVN}")) || (deps != null && deps.length() > 0)) && !lookupMavenBinary()) {
+                        System.exit(1);
+                    }
+
+                    boolean depsFulfilled = true;
+
+                    String extDepsProp = cmdProps.getProperty("external_dependencies");
+                    if(extDepsProp != null && extDepsProp.length() > 0) {
+                        List<String> extDeps = extDepsProp.contains(",") ? Arrays.asList(extDepsProp.split(",")) : Collections.singletonList(extDepsProp);
+                        for(String dep : extDeps) {
+                            if(lookupBinary(dep) == null) {
+                                System.out.println("Missing dependency: " + dep);
+                                if(cmdProps.containsKey("external_dependencies_res_" + dep)) {
+                                    System.out.println("Trying to automatically resolve dependencies...");
+                                    Properties depResCmd = new Properties();
+                                    depResCmd.setProperty("cmd", cmdProps.getProperty("external_dependencies_res_" + dep));
+                                    if(execute(depResCmd, null, Collections.<String,String>emptyMap()) > 0) {
+                                        System.out.println("Failed. Please try to install dependencies manually.");
+                                        depsFulfilled = false;
+                                    }
+                                } else {
+                                    depsFulfilled = false;
+                                }
+                            }
+                        }
+                    }
+
+                    if(!depsFulfilled) {
+                        String extDepsHint = cmdProps.getProperty("external_dependencies_hint");
+                        if(extDepsHint != null ) {
+                            System.out.println("\n" + extDepsHint);
+                        }
+                        System.exit(1);
+                    }
+
                     int exitCode = execute(cmdProps, args, downloadDependencies(command, cmdProps));
                     if(appendToLog)
                     {
@@ -532,8 +569,9 @@ public class CLIRunner
     public String processCommand(String command, Map<String, String> depsMap)
     {
         try {
-            String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin)
-                    .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm());
+            String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin == null ? "" : mvnBin)
+                    .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm())
+                    .replace("${CFGDIR_SEP}", configFilePath + File.separator);
             for (Map.Entry<String, String> entry : depsMap.entrySet()) {
                 cmd = cmd.replace("${" + entry.getKey() + "}", entry.getValue());
             }
@@ -556,9 +594,10 @@ public class CLIRunner
     public int execute(Properties cmdProps, String[] args, Map<String, String> depsMap)
     {
         Map<String, String> replacements = new HashMap<String, String>(depsMap);
-        for(int i = 0; i<args.length; i++)
-        {
-            replacements.put("arg" + i, args[i]);
+        if(args != null) {
+            for (int i = 0; i < args.length; i++) {
+                replacements.put("arg" + i, args[i]);
+            }
         }
         boolean silent = Boolean.parseBoolean(cmdProps.getProperty("silent"));
         String cmd1 = cmdProps.getProperty("cmd");
@@ -570,6 +609,12 @@ public class CLIRunner
             {
                 cmdList.add(processCommand(part, replacements));
             }
+
+            if(isWindows())
+            {
+                cmdList.addAll(0, Arrays.asList("cmd.exe", "/C"));
+            }
+
             return execute(cmdList, null, !silent);
         }
         return 0;
@@ -638,8 +683,10 @@ public class CLIRunner
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            return 0;
+            if(printOutput) {
+                e.printStackTrace();
+            }
+            return 1;
         }
     }
 
@@ -692,7 +739,6 @@ public class CLIRunner
             depVersionProperties.load(depVersionPropertiesFileIS);
             depVersionPropertiesFileIS.close();
         }
-        lookupMavenBinary();
         String updateProp = configProperties.getProperty("updateInterval");
         if(updateProp != null)
         {
@@ -711,33 +757,47 @@ public class CLIRunner
      * Save the absolute path of the maven binary to config.properties.
      * @throws IOException
      */
-    protected void lookupMavenBinary() throws IOException
+    protected boolean lookupMavenBinary() throws IOException
     {
         mvnBin = configProperties.getProperty("mvnBin");
         if(mvnBin == null || !(new File(mvnBin)).exists())
         {
             System.out.println("Maven binary not configured, scan in progress ...");
-            String path = System.getenv("PATH");
-            if(path != null)
-            {
-                String[] pathEntries = path.split(File.pathSeparator);
-                for(String pathEntry : pathEntries)
-                {
-                    String mvn = executableExistsWithEnding(pathEntry + File.separatorChar + "mvn");
-                    if(mvn != null)
-                    {
-                        System.out.println("Maven binary found: " + mvn);
-                        mvnBin = mvn;
-                        configProperties.setProperty("mvnBin", mvnBin);
-                        FileOutputStream outputStream = new FileOutputStream(configFile);
-                        configProperties.store(outputStream, "");
-                        return;
-                    }
-                }
 
-                System.out.println("ERROR: 'mvn' executable not found. Make sure you have maven 3 or higher installed and added to your PATH environment.");
+            String mvn = lookupBinary("mvn");
+            if(mvn != null)
+            {
+                System.out.println("Maven binary found: " + mvn);
+                mvnBin = mvn;
+                configProperties.setProperty("mvnBin", mvnBin);
+                FileOutputStream outputStream = new FileOutputStream(configFile);
+                configProperties.store(outputStream, "");
+                return true;
             }
+
+
+            System.out.println("ERROR: 'mvn' executable not found. Make sure you have maven 3 or higher installed and added to your PATH environment.");
         }
+        return false;
+    }
+
+    protected String lookupBinary(final String bin) throws IOException
+    {
+        String path = System.getenv("PATH");
+        if(path != null)
+        {
+            String[] pathEntries = path.split(File.pathSeparator);
+            for(String pathEntry : pathEntries)
+            {
+                String binPath = executableExistsWithEnding(pathEntry + File.separatorChar + bin);
+                if(binPath != null)
+                {
+                    return binPath;
+                }
+            }
+
+        }
+        return null;
     }
 
     /**
