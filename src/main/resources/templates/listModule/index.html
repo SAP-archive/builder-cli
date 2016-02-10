@@ -9,21 +9,20 @@
         <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
         <script src="https://builder.yaas.io/public/js/builder.js"></script>
         <script src="https://builder.yaas.io/public/js/builder_editors_v2.js"></script>
+        <script src="./controller/listCtrl.js"></script>
         <title>The Simple One</title>
     </head>
     <body ng-app="defaultListApp">
-        <div ng-controller="defaultListCtrl">
-            <div ng-repeat="item in items">
-                <ul class="dataCards {$modifiers}">
-                    <li class="dataCard">
-                        <div class="cardRow cardRowClickable">
-                            <p class="primaryData">
-                                {{item}}
-                            </p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <div ng-controller="defaultListCtrl" class="wrapper">
+            <ul class="dataCards dataCards-singleColumn">
+                <li class="dataCard" ng-repeat="item in items">
+                    <div class="cardRow cardRowClickable">
+                        <p class="primaryData">
+                            {{item}}
+                        </p>
+                    </div>
+                </li>
+            </ul>
         </div>
     </body>
 </html>

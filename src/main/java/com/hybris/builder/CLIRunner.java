@@ -226,7 +226,7 @@ public class CLIRunner
         String[] singleTemplate = null;
         for(int i = 0; i<templates.length;i++){
             singleTemplate = templates[i].split("=");
-            System.out.println("("+i+") - " + singleTemplate[1]);
+            System.out.println(i+". - " + singleTemplate[1]);
         }
         String input = System.console().readLine();
 
