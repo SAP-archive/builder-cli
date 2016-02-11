@@ -219,21 +219,35 @@ public class CLIRunner
      */
     private void createTemplate(Properties cmdProps, String[] args) throws IOException
     {
+        System.out.println("\nAvailable templates: \n");
         String templateName = null;
         Properties defaultProperties = new Properties();
         defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
-        Properties templateProps = new Properties();
         String templateList = defaultProperties.getProperty("templates");
         String[] templates = templateList.split(",");
         for(int i = 0; i<templates.length;i++){
-            templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
-            String description = templateProps.getProperty("description");
-            System.out.println(i+". - " + description);
+            Properties props = new Properties();
+            props.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
+            String description = props.getProperty("description");
+            System.out.println(ansi_white + i + ". " + templates[i] + ansi_reset + " - " + description);
         }
-        System.out.print("Please choose a template>");
-        String input = System.console().readLine();
 
-        templateName = templates[Integer.parseInt(input)];
+        int templNr = -1;
+
+        do {
+            System.out.print("\nPlease choose a template" + ansi_white + "\n> " + ansi_reset);
+            String input = System.console().readLine();
+            try {
+                templNr = Integer.parseInt(input);
+                if(templNr < 0 || templNr >= templates.length) {
+                    templNr = -1;
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a number between 0 and " + (templates.length - 1));
+            }
+        } while (templNr < 0);
+        templateName = templates[templNr];
 
         Map<String, String> argsMap = new HashMap<String, String>();
         for(int i = 1; cmdProps.containsKey("arg" + i); i++)
@@ -246,6 +260,7 @@ public class CLIRunner
             argsMap.put("ARG" + i, args[i]);
         }
 
+        Properties templateProps = new Properties();
         templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
@@ -269,6 +284,29 @@ public class CLIRunner
 
                 dir.mkdirs();
             }
+        }
+
+        if(templateProps.containsKey("replacements")) {
+            System.out.println("This template allows you to specify replacement values for variables within the resource files. If you don't want to set them now, just leave them empty.\n");
+            String replacements = templateProps.getProperty("replacements");
+            List<String> replList = new ArrayList<String>();
+            if(replacements.contains(",")) {
+                replList.addAll(Arrays.asList(replacements.split(",")));
+
+            } else {
+                replList.add(replacements);
+            }
+
+            for (String repl : replList) {
+                String description = templateProps.getProperty(repl + "_description");
+                if(description == null) {
+                    description = repl;
+                }
+                System.out.print(description + ansi_white + "\n> " + ansi_reset);
+
+                argsMap.put(repl, System.console().readLine());
+            }
+
         }
 
         // create files
@@ -390,7 +428,11 @@ public class CLIRunner
         String processed = template;
         for(Map.Entry<String, String> param : params.entrySet())
         {
-            processed = processed.replaceAll("\\{\\{" + param.getKey() + "}}", param.getValue());
+            String value = param.getValue();
+            if(value == null || value.trim().length() == 0) {
+                value = param.getKey();
+            }
+            processed = processed.replaceAll("\\{\\{" + param.getKey() + "}}", value);
         }
         return processed;
     }

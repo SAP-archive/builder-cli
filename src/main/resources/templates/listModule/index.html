@@ -20,15 +20,10 @@
             <li class="dataCard" ng-repeat="item in items">
                 <div class="cardRow cardRowClickable">
                     <p class="primaryData">
-                        {{item}}
+                        {{item.{{YOUR_PROPERTY1}}}}
                     </p>
                     <p class="secondaryData">
-                        {{item}}
-                    </p>
-                    <p class="statusDataValue">
-                        <span class="active">
-                            {{item}}
-                        </span>
+                        {{item.{{YOUR_PROPERTY2}}}}
                     </p>
                 </div>
             </li>
