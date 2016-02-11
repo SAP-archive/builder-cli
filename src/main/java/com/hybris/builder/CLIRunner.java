@@ -31,6 +31,7 @@ public class CLIRunner
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
     private String javaOpts;
+    private String mvnOpts;
     private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
     private static final int TIMEOUT_VALUE = 5000;
 
@@ -470,9 +471,27 @@ public class CLIRunner
 
                     boolean printOutput = "true".equals(configProperties.getProperty("verbose"));
 
-                    int exitValue = execute(Arrays.asList(mvnBin, "-U", "-DoutputDirectory=" + tmpDir.getAbsolutePath(),
+                    List<String> cmdList = new ArrayList<String>();
+                    cmdList.add(mvnBin);
+
+                    if(mvnOpts != null && mvnOpts.trim().length() > 0) {
+                        if(mvnOpts.contains(" ")) {
+                            String[] opts = mvnOpts.split(" ");
+                            for(String opt : opts) {
+                                if(opt != null && opt.trim().length() > 0) {
+                                    cmdList.add(opt);
+                                }
+                            }
+                        } else {
+                            cmdList.add(mvnOpts);
+                        }
+                    }
+
+                    cmdList.addAll(Arrays.asList("-U", "-DoutputDirectory=" + tmpDir.getAbsolutePath(),
                             "-DincludeArtifactIds=" + artifactId,
-                            "dependency:copy-dependencies"), tmpDir, printOutput);
+                            "dependency:copy-dependencies"));
+
+                    int exitValue = execute(cmdList, tmpDir, printOutput);
 
                     System.out.println(exitValue == 0 ? "Done." : "Failed.");
 
@@ -604,6 +623,7 @@ public class CLIRunner
         if(cmd1 != null)
         {
             cmd1 = cmd1.replace("${BUILDER_JAVA_OPTS}", (javaOpts==null || javaOpts.trim().length()==0)?"":(javaOpts+" "));
+            cmd1 = cmd1.replace("${BUILDER_MVN_OPTS}", (mvnOpts==null || mvnOpts.trim().length()==0)?"":(mvnOpts+" "));
             List<String> cmdList = new ArrayList<String>();
             for(String part : cmd1.split(" "))
             {
@@ -701,6 +721,7 @@ public class CLIRunner
         userHome = System.getProperty("user.home");
 
         javaOpts = System.getenv("BUILDER_JAVA_OPTS");
+        mvnOpts = System.getenv("BUILDER_MVN_OPTS");
 
         InputStream defaultPropertiesAsStream = this.getClass().getResourceAsStream("/default.properties");
         if (defaultPropertiesAsStream == null)
