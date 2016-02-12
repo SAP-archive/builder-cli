@@ -235,7 +235,7 @@ public class CLIRunner
         int templNr = -1;
 
         do {
-            System.out.print("\nPlease choose a template" + ansi_white + "\n> " + ansi_reset);
+            System.out.print("\nEnter a number" + ansi_white + "\n> " + ansi_reset);
             String input = System.console().readLine();
             try {
                 templNr = Integer.parseInt(input);

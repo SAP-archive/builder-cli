@@ -12,11 +12,6 @@ extensibleApp.controller('ExtensibleController', ["$scope","Restangular", "curre
 
     BuilderExtensible.injectExtensions();
 
-    Restangular.setBaseUrl('https://api.yaas.io/hybris/account/v1');
-
-    Restangular.one("projects/" + encodeURIComponent(currentProjectId)).get($scope.project).then(function(data){
-        $scope.currentProjectDescription = data.description;
-    });
 
     BuilderExtensible.on("slot1", function(data) {
         $scope.slot1pluginId = data;
@@ -28,8 +23,4 @@ extensibleApp.controller('ExtensibleController', ["$scope","Restangular", "curre
         $scope.$apply();
     });
 
-    $scope.updateProject = function(){
-        Restangular
-            .one("projects/" + encodeURIComponent(currentProjectId)).customPUT($scope.project, "", {}, {});
-    };
 }]);
