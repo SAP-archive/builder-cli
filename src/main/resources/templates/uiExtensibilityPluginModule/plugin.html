@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html style="padding: 0; height: auto;" ng-app="pluginApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet"/>
+    <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
+    <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
+    <script src="https://builder.yaas.io/public/js/vendor/restangular/dist/restangular.js"></script>
+    <script src="https://builder.yaas.io/public/js/builder_plugin.js"></script>
+    <script src="js/pluginApp.js"></script>
+    <title>slot 1</title>
+</head>
+<body style="padding: 0; height: auto;" ng-controller="PluginController">
+<div sizeElement style="width: 900px; height: 600px; overflow: hidden;" >
+
+    <div class="row">
+
+        <div class="col-sm-6 col-xs-12">
+            <div class="form-group">
+                <label class="control-label">Token</label>
+                <p class="form-readonly-text form-readonly-text-lg ng-binding">{{token}}</p>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xs-12">
+            <div class="form-group">
+                <label class="control-label">Scope</label>
+                <p class="form-readonly-text form-readonly-text-lg ng-binding">{{scope}}</p>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xs-12">
+            <div class="form-group">
+                <label class="control-label">new project's description</label>
+                <input type="text" class="form-control input-lg" ng-model="project.description" name="description">
+                <button type="button" class="btn btn-warning" ng-click="updateProject()">UPDATE</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+---
+applications:
+- name: uiextdemo-plugin
+  host: uiextdemo-plugin
+  buildpack: staticfile_buildpack
+  instances: 1
+  memory: 256M
+  domain: us-east.modules.yaas.io

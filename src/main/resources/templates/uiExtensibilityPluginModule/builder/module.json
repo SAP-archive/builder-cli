@@ -1,0 +1,14 @@
+{
+    "widgets" : [{
+        "id" : "myextension_1",
+        "title" : "Plugin",
+        "settings" : {
+            "viewUrl" : "plugin.html"
+        },
+        "extends": {
+            "id": "extensiblemodule",
+            "slot" : "slot1",
+            "authUrl" : "builder/auth.html"
+        }
+    }]
+}

@@ -1,0 +1,12 @@
+{
+    "widgets" : [{
+        "id" : "extensiblemodule",
+        "title" : "Extensible Module",
+        "settings" : {
+            "viewUrl" : "index.html"
+        },
+        "extensible" : {
+            "layout" : "nested"
+        }
+    }]
+}
