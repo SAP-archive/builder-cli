@@ -219,26 +219,44 @@ public class CLIRunner
      */
     private void createTemplate(Properties cmdProps, String[] args) throws IOException
     {
+        boolean wrongNumberOfArguments = false;
+        Map<String, String> argsMap = new HashMap<String, String>();
+
+        if(args.length < 2) {
+            wrongNumberOfArguments = true;
+        } else {
+            for (int k = 1; cmdProps.containsKey("arg" + k); k++) {
+                if (k >= args.length) {
+                    wrongNumberOfArguments = true;
+                    break;
+                }
+                argsMap.put("ARG" + k, args[k]);
+            }
+        }
+
+        if(wrongNumberOfArguments) {
+            showUsage(args[0], true, "Error: Wrong number of arguments.");
+            System.exit(0);
+        }
+
+        File targetDirectory = new File(args[1]);
+
+        if(targetDirectory.exists())
+        {
+            System.out.println("Error: Directory already exists: " + targetDirectory.getAbsolutePath());
+            System.exit(1);
+        }
+        targetDirectory.mkdirs();
+
+        System.out.println("\nAvailable templates: \n");
         String templateName = null;
         Properties defaultProperties = new Properties();
         defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
         String templateList = defaultProperties.getProperty("templates");
         String[] templates = templateList.split(",");
 
-        Map<String, String> argsMap = new HashMap<String, String>();
+
         for(int i = 0; i<templates.length;i++){
-            for(int k = 1; cmdProps.containsKey("arg" + k); k++)
-            {
-                if(k >= args.length)
-                {
-                    showUsage(templates[i], true, "Error: Wrong number of arguments.");
-                    System.exit(0);
-                }
-                argsMap.put("ARG" + k, args[k]);
-            }
-            if(i==0){
-                System.out.println("\nAvailable templates: \n");
-            }
             Properties props = new Properties();
             props.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
             String description = props.getProperty("description");
@@ -266,9 +284,6 @@ public class CLIRunner
         templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
-        File targetDirectory = new File(args[1]); 
-        targetDirectory.mkdirs();
-
 
         // create dirs
         if(rawdirs != null && !rawdirs.trim().isEmpty())
@@ -277,13 +292,6 @@ public class CLIRunner
             for(String dirname : dirs)
             {
                 File dir = new File(targetDirectory, dirname);
-
-                if(dir.exists())
-                {
-                    System.out.println("Error: Directory already exists: " + dir.getAbsolutePath());
-                    System.exit(1);
-                }
-
                 dir.mkdirs();
             }
         }
