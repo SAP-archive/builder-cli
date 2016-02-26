@@ -239,15 +239,6 @@ public class CLIRunner
             System.exit(0);
         }
 
-        File targetDirectory = new File(args[1]);
-
-        if(targetDirectory.exists())
-        {
-            System.out.println("Error: Directory already exists: " + targetDirectory.getAbsolutePath());
-            System.exit(1);
-        }
-        targetDirectory.mkdirs();
-
         System.out.println("\nAvailable templates: \n");
         String templateName = null;
         Properties defaultProperties = new Properties();
@@ -285,17 +276,6 @@ public class CLIRunner
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
 
-        // create dirs
-        if(rawdirs != null && !rawdirs.trim().isEmpty())
-        {
-            String[] dirs = rawdirs.split(",");
-            for(String dirname : dirs)
-            {
-                File dir = new File(targetDirectory, dirname);
-                dir.mkdirs();
-            }
-        }
-
         if(templateProps.containsKey("replacements")) {
             System.out.println("This template allows you to specify replacement values for variables within the resource files. If you don't want to set them now, just leave them empty.\n");
             String replacements = templateProps.getProperty("replacements");
@@ -317,6 +297,33 @@ public class CLIRunner
                 argsMap.put(repl, System.console().readLine());
             }
 
+        }
+
+        //create target directory
+        File targetDirectory = new File(args[1]);
+
+        if(targetDirectory.exists())
+        {
+            System.out.println("Error: Directory already exists: " + targetDirectory.getAbsolutePath());
+            System.exit(1);
+        }
+        targetDirectory.mkdirs();
+        // create dirs
+        if(rawdirs != null && !rawdirs.trim().isEmpty())
+        {
+            String[] dirs = rawdirs.split(",");
+            for(String dirname : dirs)
+            {
+                File dir = new File(targetDirectory, dirname);
+
+                if(dir.exists())
+                {
+                    System.out.println("Error: Directory already exists: " + dir.getAbsolutePath());
+                    System.exit(1);
+                }
+
+                dir.mkdirs();
+            }
         }
 
         // create files
