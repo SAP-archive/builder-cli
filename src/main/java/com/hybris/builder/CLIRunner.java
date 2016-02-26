@@ -219,12 +219,34 @@ public class CLIRunner
      */
     private void createTemplate(Properties cmdProps, String[] args) throws IOException
     {
+        boolean wrongNumberOfArguments = false;
+        Map<String, String> argsMap = new HashMap<String, String>();
+
+        if(args.length < 2) {
+            wrongNumberOfArguments = true;
+        } else {
+            for (int k = 1; cmdProps.containsKey("arg" + k); k++) {
+                if (k >= args.length) {
+                    wrongNumberOfArguments = true;
+                    break;
+                }
+                argsMap.put("ARG" + k, args[k]);
+            }
+        }
+
+        if(wrongNumberOfArguments) {
+            showUsage(args[0], true, "Error: Wrong number of arguments.");
+            System.exit(0);
+        }
+
         System.out.println("\nAvailable templates: \n");
         String templateName = null;
         Properties defaultProperties = new Properties();
         defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
         String templateList = defaultProperties.getProperty("templates");
         String[] templates = templateList.split(",");
+
+
         for(int i = 0; i<templates.length;i++){
             Properties props = new Properties();
             props.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
@@ -248,19 +270,6 @@ public class CLIRunner
             }
         } while (templNr < 0);
         templateName = templates[templNr];
-
-        Map<String, String> argsMap = new HashMap<String, String>();
-        for(int i = 1; cmdProps.containsKey("arg" + i); i++)
-        {
-            if(i >= args.length)
-            {
-                showUsage(templateName, true, "Error: Wrong number of arguments.");
-                System.exit(0);
-            }
-            argsMap.put("ARG" + i, args[i]);
-        }
-
-
 
         Properties templateProps = new Properties();
         templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
@@ -292,6 +301,12 @@ public class CLIRunner
 
         //create target directory
         File targetDirectory = new File(args[1]);
+
+        if(targetDirectory.exists())
+        {
+            System.out.println("Error: Directory already exists: " + targetDirectory.getAbsolutePath());
+            System.exit(1);
+        }
         targetDirectory.mkdirs();
         // create dirs
         if(rawdirs != null && !rawdirs.trim().isEmpty())
