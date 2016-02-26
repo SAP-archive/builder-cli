@@ -260,31 +260,12 @@ public class CLIRunner
             argsMap.put("ARG" + i, args[i]);
         }
 
+
+
         Properties templateProps = new Properties();
         templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
-        File targetDirectory = new File(args[1]); 
-        targetDirectory.mkdirs();
-
-
-        // create dirs
-        if(rawdirs != null && !rawdirs.trim().isEmpty())
-        {
-            String[] dirs = rawdirs.split(",");
-            for(String dirname : dirs)
-            {
-                File dir = new File(targetDirectory, dirname);
-
-                if(dir.exists())
-                {
-                    System.out.println("Error: Directory already exists: " + dir.getAbsolutePath());
-                    System.exit(1);
-                }
-
-                dir.mkdirs();
-            }
-        }
 
         if(templateProps.containsKey("replacements")) {
             System.out.println("This template allows you to specify replacement values for variables within the resource files. If you don't want to set them now, just leave them empty.\n");
@@ -307,6 +288,27 @@ public class CLIRunner
                 argsMap.put(repl, System.console().readLine());
             }
 
+        }
+
+        //create target directory
+        File targetDirectory = new File(args[1]);
+        targetDirectory.mkdirs();
+        // create dirs
+        if(rawdirs != null && !rawdirs.trim().isEmpty())
+        {
+            String[] dirs = rawdirs.split(",");
+            for(String dirname : dirs)
+            {
+                File dir = new File(targetDirectory, dirname);
+
+                if(dir.exists())
+                {
+                    System.out.println("Error: Directory already exists: " + dir.getAbsolutePath());
+                    System.exit(1);
+                }
+
+                dir.mkdirs();
+            }
         }
 
         // create files
