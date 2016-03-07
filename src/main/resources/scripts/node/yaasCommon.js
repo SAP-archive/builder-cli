@@ -435,7 +435,7 @@ var YaaS = (function(){
 
         providePassword : function() {
             addToQStack(function(tenant) {
-                var password = ""
+                var password = "";
                 rl.close();
                 process.stdin.setRawMode(true);
                 process.stdin.resume();
