@@ -30,6 +30,7 @@ public class CLIRunner
     private String ansi_reset = "\u001B[0m";
     private String ansi_red = "\u001B[31m";
     private String ansi_blue = "\u001B[34m";
+    private String ansi_yellow = "\u001B[33m";
     private String javaOpts;
     private String mvnOpts;
     private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
@@ -57,6 +58,7 @@ public class CLIRunner
                 ansi_reset = "";
                 ansi_white = "";
                 ansi_blue = "";
+                ansi_yellow = "";
             }
 
             checkPrerequisites();
@@ -95,64 +97,67 @@ public class CLIRunner
                         System.exit(1);
                     }
                 }
-                String command = args[0];
-                Properties cmdProps = loadCommand(command);
-                if(cmdProps == null)
+                else if("experimental".equals(args[0]))
                 {
-                    showUsage(command, true);
+                    showUsage(null, false, null, true);
                     System.exit(0);
-                }
-
-                if("template".equals(cmdProps.getProperty("type")))
-                {
-                    createTemplate(cmdProps, args);
                 }
                 else
                 {
-                    String cmd = cmdProps.getProperty("cmd");
-                    String deps = cmdProps.getProperty("dependencies");
-                    if(((cmd != null && cmd.contains("${MVN}")) || (deps != null && deps.length() > 0)) && !lookupMavenBinary()) {
-                        System.exit(1);
+                    String command = args[0];
+                    Properties cmdProps = loadCommand(command);
+                    if (cmdProps == null) {
+                        showUsage(command, true);
+                        System.exit(0);
                     }
 
-                    boolean depsFulfilled = true;
+                    if ("template".equals(cmdProps.getProperty("type"))) {
+                        createTemplate(cmdProps, args);
+                    } else {
+                        String cmd = cmdProps.getProperty("cmd");
+                        String deps = cmdProps.getProperty("dependencies");
+                        if (((cmd != null && cmd.contains("${MVN}")) || (deps != null && deps.length() > 0)) && !lookupMavenBinary()) {
+                            System.exit(1);
+                        }
 
-                    String extDepsProp = cmdProps.getProperty("external_dependencies");
-                    if(extDepsProp != null && extDepsProp.length() > 0) {
-                        List<String> extDeps = extDepsProp.contains(",") ? Arrays.asList(extDepsProp.split(",")) : Collections.singletonList(extDepsProp);
-                        for(String dep : extDeps) {
-                            if(lookupBinary(dep) == null) {
-                                System.out.println("Missing dependency: " + dep);
-                                if(cmdProps.containsKey("external_dependencies_res_" + dep)) {
-                                    System.out.println("Trying to automatically resolve dependencies...");
-                                    Properties depResCmd = new Properties();
-                                    depResCmd.setProperty("cmd", cmdProps.getProperty("external_dependencies_res_" + dep));
-                                    if(execute(depResCmd, null, Collections.<String,String>emptyMap()) > 0) {
-                                        System.out.println("Failed. Please try to install dependencies manually.");
+                        boolean depsFulfilled = true;
+
+                        String extDepsProp = cmdProps.getProperty("external_dependencies");
+                        if (extDepsProp != null && extDepsProp.length() > 0) {
+                            List<String> extDeps = extDepsProp.contains(",") ? Arrays.asList(extDepsProp.split(",")) : Collections.singletonList(extDepsProp);
+                            for (String dep : extDeps) {
+                                if (lookupBinary(dep) == null) {
+                                    System.out.println("Missing dependency: " + dep);
+                                    if (cmdProps.containsKey("external_dependencies_res_" + dep)) {
+                                        System.out.println("Trying to automatically resolve dependencies...");
+                                        Properties depResCmd = new Properties();
+                                        depResCmd.setProperty("cmd", cmdProps.getProperty("external_dependencies_res_" + dep));
+                                        if (execute(depResCmd, null, Collections.<String, String>emptyMap()) > 0) {
+                                            System.out.println("Failed. Please try to install dependencies manually.");
+                                            depsFulfilled = false;
+                                        }
+                                    } else {
                                         depsFulfilled = false;
                                     }
-                                } else {
-                                    depsFulfilled = false;
                                 }
                             }
                         }
-                    }
 
-                    if(!depsFulfilled) {
-                        String extDepsHint = cmdProps.getProperty("external_dependencies_hint");
-                        if(extDepsHint != null ) {
-                            System.out.println("\n" + extDepsHint);
+                        if (!depsFulfilled) {
+                            String extDepsHint = cmdProps.getProperty("external_dependencies_hint");
+                            if (extDepsHint != null) {
+                                System.out.println("\n" + extDepsHint);
+                            }
+                            System.exit(1);
                         }
-                        System.exit(1);
-                    }
 
-                    int exitCode = execute(cmdProps, args, downloadDependencies(command, cmdProps));
-                    if(appendToLog)
-                    {
-                        System.out.println("\nERROR: Command failed. Check '" +
-                                errorLogName + "' for more info");
+                        int exitCode = execute(cmdProps, args, downloadDependencies(command, cmdProps));
+                        if (appendToLog) {
+                            System.out.println("\nERROR: Command failed. Check '" +
+                                    errorLogName + "' for more info");
+                        }
+                        System.exit(exitCode);
                     }
-                    System.exit(exitCode);
                 }
             }
             else
@@ -235,7 +240,7 @@ public class CLIRunner
         }
 
         if(wrongNumberOfArguments) {
-            showUsage(args[0], true, "Error: Wrong number of arguments.");
+            showUsage(args[0], true, "Error: Wrong number of arguments.", false);
             System.exit(0);
         }
 
@@ -380,7 +385,7 @@ public class CLIRunner
      */
     protected void showUsage(String command, boolean error) throws IOException
     {
-        showUsage(command, error, null);
+        showUsage(command, error, null, false);
     }
 
     /**
@@ -388,9 +393,10 @@ public class CLIRunner
      * @param command The command, which the builder cli should perform.
      * @param error Boolean value, if an error occurred.
      * @param errorMsg Print a error message, if something went wrong.
+     * @param experimental Show experimental commands only.
      * @throws IOException
      */
-    protected void showUsage(String command, boolean error, String errorMsg) throws IOException
+    protected void showUsage(String command, boolean error, String errorMsg, boolean experimental) throws IOException
     {
         System.out.println(ansi_white + name + ansi_reset + ", version " + version +"\n"+"Copyright (c) 2009-2016 SAP SE or an SAP affiliate company\n");
         String readReleasedVersion = readReleasedVersion();
@@ -403,8 +409,14 @@ public class CLIRunner
             String msg = errorMsg == null ? "ERROR: Unknown command '" + command + "'" : errorMsg;
             System.out.println(ansi_red + msg + ansi_reset);
         }
+
+        if(experimental)
+        {
+            System.out.println("\n" + ansi_yellow + "Experimental commands (no support, use at your own risk)" + ansi_reset);
+        }
+
         System.out.println("\nUsage: " + appProperties.getProperty("cmdName") + " command [arg ...]");
-        String commands = appProperties.getProperty("commands");
+        String commands = appProperties.getProperty(experimental ? "experimentalCommands" : "commands");
         if(commands != null && commands.trim().length() > 0)
         {
             Set<String> commandSet = new LinkedHashSet<String>(Arrays.asList(commands.split(",")));
@@ -429,8 +441,12 @@ public class CLIRunner
                 }
             }
         }
-        System.out.println("\t" + ansi_white + "displayCachedVersions" + ansi_reset + "\t\t" + "Print a list with versions of cached dependencies" + "\n");
-        System.out.println("\t" + ansi_white + "clearCache" + ansi_reset + "\t\t\t" + "Delete cached dependencies" + "\n");
+        if(!experimental)
+        {
+            System.out.println("\t" + ansi_white + "displayCachedVersions" + ansi_reset + "\t\t" + "Print a list with versions of cached dependencies" + "\n");
+            System.out.println("\t" + ansi_white + "clearCache" + ansi_reset + "\t\t\t" + "Delete cached dependencies" + "\n");
+            System.out.println("\t" + ansi_white + "experimental" + ansi_reset + "\t\t\t" + "Show experimental commands (no support, use at your own risk)" + "\n");
+        }
         System.out.flush();
     }
 
@@ -663,7 +679,7 @@ public class CLIRunner
         try {
             String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin == null ? "" : mvnBin)
                     .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm())
-                    .replace("${CFGDIR_SEP}", configFilePath + File.separator);
+                    .replace("${CFGDIR_SEP}", configFilePath + File.separator).replace("${SEP}", File.separator);
             for (Map.Entry<String, String> entry : depsMap.entrySet()) {
                 cmd = cmd.replace("${" + entry.getKey() + "}", entry.getValue());
             }
@@ -701,6 +717,11 @@ public class CLIRunner
             for(String part : cmd1.split(" "))
             {
                 cmdList.add(processCommand(part, replacements));
+            }
+
+            if(cmdList.size() > 0 && "node".equals(cmdList.get(0)))
+            {
+                copyNodeScripts();
             }
 
             if(isWindows())
@@ -843,6 +864,50 @@ public class CLIRunner
             catch(NumberFormatException e)
             {
                 System.out.println("Error parsing update interval");
+            }
+        }
+    }
+
+    /**
+     * Copies all node scripts to USERHOME/.builder/scripts/node
+     */
+    protected void copyNodeScripts()
+    {
+        String nodescripts = appProperties.getProperty("nodescripts");
+        if(nodescripts != null && !nodescripts.isEmpty())
+        {
+            List<String> scripts = new ArrayList<String>();
+            if(nodescripts.contains(","))
+            {
+                scripts.addAll(Arrays.asList(nodescripts.split(",")));
+            }
+            else
+            {
+                scripts.add(nodescripts);
+            }
+
+            File scriptDir = new File(configFilePath, "scripts" + File.separator + "node");
+            scriptDir.mkdirs();
+
+            for (String script : scripts)
+            {
+                try {
+                    File file = new File(scriptDir, script);
+
+                    file.createNewFile();
+
+                    String scriptContent = getString(getClass().getClassLoader()
+                            .getResourceAsStream("scripts/node/" + script));
+
+                    if (scriptContent != null) {
+                        writeStringToFile(scriptContent, file);
+                    }
+                }
+                catch (IOException e)
+                {
+                    System.out.println("Error: Could not create file: " + script);
+                    System.exit(0);
+                }
             }
         }
     }
