@@ -71,7 +71,7 @@ var YaaS = (function(){
             if(resp.statusCode < 400) {
                 callback(JSON.parse(data));
             } else {
-                _error(response.statusCode + ", " + response.statusMessage + "\nData: " + data).andExit();
+                _error(resp.statusCode + ", " + resp.statusMessage + "\nData: " + data).andExit();
             }
         });
     }
@@ -137,6 +137,8 @@ var YaaS = (function(){
         showCurrentCTX : function() {
             addToQStack(function() {
                 console.log(Colors.WHITE + "Org: ", Colors.RESET, ctx.org.name, Colors.WHITE, "  Team: ", Colors.RESET, ctx.team.name);
+                console.log(Colors.WHITE + "Project: ", Colors.RESET, ctx.project.name, Colors.WHITE, "  Current Tenant: ", Colors.RESET, ctx.currentTenantId);
+                console.log(Colors.WHITE + "Token: ", Colors.RESET, ctx.token);
                 proceedQStack();
             });
             return YaaS;
@@ -363,6 +365,16 @@ var YaaS = (function(){
             return YaaS;
         },
 
+        setCurrentTenant : function(ctxProperty) {
+            addToQStack(function() {
+                ctx.currentTenantId = ctx[ctxProperty].id;
+                console.log(Colors.WHITE, "\nSetting the '"+ctx.currentTenantId+"' "+ctxProperty+" as current tenant" , Colors.RESET);
+                YaaS.saveCTX();
+                proceedQStack();
+            });
+            return YaaS;
+        },
+
         chooseTeam : function() {
             addToQStack(function() {
                 getJSON(apiBaseDomain, accountSrv + "/organizations/" + ctx.org.id + "/teams?pageSize=1000&member=" + ctx.account, function(data) {
@@ -474,7 +486,7 @@ var YaaS = (function(){
 
         login : function(useCurrentTenant) {
             addToQStack(function() {
-                var tenant = useCurrentTenant ? ctx.team.id : undefined;
+                var tenant = useCurrentTenant ? ctx.currentTenantId : undefined;
                 var postData = "grant_type=password&client_id=" + clientId +
                     "&username=" + ctx.account + "&password=" + YaaS.password +
                     "&scope=" + encodeURIComponent(scope + (tenant ? " hybris.tenant=" + tenant : " hybris.no_tenant"));
