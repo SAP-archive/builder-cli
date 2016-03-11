@@ -17,10 +17,11 @@ var YaaS = (function(){
 
 
     var apiBaseDomain = "api.yaas.io";
+    var clientId = "GuvUj0WeMVo2fAJRJGCJTiVdGsiznGd3";
+    
     var accountSrv = "/hybris/account/v1";
     var oauthSrv = "/hybris/oauth2/v1";
     var marketPlaceSrv = "/hybris/marketplace/v3";
-    var clientId = "Bin5mve9QLuEpYggjTeMzjQoklXr4aav";
     var scope = "hybris.configuration_manage hybris.account_manage hybris.account_view hybris.marketplace_submit hybris.media_manage hybris.org_manage hybris.org_view sap.bill_view sap.subscription_manage hybris.org_payment hybris.org_project_create hybris.org_members sap.subscription_cancel sap.subscription_provider_view hybris.showcase_manage hybris.org_project_manage";
 
     var Colors = {
