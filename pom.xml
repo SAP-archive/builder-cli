@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sap.cloud.yaas.builder-sdk</groupId>
     <artifactId>builder-cli</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cli.exename>builder</cli.exename>
@@ -167,7 +167,7 @@
                     <plugin>
                         <groupId>net.ju-n.maven.plugins</groupId>
                         <artifactId>checksum-maven-plugin</artifactId>
-                        <version>1.3-SNAPSHOT</version>
+                        <version>1.3</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -294,7 +294,7 @@
                     <plugin>
                         <groupId>net.ju-n.maven.plugins</groupId>
                         <artifactId>checksum-maven-plugin</artifactId>
-                        <version>1.3-SNAPSHOT</version>
+                        <version>1.3</version>
                         <executions>
                             <execution>
                                 <goals>
