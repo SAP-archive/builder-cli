@@ -561,6 +561,12 @@ public class CLIRunner
                     boolean printOutput = "true".equals(configProperties.getProperty("verbose"));
 
                     List<String> cmdList = new ArrayList<String>();
+
+		    if(isWindows()) {
+		        cmdList.add("cmd");
+			cmdList.add("/c");
+		    }
+
                     cmdList.add(mvnBin);
 
                     if(mvnOpts != null && mvnOpts.trim().length() > 0) {
