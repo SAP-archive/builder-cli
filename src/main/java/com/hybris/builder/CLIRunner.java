@@ -638,8 +638,9 @@ public class CLIRunner
             //TODO: cleanup
         }
         FileOutputStream fos = new FileOutputStream(depVersionPropertiesFile);
+        addToStreamStack(fos);
         depVersionProperties.store(fos, "");
-        fos.close();
+        //fos.close();
         return depsMap;
     }
 

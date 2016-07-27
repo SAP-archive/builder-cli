@@ -448,7 +448,7 @@ var YaaS = (function(){
 
         providePassword : function() {
             addToQStack(function(tenant) {
-                var password = "";
+                var userpwd = "";
                 rl.close();
                 process.stdin.setRawMode(true);
                 process.stdin.resume();
@@ -465,17 +465,17 @@ var YaaS = (function(){
                         process.stdin.pause();
                         process.stdin.removeListener('data', inputHandler);
                         rl = readline.createInterface(process.stdin, process.stdout);
-                        YaaS.password = password;
+                        YaaS.password = userpwd;
                         proceedQStack();
                     } else if(character.charCodeAt(0) === 127 /* unix */ || character.charCodeAt(0) === 8 /* windows */) {
-                        if(password.length > 0) {
-                            password = password.slice(0, -1);
+                        if(userpwd.length > 0) {
+                            userpwd = userpwd.slice(0, -1);
                             //process.stdout.write("<");
                         }
                     } else if(character.charCodeAt(0) === 3) {
                         process.exit();
                     } else {
-                        password += character;
+                        userpwd += character;
                         //process.stdout.write("*");
                     }
                 };
