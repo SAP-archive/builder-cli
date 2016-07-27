@@ -637,10 +637,7 @@ public class CLIRunner
 
             //TODO: cleanup
         }
-        FileOutputStream fos = new FileOutputStream(depVersionPropertiesFile);
-        addToStreamStack(fos);
-        depVersionProperties.store(fos, "");
-        //fos.close();
+        depVersionProperties.store(addToStreamStack(new FileOutputStream(depVersionPropertiesFile)), "");
         return depsMap;
     }
 
@@ -650,8 +647,8 @@ public class CLIRunner
     private void saveConfigFile() {
         try {
             FileOutputStream fos = new FileOutputStream(configFile);
+            addToStreamStack(fos);
             configProperties.store(fos, "");
-            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -666,8 +663,8 @@ public class CLIRunner
     protected void writeStringToFile(String content, File file) throws IOException
     {
         BufferedWriter writer = new BufferedWriter( new FileWriter(file));
+        addToStreamStack(writer);
         writer.write(content);
-        writer.close();
     }
 
     /**
@@ -811,8 +808,8 @@ public class CLIRunner
             {
                 FileWriter logWriter = new FileWriter(errorLogName, appendToLog);
                 appendToLog = true;
+                addToStreamStack(logWriter);
                 logWriter.write(fullOutputBuilder.toString());
-                logWriter.close();
             }
             return exitValue;
 
@@ -874,7 +871,6 @@ public class CLIRunner
             FileInputStream depVersionPropertiesFileIS = new FileInputStream(depVersionPropertiesFile);
             addToStreamStack(depVersionPropertiesFileIS);
             depVersionProperties.load(depVersionPropertiesFileIS);
-            //depVersionPropertiesFileIS.close();
         }
         String updateProp = configProperties.getProperty("updateInterval");
         if(updateProp != null)
@@ -1061,12 +1057,7 @@ public class CLIRunner
         return newestVersion;
     }
 
-    private InputStream addToStreamStack(InputStream closeable){
-        streams.add(closeable);
-        return closeable;
-    }
-
-    private <T extends OutputStream> T addToStreamStack(T closeable){
+    private <T extends Closeable> T addToStreamStack(T closeable){
         streams.add(closeable);
         return closeable;
     }
