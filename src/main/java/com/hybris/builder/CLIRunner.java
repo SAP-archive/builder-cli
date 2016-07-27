@@ -361,8 +361,8 @@ public class CLIRunner
 
                 System.out.println("Creating file " + targetDirectory.getName() + "/" + filename);
 
-                String template = getString(getClass().getClassLoader()
-                        .getResourceAsStream("templates/" + templateName + "/" + filename));
+                String template = getString(addToStreamStack(getClass().getClassLoader()
+                        .getResourceAsStream("templates/" + templateName + "/" + filename)));
 
                 if(template != null)
                 {
@@ -678,7 +678,7 @@ public class CLIRunner
     protected Properties loadCommand(String command) throws IOException {
         String commandSpec = "/commands/" + command + ".properties";
         Properties commandProperties = new Properties();
-        InputStream cmdStream = this.getClass().getResourceAsStream(commandSpec);
+        InputStream cmdStream = addToStreamStack(this.getClass().getResourceAsStream(commandSpec));
         if(cmdStream == null)
         {
             return null;
@@ -863,6 +863,7 @@ public class CLIRunner
         configFile = new File(configFileDir, appProperties.getProperty("configFile"));
         configFile.createNewFile();
         FileInputStream fileInputStream = new FileInputStream(configFile);
+        addToStreamStack(fileInputStream);
         configProperties.load(fileInputStream);
         fileInputStream.close();
         depVersionPropertiesFile = new File(configFilePath, "depVersions.txt");
@@ -870,8 +871,9 @@ public class CLIRunner
         if(depVersionPropertiesFile.exists())
         {
             FileInputStream depVersionPropertiesFileIS = new FileInputStream(depVersionPropertiesFile);
+            addToStreamStack(depVersionPropertiesFileIS);
             depVersionProperties.load(depVersionPropertiesFileIS);
-            depVersionPropertiesFileIS.close();
+            //depVersionPropertiesFileIS.close();
         }
         String updateProp = configProperties.getProperty("updateInterval");
         if(updateProp != null)
