@@ -38,6 +38,7 @@ public class CLIRunner
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
+    private Set<Closeable> streams = new HashSet();
 
     public static void main(String [ ] args)
     {
@@ -169,6 +170,16 @@ public class CLIRunner
         catch (Exception e)
         {
             e.printStackTrace();
+        }finally {
+            for(Closeable closeable : streams){
+                try {
+                    if (closeable != null) {
+                        closeable.close();
+                    }
+                }catch(IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
         }
     }
 
@@ -247,14 +258,14 @@ public class CLIRunner
         System.out.println("\nAvailable templates: \n");
         String templateName = null;
         Properties defaultProperties = new Properties();
-        defaultProperties.load(getClass().getResourceAsStream("/default.properties"));
+        defaultProperties.load(addToStreamStack(getClass().getResourceAsStream("/default.properties")));
         String templateList = defaultProperties.getProperty("templates");
         String[] templates = templateList.split(",");
 
 
         for(int i = 0; i<templates.length;i++){
             Properties props = new Properties();
-            props.load(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties"));
+            props.load(addToStreamStack(getClass().getClassLoader().getResourceAsStream("templates/" + templates[i] + "/template.properties")));
             String description = props.getProperty("description");
             System.out.println(ansi_white + i + ". " + templates[i] + ansi_reset + " - " + description);
         }
@@ -277,7 +288,8 @@ public class CLIRunner
         templateName = templates[templNr];
 
         Properties templateProps = new Properties();
-        templateProps.load(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties"));
+        templateProps.load(addToStreamStack(getClass().getClassLoader().getResourceAsStream("templates/" + templateName + "/template.properties")));
+
         String rawdirs = templateProps.getProperty("dirs");
         String rawfiles = templateProps.getProperty("files");
 
@@ -349,8 +361,8 @@ public class CLIRunner
 
                 System.out.println("Creating file " + targetDirectory.getName() + "/" + filename);
 
-                String template = getString(getClass().getClassLoader()
-                        .getResourceAsStream("templates/" + templateName + "/" + filename));
+                String template = getString(addToStreamStack(getClass().getClassLoader()
+                        .getResourceAsStream("templates/" + templateName + "/" + filename)));
 
                 if(template != null)
                 {
@@ -492,7 +504,8 @@ public class CLIRunner
             File cmdDepDir = new File(configFilePath, command);
             cmdDepDir.mkdirs();
 
-            InputStream pomStream = getClass().getResourceAsStream("/pom_template.xml");
+            InputStream pomStream = addToStreamStack(getClass().getResourceAsStream("/pom_template.xml"));
+
             byte[] bytes = IOUtils.readFully(pomStream, -1, true);
             String pomTemplate = new String(bytes);
 
@@ -507,7 +520,7 @@ public class CLIRunner
                     commonDepDir.mkdirs();
                     depDir = commonDepDir;
                     Properties commonDepProperties = new Properties();
-                    commonDepProperties.load(getClass().getResourceAsStream("/commonDependencies.properties"));
+                    commonDepProperties.load(addToStreamStack(getClass().getResourceAsStream("/commonDependencies.properties")));
                     String art = commonDepProperties.getProperty(rawDep.replace("common#", ""));
                     if(art == null) {
                         System.out.println("ERROR: Could not resolve dependency " + rawDep);
@@ -624,9 +637,7 @@ public class CLIRunner
 
             //TODO: cleanup
         }
-        FileOutputStream fos = new FileOutputStream(depVersionPropertiesFile);
-        depVersionProperties.store(fos, "");
-        fos.close();
+        depVersionProperties.store(addToStreamStack(new FileOutputStream(depVersionPropertiesFile)), "");
         return depsMap;
     }
 
@@ -636,8 +647,8 @@ public class CLIRunner
     private void saveConfigFile() {
         try {
             FileOutputStream fos = new FileOutputStream(configFile);
+            addToStreamStack(fos);
             configProperties.store(fos, "");
-            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -652,8 +663,8 @@ public class CLIRunner
     protected void writeStringToFile(String content, File file) throws IOException
     {
         BufferedWriter writer = new BufferedWriter( new FileWriter(file));
+        addToStreamStack(writer);
         writer.write(content);
-        writer.close();
     }
 
     /**
@@ -665,12 +676,13 @@ public class CLIRunner
     protected Properties loadCommand(String command) throws IOException {
         String commandSpec = "/commands/" + command + ".properties";
         Properties commandProperties = new Properties();
-        InputStream cmdStream = this.getClass().getResourceAsStream(commandSpec);
+        InputStream cmdStream = addToStreamStack(this.getClass().getResourceAsStream(commandSpec));
         if(cmdStream == null)
         {
             return null;
         }
         commandProperties.load(cmdStream);
+        addToStreamStack(cmdStream);
         return  commandProperties;
     }
 
@@ -789,6 +801,7 @@ public class CLIRunner
             Runtime.getRuntime().addShutdownHook(closeProcessThread);
 
             InputStream inputStream = process.getInputStream();
+            addToStreamStack(inputStream);
             BufferedReader streamReader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             StringBuilder fullOutputBuilder = new StringBuilder("\n******************** " + new Date() +
@@ -807,8 +820,8 @@ public class CLIRunner
             {
                 FileWriter logWriter = new FileWriter(errorLogName, appendToLog);
                 appendToLog = true;
+                addToStreamStack(logWriter);
                 logWriter.write(fullOutputBuilder.toString());
-                logWriter.close();
             }
             return exitValue;
 
@@ -835,12 +848,10 @@ public class CLIRunner
         javaOpts = System.getenv("BUILDER_JAVA_OPTS");
         mvnOpts = System.getenv("BUILDER_MVN_OPTS");
 
-        InputStream defaultPropertiesAsStream = this.getClass().getResourceAsStream("/default.properties");
-        if (defaultPropertiesAsStream == null)
-        {
-        	throw new IOException("Could not open default.properties!");
-        }
-		appProperties.load(defaultPropertiesAsStream);
+        InputStream defaultPropertiesAsStream = null;
+        defaultPropertiesAsStream = this.getClass().getResourceAsStream("/default.properties");
+        addToStreamStack(defaultPropertiesAsStream);
+        appProperties.load(defaultPropertiesAsStream);
 
         String configDirProp = appProperties.getProperty("configDir");
         if (configDirProp == null)
@@ -862,6 +873,7 @@ public class CLIRunner
         configFile = new File(configFileDir, appProperties.getProperty("configFile"));
         configFile.createNewFile();
         FileInputStream fileInputStream = new FileInputStream(configFile);
+        addToStreamStack(fileInputStream);
         configProperties.load(fileInputStream);
         fileInputStream.close();
         depVersionPropertiesFile = new File(configFilePath, "depVersions.txt");
@@ -869,8 +881,8 @@ public class CLIRunner
         if(depVersionPropertiesFile.exists())
         {
             FileInputStream depVersionPropertiesFileIS = new FileInputStream(depVersionPropertiesFile);
+            addToStreamStack(depVersionPropertiesFileIS);
             depVersionProperties.load(depVersionPropertiesFileIS);
-            depVersionPropertiesFileIS.close();
         }
         String updateProp = configProperties.getProperty("updateInterval");
         if(updateProp != null)
@@ -933,8 +945,8 @@ public class CLIRunner
 
                     file.createNewFile();
 
-                    String fileContent = getString(getClass().getClassLoader()
-                            .getResourceAsStream(resourcePath + fileName));
+                    String scriptContent = getString(addToStreamStack(getClass().getClassLoader()
+                            .getResourceAsStream("scripts/node/" + script)));
 
                     if (fileContent != null) {
                         writeStringToFile(fileContent, file);
@@ -966,7 +978,7 @@ public class CLIRunner
                 System.out.println("Maven binary found: " + mvn);
                 mvnBin = mvn;
                 configProperties.setProperty("mvnBin", mvnBin);
-                FileOutputStream outputStream = new FileOutputStream(configFile);
+                FileOutputStream outputStream = addToStreamStack(new FileOutputStream(configFile));
                 configProperties.store(outputStream, "");
                 return true;
             }
@@ -1055,7 +1067,7 @@ public class CLIRunner
             URLConnection connection = new URL(VERSION_URL).openConnection();
             connection.setConnectTimeout(TIMEOUT_VALUE);
             connection.connect();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(addToStreamStack(connection.getInputStream())));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] splitLine = line.split("=");
@@ -1076,4 +1088,8 @@ public class CLIRunner
         return newestVersion;
     }
 
+    private <T extends Closeable> T addToStreamStack(T closeable){
+        streams.add(closeable);
+        return closeable;
+    }
 }
