@@ -737,14 +737,26 @@ public class CLIRunner
                 cmdList.add(processCommand(part, replacements));
             }
 
-            if(cmdList.size() > 0 && "node".equals(cmdList.get(0)))
+            if(cmdList.size() > 0 )
             {
-                copyNodeScripts();
+                if("node".equals(cmdList.get(0)))
+                {
+                    copyNodeScripts();
+                }
+                else if("http-server".equals(cmdList.get(0)))
+                {
+                    copyCommonResources();
+                }
             }
 
             if(isWindows())
             {
                 cmdList.addAll(0, Arrays.asList("cmd.exe", "/C"));
+            }
+
+            String preCmdEcho = cmdProps.getProperty("pre-cmd-echo");
+            if(preCmdEcho != null && preCmdEcho.trim().length() > 0) {
+                System.out.println(preCmdEcho.replace("${selfSignedCertFingerprint}", appProperties.getProperty("selfSignedCertFingerprint")));
             }
 
             return execute(cmdList, null, !silent);
@@ -886,44 +898,63 @@ public class CLIRunner
         }
     }
 
+
+    /**
+     * Copies all common resources to USERHOME/.builder/res
+     */
+    protected void copyCommonResources()
+    {
+        copyFiles("commonResources", "common/", new File(configFilePath, "res"));
+    }
+
     /**
      * Copies all node scripts to USERHOME/.builder/scripts/node
      */
     protected void copyNodeScripts()
     {
-        String nodescripts = appProperties.getProperty("nodescripts");
-        if(nodescripts != null && !nodescripts.isEmpty())
+        copyFiles("nodescripts", "scripts/node/", new File(configFilePath, "scripts" + File.separator + "node"));
+    }
+
+    /**
+     * Copies resources files to the specified output directory.
+     * @param propertyKey the key defining the resources value in default.properties.
+     * @param resourcePath the path where the resources are located.
+     * @param outputDir the directory where the resources should be copied to (will be created if it doesn't exist).
+     */
+    protected void copyFiles(final String propertyKey, final String resourcePath, final File outputDir)
+    {
+        String fileListString = appProperties.getProperty(propertyKey);
+        if(fileListString != null && !fileListString.isEmpty())
         {
-            List<String> scripts = new ArrayList<String>();
-            if(nodescripts.contains(","))
+            List<String> files = new ArrayList<String>();
+            if(fileListString.contains(","))
             {
-                scripts.addAll(Arrays.asList(nodescripts.split(",")));
+                files.addAll(Arrays.asList(fileListString.split(",")));
             }
             else
             {
-                scripts.add(nodescripts);
+                files.add(fileListString);
             }
 
-            File scriptDir = new File(configFilePath, "scripts" + File.separator + "node");
-            scriptDir.mkdirs();
+            outputDir.mkdirs();
 
-            for (String script : scripts)
+            for (String fileName : files)
             {
                 try {
-                    File file = new File(scriptDir, script);
+                    File file = new File(outputDir, fileName);
 
                     file.createNewFile();
 
                     String scriptContent = getString(addToStreamStack(getClass().getClassLoader()
                             .getResourceAsStream("scripts/node/" + script)));
 
-                    if (scriptContent != null) {
-                        writeStringToFile(scriptContent, file);
+                    if (fileContent != null) {
+                        writeStringToFile(fileContent, file);
                     }
                 }
                 catch (IOException e)
                 {
-                    System.out.println("Error: Could not create file: " + script);
+                    System.out.println("Error: Could not create file: " + fileName);
                     System.exit(0);
                 }
             }
