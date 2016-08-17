@@ -201,8 +201,8 @@
                                     <goal>rename</goal>
                                 </goals>
                                 <configuration>
-                                    <sourceFile>${basedir}/dist/windows/builder4win.zip.sha1</sourceFile>
-                                    <destinationFile>${basedir}/dist/windows/builder4win.sha1</destinationFile>
+                                    <sourceFile>${basedir}/dist/windows/builder4win.zip.sha256</sourceFile>
+                                    <destinationFile>${basedir}/dist/windows/builder4win.sha256</destinationFile>
                                 </configuration>
                             </execution>
                         </executions>
@@ -328,8 +328,8 @@
                                     <goal>rename</goal>
                                 </goals>
                                 <configuration>
-                                    <sourceFile>${basedir}/dist/maclinux/builder.zip.sha1</sourceFile>
-                                    <destinationFile>${basedir}/dist/maclinux/builder.sha1</destinationFile>
+                                    <sourceFile>${basedir}/dist/maclinux/builder.zip.sha256</sourceFile>
+                                    <destinationFile>${basedir}/dist/maclinux/builder.sha256</destinationFile>
                                 </configuration>
                             </execution>
                         </executions>

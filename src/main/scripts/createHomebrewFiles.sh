@@ -11,6 +11,6 @@ tar -cvzf builder.tgz builder
 cd ../..
 cp target/tmpBuilderDir/builder.tgz dist/homebrew-builder/builder.tgz
 
-(shasum dist/homebrew-builder/builder.tgz | grep -Eo '^[^ ]+') > dist/homebrew-builder/builder.sha1
+(shasum -a 256 dist/homebrew-builder/builder.tgz | grep -Eo '^[^ ]+') > dist/homebrew-builder/builder.sha256
 
 
