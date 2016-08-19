@@ -946,7 +946,7 @@ public class CLIRunner
                     file.createNewFile();
 
                     String fileContent = getString(addToStreamStack(getClass().getClassLoader()
-                            .getResourceAsStream("scripts/node/" + fileName)));
+                            .getResourceAsStream(resourcePath + fileName)));
 
                     if (fileContent != null) {
                         writeStringToFile(fileContent, file);
