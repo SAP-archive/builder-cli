@@ -665,6 +665,7 @@ public class CLIRunner
         BufferedWriter writer = new BufferedWriter( new FileWriter(file));
         addToStreamStack(writer);
         writer.write(content);
+        writer.flush();
     }
 
     /**
@@ -822,6 +823,7 @@ public class CLIRunner
                 appendToLog = true;
                 addToStreamStack(logWriter);
                 logWriter.write(fullOutputBuilder.toString());
+                logWriter.flush();
             }
             return exitValue;
 
@@ -946,7 +948,7 @@ public class CLIRunner
                     file.createNewFile();
 
                     String fileContent = getString(addToStreamStack(getClass().getClassLoader()
-                            .getResourceAsStream("scripts/node/" + fileName)));
+                            .getResourceAsStream(resourcePath + fileName)));
 
                     if (fileContent != null) {
                         writeStringToFile(fileContent, file);
@@ -980,6 +982,7 @@ public class CLIRunner
                 configProperties.setProperty("mvnBin", mvnBin);
                 FileOutputStream outputStream = addToStreamStack(new FileOutputStream(configFile));
                 configProperties.store(outputStream, "");
+                outputStream.flush();
                 return true;
             }
 
