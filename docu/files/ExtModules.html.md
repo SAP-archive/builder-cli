@@ -847,27 +847,27 @@ The Notification Manager enables you to show notifications in Builder.
         <th>Description</th>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showInfo(message)</td>
+        <td>Builder.notificationManager.showInfo(message)</td>
         <td>Shows an informational message in the notification area. It automatically closes after a few seconds.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showSuccess(message)</td>
+        <td>Builder.notificationManager.showSuccess(message)</td>
         <td>Shows a success message in the notification area. It automatically closes after a few seconds.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showError(message)</td>
+        <td>Builder.notificationManager.showError(message)</td>
         <td>Shows a warning message in the notification area. It remains open until you close it.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().pushProcessing(message)</td>
+        <td>Builder.notificationManager.pushProcessing(message)</td>
         <td>Shows a "processing" information message. If the application is already in the processing state, it increments the counter of processing requests. Use this for long-running operations.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().popProcessing(message)</td>
+        <td>Builder.notificationManager.popProcessing(message)</td>
         <td>Stops showing the "processing" information, or just decrements the counter of processing requests, if greater than one.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().clearProcessing(message)</td>
+        <td>Builder.notificationManager.clearProcessing(message)</td>
         <td>Stops displaying the "processing" information.</td>
     </tr>
 </table>
