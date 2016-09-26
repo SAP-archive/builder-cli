@@ -847,31 +847,104 @@ The Notification Manager enables you to show notifications in Builder.
         <th>Description</th>
     </tr>
     <tr>
-        <td>Builder.notificationManager.showInfo(message)</td>
-        <td>Shows an informational message in the notification area. It automatically closes after a few seconds.</td>
+        <td>Builder.notificationManager.showInfo(message, data)</td>
+        <td>Shows an informational message in the notification area. It automatically closes after a few seconds. Parameters:
+        <ul>
+            <li> **message** - message to be displayed.</li>
+            <li> **data** (optional) - data to be injected in the message (see next chapter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager.showSuccess(message)</td>
-        <td>Shows a success message in the notification area. It automatically closes after a few seconds.</td>
+        <td>Builder.notificationManager.showSuccess(message, data)</td>
+        <td>Shows a success message in the notification area. It automatically closes after a few seconds. Parameters:
+        <ul>
+            <li> **message** - message to be displayed.</li>
+            <li> **data** (optional) - data to be injected in the message (see next chapter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager.showError(message)</td>
-        <td>Shows a warning message in the notification area. It remains open until you close it.</td>
+        <td>Builder.notificationManager.showError(message, data)</td>
+        <td>Shows a warning message in the notification area. It remains open until you close it. Parameters:
+        <ul>
+           <li> **message** - message to be displayed.</li>
+           <li> **data** (optional) - data to be injected in the message (see next chapter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager.pushProcessing(message)</td>
+        <td>Builder.notificationManager.showConfirmation(title, message, onConfirmCallback, onCancelCallback, data)</td>
+        <td>Shows a confirmation dialog with provided title and message. It also contains a button to confirm and to cancel. The onConfirmCallback function is called when user confirms, the onCancelCallback callback when user presses cancel. Parameters:
+        <ul>
+           <li> **title** - title of the confirmation dialog.</li>
+           <li> **message** - message to be displayed. It should explain what is to confirm and ask user to confirm or not.</li>
+           <li> **onConfirmCallback** - function to be called when user confirms</li>
+           <li> **onConfirmCallback** - function to be called when user presses cancel</li>
+           <li> **data** (optional) - data to be injected in the message (see next chapter)</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.showModalDialog(modalConfiguration)</td>
+        <td>This does the same as the showConfirmation function but all parameters are provided with a single configuration object modalConfiguration. It has also more configuration possibilities than the showConfirmation function. Parameters:
+        <ul>
+           <li> **modalConfiguration** - configuration object. These are the possible properties of the configuration object:
+              <ul>
+                 <li> **title** - title of the confirmation dialog.</li>
+                 <li> **message** - message to be displayed. It should explain what is to confirm and ask user to confirm or not.</li>
+                 <li> **onOk** - function to be called when user confirms</li>
+                 <li> **onCancel** - function to be called when user presses cancel</li>
+                 <li> **okLabel** - label of the confirm button (default is 'OK')</li>
+                 <li> **cancelLabel** - label of the confirm button (default is 'Cancel')</li>
+                 <li> **fullBlocking** - if true, the modal dialog blocks clicks in the background until it is closed</li>
+                 <li> **data** (optional) - data to be injected in the message (see next chapter)</li>
+              </ul>
+           </li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.pushProcessing()</td>
         <td>Shows a "processing" information message. If the application is already in the processing state, it increments the counter of processing requests. Use this for long-running operations.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager.popProcessing(message)</td>
+        <td>Builder.notificationManager.popProcessing()</td>
         <td>Stops showing the "processing" information, or just decrements the counter of processing requests, if greater than one.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager.clearProcessing(message)</td>
+        <td>Builder.notificationManager.clearProcessing()</td>
         <td>Stops displaying the "processing" information.</td>
     </tr>
 </table>
 
+
+#### Notification manager - the data parameter
+
+The **data** parameter used in various Notification manager functions allows you to inject additional data to the message provided as the first parameter of the function call. Currently only Builder links are supported as data type. In the future there might be more possibilities.
+The **data** parameter must be an object. Every property of that object can be used as a placeholder in the message and will be replaced by the - processed - value of the property.
+
+Following example demonstrates the usage by showing and info message that contains a link to a certain node in the Builder:
+
+```
+Builder.notificationManager.showInfo(
+    'New product was created succesfully. Go to {catLink} to attach it to a category.', 
+    {
+        catLink: {type: "link", url:"/Home/org1/Projects/pro1/categories", text: "Category Management"}
+    }
+);
+```
+
+The result is this message:
+
+![Info message with a link](img/info_message_w_link.png)
+
+The link part is clickable and navigates you to the Builder path as specified in the data object. You can have more than one links/placeholders in a single message. 
+To build a link to a certain part of the Builder you can use the **linkManager** for example like this:
+
+```
+var url = Builder.linkManager().currentProject().path('/categories').get(); // the get method returns the Builder link as a string
+```
 
 ### Link manager
 
