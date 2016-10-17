@@ -62,7 +62,7 @@ Ensure that you have Java 7 or higher and Apache Maven 3.x installed. For more i
 
 <div>
     Checksum for `builder4win.zip`:
-        <ul><li><a href="https://github.com/SAP/builder-cli/blob/master/dist/windows/builder4win.sha1">checksum</a></li></ul>
+        <ul><li><a href="https://github.com/SAP/builder-cli/blob/master/dist/windows/builder4win.sha256">checksum</a></li></ul>
 </div>
 
 ### Install the Builder SDK CLI on UNIX/Linux/MacOS
@@ -72,7 +72,7 @@ Ensure that you have Java 7 or higher and Apache Maven 3.x installed. For more i
 
 <div>
     Checksum for `builder.zip`:
-        <ul><li><a href="https://github.com/SAP/builder-cli/blob/master/dist/maclinux/builder.sha1">checksum</a></li></ul>
+        <ul><li><a href="https://github.com/SAP/builder-cli/blob/master/dist/maclinux/builder.sha256">checksum</a></li></ul>
 </div>
 
 ## Make the Builder SDK CLI available as Homebrew-Tap
