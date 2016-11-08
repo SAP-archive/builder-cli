@@ -920,6 +920,9 @@ public class CLIRunner
         copyFiles("nodescripts", "scripts/node/", new File(configFilePath, "scripts" + File.separator + "node"));
     }
 
+    /**
+     * Copies all skeletor files to USERHOME/.builder/skeletor
+     */
     protected void copySkeletor(){
         copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "skeletor"));
         copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "skeletor"+ File.separator + "snippets"));
