@@ -2,6 +2,7 @@ var tree;
 var nodeIndex = 0;
 var editMode = true;
 var tmpCmp;
+var downloadAvailable = false
 
 var rootNode = {
     "name": "rootNode",
@@ -34,7 +35,14 @@ function init(){
     }else{
         addNodeToTree('main');
     }
+    var downloadLink = document.createElement("a");
+    if(downloadLink.download !== undefined){
+        downloadAvailable=true;
+    }else{
+        downloadAvailable=false;
+    }
     $('.btn-download').hide();
+
 };
 
 function updateView() {
@@ -114,18 +122,21 @@ function searchNode(tree, parentNodeName){
     downloadLink.download = fileNameToSaveAs;
     downloadLink.innerHTML = "Download File";
     if (window.webkitURL != null) {
-        // Chrome allows the link to be clicked
-        // without actually adding it to the DOM.
+        //Chrome stuff
         downloadLink.href = window.webkitURL.createObjectURL(htmlFileAsBlob);
     } else {
-        // Firefox requires the link to be added to the DOM
-        // before it can be clicked.
+        //necessary for FF
         downloadLink.href = window.URL.createObjectURL(htmlFileAsBlob);
-        downloadLink.onclick = destroyClickedElement;
+        downloadLink.onclick = deleteClickedElement;
         downloadLink.style.display = "none";
         document.body.appendChild(downloadLink);
     }
     downloadLink.click();
+}
+
+function deleteClickedElement(event) {
+    debugger;
+    document.body.removeChild(event.target);
 }
 
 //TODO use new variables
@@ -214,7 +225,9 @@ function preview() {
         $('.btn-preview .glyphicon').removeClass('glyphicon-eye-open');
         $('.btn-preview .glyphicon').addClass('glyphicon-eye-close');
         $('.btn-trash').hide();
-        $('.btn-download').show();
+        if(downloadAvailable){
+            $('.btn-download').show();
+        }
         $('#treeString').hide();
         editMode = false;
     }else{
