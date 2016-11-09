@@ -40,7 +40,7 @@ Remember that a list of languages (currencies) in which the property is localize
         <localized-text-editor data="localizedData" ng-form="someName2" builder-locale-type="currencies"></localized-text-editor>
     </div>
 ```
-The <b>builder-locale-type</b> attribute enables you to choose between a localized editor for languages and for currencies. You must set the value to `languages` or `currencies`, respectively. That attribute is required for a localized editor component. Please be aware that some configurations might be invalid. For example, it doesn't make sense to have a multi-line currency editor.
+The <b>builder-locale-type</b> attribute enables you to choose between a localized editor for languages and for currencies. You must set the value to `languages` or `currencies`, respectively. That attribute is required for a localized editor component. Please avoid configuration that will render your code invalid. For example, a multi-line currency editor is an example of configuration that is not supported.
 The <b>builder-editor-type</b> attribute defines the type of editor. If it is empty, that indicates a single-line editor. If it contains a tab, that indicates a multi-line editor with tabs for languages. For the multi-line editor, you can specify the number of rows using the <b>builder-editor-rows</b> attribute. The <b>localizedData</b> object is passed on the <b>data</b> attribute, and the localized field label is passed with the <b>label</b> attribute.
 
 ### Validate the localized editor
