@@ -135,7 +135,6 @@ function searchNode(tree, parentNodeName){
 }
 
 function deleteClickedElement(event) {
-    debugger;
     document.body.removeChild(event.target);
 }
 
