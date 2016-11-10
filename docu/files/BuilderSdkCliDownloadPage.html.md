@@ -6,12 +6,12 @@ type: Download
 order: 1
 ---
 
-If you want to create your own user interfaces to manage your services in the Builder, use the **Builder SDK CLI**. The Builder SDK is a command-line interface that runs the Builder in **developer** mode. This mode implements a Builder module faster and more efficiently.
+If you would like to create your own user interfaces to manage your services in the Builder, use the **Builder SDK CLI**. The Builder SDK is a command-line interface that runs the Builder in **developer** mode. This mode implements a Builder module faster and more efficiently.
 
 Topics in this section include:
 
 * Installation process for the application
-* Extending, customizing, and developing your own Builder module using the Builder
+* Extension, customization, and development of your own Builder module using the Builder
 * Builder module descriptor and navigation inside the module
 * Security of the Builder and utilities for authorization, notification, and linking
 * The localized editor, which is a tool to add the names of your products in languages used by your target market
