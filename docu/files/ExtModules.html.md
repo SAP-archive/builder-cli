@@ -838,40 +838,128 @@ The Builder initiates the authorization process for your Builder module by passi
 In order to make this mechanism secure, Builder modules must be served over HTTPS only using a valid not self-signed certificate.
 </div>
 
+#### Authorization Manager
+
+The Builder contains a built-in authorization mechanism for REST calls coming from external Builder modules.
+This mechanism is based on the [Restangular](https://github.com/mgonto/restangular) plug-in and uses its request and error interceptors to add access token headers to your requests, as well as to handle authorization errors.
+It is recommended to use Restangular because of this out-of-the-box feature. However, if this does not work for your situation, you can also use the **Authorization Manager** to implement custom authorization for your Builder module.
+
+The Authorization Manager is a JavaScript object designed for authorization-related purposes.
+
+|Function| Description |Service Call Authentication|
+|--------|-----------------------|----------------|
+|Builder.authManager().getAccessToken()|Gets the access token that should be used when making REST calls to services. It contains scopes based on the current user and the package to which your module is registered.|Use the function to get a valid access token and include this token in the authorization header, which is required by the request.|
+|Builder.authManager().handleAuthError(navigationState, response)|Using this function, you notify the Builder that there was an authorization problem during a REST call (a `401` response code was generated), which usually means that the access token has expired. The Builder handles that example by getting a new token or by redirecting you to the login screen.|Use the function to properly handle the `401 Unauthorized` response caused by the fact that your token is no longer valid.|
+
 ### Notification manager
 
-The Notification Manager enables you to show notifications in Builder.
+The Notification Manager allows you to show notifications in the Builder.
 <table>
     <tr>
         <th>Function</th>
         <th>Description</th>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showInfo(message)</td>
-        <td>Shows an informational message in the notification area. It automatically closes after a few seconds.</td>
+        <td>Builder.notificationManager.showInfo(message, data)</td>
+        <td>Shows an informational message in the notification area. It automatically closes after a few seconds. Parameters:
+        <ul>
+            <li> **message** - message to display</li>
+            <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showSuccess(message)</td>
-        <td>Shows a success message in the notification area. It automatically closes after a few seconds.</td>
+        <td>Builder.notificationManager.showSuccess(message, data)</td>
+        <td>Shows a success message in the notification area. It automatically closes after a few seconds. Parameters:
+        <ul>
+            <li> **message** - message to display</li>
+            <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().showError(message)</td>
-        <td>Shows a warning message in the notification area. It remains open until you close it.</td>
+        <td>Builder.notificationManager.showError(message, data)</td>
+        <td>Shows a warning message in the notification area. It remains open until you close it. Parameters:
+        <ul>
+           <li> **message** - message to display</li>
+           <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+        </ul>
+        </td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().pushProcessing(message)</td>
+        <td>Builder.notificationManager.showConfirmation(title, message, onConfirmCallback, onCancelCallback, data)</td>
+        <td>Shows a confirmation dialog with the provided title and message. It also contains a button to confirm or to cancel. The `onConfirmCallback` function is called when user confirms, the `onCancelCallback` function is called when the user presses **Cancel**. Parameters:
+        <ul>
+           <li> **title** - title of the confirmation dialog</li>
+           <li> **message** - message to display; The message should explain what you want to confirm and ask the user to confirm or cancel.</li>
+           <li> **onConfirmCallback** - function to call when the user confirms</li>
+           <li> **onConfirmCallback** - function to call when the user cancels</li>
+           <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.showModalDialog(modalConfiguration)</td>
+        <td>This function performs the same operation as the `showConfirmation` function but it provides all parameters with a single configuration object called **modalConfiguration**. It also includes more configuration possibilities than the `showConfirmation` function. Parameters:
+        <ul>
+           <li> **modalConfiguration** - configuration object; These are the possible properties of the configuration object:
+              <ul>
+                 <li> **title** - title of the confirmation dialog</li>
+                 <li> **message** - message to be displayed; The message should explain what you want to confirm and ask the user to confirm or cancel.</li>
+                 <li> **onOk** - function to call when the user confirms</li>
+                 <li> **onCancel** - function to call when the user cancels</li>
+                 <li> **okLabel** - label of the confirm button; the default is **OK**</li>
+                 <li> **cancelLabel** - label of the confirm button; the default is **Cancel**</li>
+                 <li> **fullBlocking** - if set to true, the modal dialog blocks clicks in the background until the dialog is closed</li>
+                 <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+              </ul>
+           </li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.pushProcessing()</td>
         <td>Shows a "processing" information message. If the application is already in the processing state, it increments the counter of processing requests. Use this for long-running operations.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().popProcessing(message)</td>
-        <td>Stops showing the "processing" information, or just decrements the counter of processing requests, if greater than one.</td>
+        <td>Builder.notificationManager.popProcessing()</td>
+        <td>Stops showing the "processing" information, or decrements the counter for processing requests if the count is greater than one.</td>
     </tr>
     <tr>
-        <td>Builder.notificationManager().clearProcessing(message)</td>
+        <td>Builder.notificationManager.clearProcessing()</td>
         <td>Stops displaying the "processing" information.</td>
     </tr>
 </table>
 
+
+#### Notification manager: The data parameter
+
+The **data** parameter used in the various Notification manager functions allows you to inject additional data into the message provided as the first parameter of the function call. Currently, only the Builder links are supported as a data type. 
+
+The **data** parameter must be an object. You can use every property of that object as a placeholder in the message and the system replaces the placeholder with the processed value of the property.
+
+This example demonstrates the use of the Notification manager by showing an info message that contains a link to a specified node in the Builder:
+
+```
+Builder.notificationManager.showInfo(
+    'The new product was created succesfully. Go to {catLink} to attach it to a category.', 
+    {
+        catLink: {type: "link", url:"/Home/org1/Projects/pro1/categories", text: "Category Management"}
+    }
+);
+```
+
+The result is this message:
+
+![Info message with a link](img/info_message_w_link.png)
+
+The link is clickable and navigates to the Builder path as specified in the data object. You can have more than one links or placeholders in a single message. 
+
+To build a link to a specified part of the Builder, you can use the **linkManager** as shown:
+
+```
+var url = Builder.linkManager().currentProject().path('/categories').get(); // the get method returns the Builder link as a string
+```
 
 ### Link manager
 
