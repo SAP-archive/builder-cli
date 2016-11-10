@@ -1,0 +1,309 @@
+.previewCtn{
+    width:50%;
+    height:600px;
+}
+.cmpCtn{
+    position: relative;
+    top: 0;
+    left: 0;
+    border: 2px solid #0486e0;
+    padding: 20px 10px 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+/* If one component is selected grey out the others */
+.y-editor-builder--active .cmpCtn{
+    border-color: rgba(95, 112, 132, 0.2);
+}
+
+/* If one component is selected highlight none selected only on hover */
+.y-editor-builder--active .cmpCtn:hover{
+    border-color: #0486e0;
+}
+
+/* Component is selected */
+.y-editor-builder .cmpCtn--active{
+    border-color: #18bc33;
+}
+.cmpCtn .cmp-btn{
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #fff;
+    border: 2px solid currentColor;
+    border-right: none;
+    border-top: none;
+}
+
+
+
+.cmpCtn:hover > .cmp-ghost{
+    display: block;
+}
+
+/* Add a white background to siblings to proper hightlight stuff with transparent background */
+.cmpCtn:hover .cmpCtn,
+.cmpCtn:hover .y-dropzone{
+    background: #fff;
+}
+
+.cmp-ghost{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+    opacity: 0;
+    transition: opacity .2s ease;
+    background: rgba(4,134,224,0.2);
+}
+
+.cmp-ghost:hover{
+    opacity: 1;
+}
+
+.cmp-ghost:hover + .cmp-btn{
+    display:block;
+    z-index: 2000;
+}
+
+.cmp-btn:hover{
+    display: block;
+    z-index: 2000;
+}
+
+
+.y-sidebar{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 70px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    -webkit-align-items: stretch;
+    align-items: stretch;
+    width: 300px;
+    -webkit-transition: width .3s cubic-bezier(0.4,0.0,0.2,1);
+    transition: width .3s cubic-bezier(0.4,0.0,0.2,1);
+
+    background: #fff;
+    color: #000;
+    z-index: 1;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.y-sidebar .tab-content{
+    height: calc(100% - 70px);
+    overflow: auto;
+}
+
+.y-sidebar__list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.y-sidebar__list-item{
+    display: block;
+    width: 100%;
+    padding: 15px 25px;
+    cursor: move;
+    margin: 0;
+
+    border-bottom: 1px solid #d4d9e2;
+}
+
+.y-settings{
+    padding: 10px 15px 15px;
+}
+
+.y-content{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.y-content__slot{
+    position: absolute;
+    left: 300px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    -webkit-transition: left .3s cubic-bezier(0.4,0.0,0.2,1);
+    transition: left .3s;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.y-dropzone{
+    position: relative;
+
+    width:100%;
+    height:50px;
+
+    border: 1px #5f7084 dashed;
+    color: #5f7084;
+
+    margin: 10px 0;
+}
+
+.y-dropzone:after{
+    content: 'Drop compontent here';
+    position: absolute;
+    color: currentColor;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+/* Styles for Preview mode */
+.y-editor-builder--preview .cmpCtn{
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.y-editor-builder--preview .y-dropzone{
+    display: none;
+}
+
+.y-editor-builder--preview .cmp-btn,
+.y-editor-builder--preview .cmp-ghost{
+    display: none!important;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) and (min-width: 0){
+    .y-sidebar{
+        transform: translateX(-100%);
+        transition: transform .3s cubic-bezier(0.4,0.0,0.2,1);
+        top: 0;
+    }
+    .y-content__slot{
+        left: 0;
+    }
+}
+
+.y-code-inspector{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 10000;
+	background: #fff;
+    display: none;
+}
+
+.y-code-inspector--active{
+    top: 0;
+    left: 0;
+    display: block;
+}
+
+.y-code-inspector-content{
+    height: 100%;
+    width: 100%;
+    background: #ddd;
+}
+
+.y-code-inspector-cnt-wrapper{
+    position: absolute;
+    top: 53px;
+    left: 0px;
+    width: 100%;
+    bottom: 0;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+}
+
+
+/* Code Theme */
+
+/*
+  Five-color theme from a single blue hue.
+*/
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em 0.5em 2.5em;
+  background: #eaeef3;
+}
+
+.hljs {
+  color: #00193a;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title,
+.hljs-section,
+.hljs-doctag,
+.hljs-name,
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-comment {
+  color: #738191;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-built_in,
+.hljs-literal,
+.hljs-type,
+.hljs-addition,
+.hljs-tag,
+.hljs-quote,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #0486e0;
+}
+
+.hljs-meta,
+.hljs-subst,
+.hljs-symbol,
+.hljs-regexp,
+.hljs-attribute,
+.hljs-deletion,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-bullet {
+  color: #4c81c9;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.y-logo{
+    height: 60px;
+    border-radius: 18px;
+    margin: 5px;
+    position: absolute;
+}
+
+.y-logo:hover {
+    height: 300px;
+}
+
+.y-logo:hover + .y-logo-content:after{
+    content: 'Proudly brought to you by Himbeerdoni, Dellè & Kratzer';
+    position: absolute;
+    color: #fff;
+    top: 280px;
+    left: 20px;
+}
+
+.y-headline{
+    padding-left:10px;
+}
