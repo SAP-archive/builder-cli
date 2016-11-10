@@ -8,7 +8,7 @@ order: 4
 
 The localized editor is a custom Angular directive in **builder_editors** with a dependency to the **builder**.
 
-### Configure the localized editor
+### Configure the localized editor 
 
 As a Builder module developer, you need to complete a few simple tasks:
 
