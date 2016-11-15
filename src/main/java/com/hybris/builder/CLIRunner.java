@@ -748,7 +748,7 @@ public class CLIRunner
                 {
                     copyCommonResources();
                 }
-                if("skeletor".equals(cmdList.get(4))){
+                if(cmdList.size() > 4 && "skeletor".equals(cmdList.get(4))){
                     copySkeletor();
                 }
             }
