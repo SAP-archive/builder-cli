@@ -1,5 +1,5 @@
 ---
-title: 'Implementation guide for builder editor module V3 '
+title: 'Implementation Guide for the Builder Editor Module version 3 '
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
