@@ -3,7 +3,7 @@ title: 'Draft and dirty state handling in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 5
+order: 6
 ---
 
 You can react on unsaved states in the Builder module you are developing using draft and dirty state handling in the Builder. This helps to prevent data loss and improve the user experience in the Builder. Draft and dirty state handling are two different terms, but they are inter-related:

@@ -1,32 +1,32 @@
 ---
-title: 'The localized editor component in the Builder'
+title: 'The multi-tab editor component in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
 order: 4
 ---
 
-The localized editor is a custom Angular directive in **builder_editors** with a dependency to the **builder**.
+The multi-tab editor is a custom Angular directive in **builder_editors** with a dependency to the **builder**.
 
-### Configure the localized editor
+### Configure the multi-tab editor
 
 As a Builder module developer, you need to complete a few simple tasks:
 
-* Include one of these files:<br><br>```https://builder.yaas.io/public/js/builder_editors.js```<br>
-```https://builder.yaas.io/public/js/builder_editors_v2.js```<br><br>  
-* Then, add the **builder_editors** module to your angular module.
-* The directive expects data in the example format:
+* Include the https://builder.yaas.io/public/js/builder_editors_v3.js file. Add **builder_editors** to your module.
+* The directive expects data formatted as in this example:
+
 ```js
     /*simple string with localized property label */
     $scope.localizedLabel = 'Demo Label';
+    
+    $scope.configuration = {
+    'en': {'default': true, 'required': true},
+    'de': {'default': false, 'required': false}
+    };
 
-    /*array of json objects containing language iso and localized value of property*/
-    $scope.localizedData = [
-        {iso: 'en', value: 'english text'},
-        {iso: 'de', value: 'german text'},
-        {iso: 'pl', value: 'polish text'}];
 ```
-Since version 2 of the **builder_editors** structure of localized data has been changed, the localized editor accepts data in example format:
+Specify the data that you would like to display in the element. The multi-tab editor also accepts localized data formatted as in this example:
+
 ```js
     /*json object containing language iso and localized value of a property*/
     $scope.localizedData = {
@@ -39,15 +39,20 @@ Remember that a list of languages (currencies) in which the property is localize
 ```html
     <div class="panel-body">
         <h3>Single Line</h3>
-        <localized-text-editor data="localizedData" ng-form="someName2" builder-locale-type="currencies"></localized-text-editor>
+        <builder-tab-editor builder-locales="configuration" data="localizedData" ng-form="someName2" ></builder-tab-editor>
     </div>
 ```
-The <b>builder-locale-type</b> attribute enables you to choose between a localized editor for languages and for currencies. You must set the value to `languages` or `currencies`, respectively. That attribute is required for a localized editor component. Please avoid configuration that will render your code invalid. For example, a multi-line currency editor is an example of configuration that is not supported.
+
+#### Attributes: 
+
+- <b>data</b> - Required. Indicates which text should fill the editor prior to user input. 
+- <b>builder-validate-tabs</b> - Not required. Default false. Specifies whether a field should be validated or is required in order to save.
+- <b>builder-locales</b> - A structure specifing which locale is default and/or must be filled. This attribute enables you to choose between a multi-tab editor for languages and for currencies. You must set the value to `languages` or `currencies`, respectively. That attribute is required for a localized editor component. Please avoid configuration that will render your code invalid. For example, a multi-line currency editor is an example of configuration that is not supported.
 The <b>builder-editor-type</b> attribute defines the type of editor. If it is empty, that indicates a single-line editor. If it contains a tab, that indicates a multi-line editor with tabs for languages. For the multi-line editor, you can specify the number of rows using the <b>builder-editor-rows</b> attribute. The <b>localizedData</b> object is passed on the <b>data</b> attribute, and the localized field label is passed with the <b>label</b> attribute.
 
-### Validate the localized editor
+### Validate the multi-tab editor
 
-If you want your localized editor to be validated, you need to add the <b>builder-validate-required-languages</b> attribute set as `true` to the definition of a localized editor. Every value of the localized property is validated.
+f you want your editor to be validated, you need to add the builder-validate-tabs attribute set as true to the definition of the editor. Every value is validated.
 
 There are two warning indicators used in the validation process:
 
