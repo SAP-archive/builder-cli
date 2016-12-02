@@ -1045,12 +1045,7 @@ If you want to implement help mode in your Builder module:
 <li>In the Builder module controller `.js` file, add the following code snippet:
 ``` js
 <script>
-$scope.helpMode = Builder.helpMode;
-
-    Builder.onHelpModeChange = function(value)
-    {
-      $scope.helpMode = value; $scope.$apply();
-    };
+Builder.applyHelpMode($scope);
 </script>
 ```
 </li>
