@@ -8,46 +8,52 @@ order: 5
 
 This brief how-to guide uses version 3 of the builder_editors module (**builder_editor_v3.js**) to outline the necessary implementation steps. This page serves as an addition to the existing documentation for versions 1 and 2.
 
+1. Include the builder module: https://builder.yaas.io/public/js/builder_editors_v3.js
+2. Add 'builder_editors' module to your angular module.
+3. Prepare the configuration:
 
-* Include the builder module: https://builder.yaas.io/public/js/builder_editors_v3.js<br>
-* Add 'builder_editors' module to your angular module.<br>
-* Prepare the configuration: <br>
+  ```
+   $scope.configuration = {
+     'en': {'default': true, 'required': true},
+     'de': {'default': false, 'required': false}
+    };  
 
-```
- $scope.configuration = {
-    'en': {'default': true, 'required': true},
-    'de': {'default': false, 'required': false}
- };
+  ```
 
-```
-* Next, specify the data that you would like to display in the element.  Here is an example:             
+4. Next, specify the data that you would like to display in the element.
 
-```
-   $scope.localizedData = {
-   'en': 'english text',
-   'de': 'german text',
-   };
+  **Example:**
+
+  ```
+    $scope.localizedData = {
+     'en': 'english text',
+     'de': 'german text',
+   }; 
    
-```
-* Modify your html to include the editor with its corresponding attributes.
+  ```
 
-Example:
+5. Modify your html to include the editor with its corresponding attributes. 
 
-```
-<div class="panel-body">
- <h3>Single Line</h3>
- <builder-tab-editor builder-locales="configuration" data="localizedData" ng-form="someName2" ></builder-tab-editor>
-</div>
+  **Example:**
 
-```
+  ```
+    <div class="panel-body">
+     <h3>Single Line</h3>
+     <builder-tab-editor builder-locales="configuration" data="localizedData" ng-form="someName2" ></builder-tab-editor>
+    </div>
+
+  ```
 <br>
-****Attributes:****
+
+<h3>Attributes:</h3>
 
 - **data** - Required. Indicates which text should fill the editor prior to user input.
-- **builder-validate-tabs** - Not required. Default false. Specifies whether a field should be validated or is required in order to save
-- **builder-locales** - A structure specifying which locale is default and/or must be filled<br>
+- **builder-validate-tabs** - Not required. Default false. Specifies whether a field should be validated or is required in order to save.
+- **builder-locales** - A structure specifying which locale is default and/or must be filled.<br>
   
 
-****Validating the builder tab editor****
+<h3>Validating the builder tab editor</h3>
 
-If you want your editor to be validated, you need to add the builder-validate-tabs attribute set as true to the definition of the editor. Each value is validated.
+To allow validation in the editor: 
+1. Add the builder-validate-tabs attribute to the definition of the editor. 
+2. Set the attribute to as true. Each value is validated.
