@@ -45,7 +45,7 @@ Example:
 
 - **data** - Required. Indicates which text should fill the editor prior to user input.
 - **builder-validate-tabs** - Not required. Default false. Specifies whether a field should be validated or is required in order to save
-- **builder-locales** - A structure specifing which locale is default and/or must be filled<br>
+- **builder-locales** - A structure specifying which locale is default and/or must be filled<br>
   
 
 ****Validating the builder tab editor****
