@@ -6,7 +6,7 @@ type: Tutorial
 order: 5
 ---
 
-This brief how-to guide uses version 3 of the builder_editors module (**builder_editor_v3.js**) to outline the necessary implementation steps. This page serves as an addendum to the existing documentation for versions 1 and 2.
+This brief how-to guide uses version 3 of the builder_editors module (**builder_editor_v3.js**) to outline the necessary implementation steps. This page serves as an addition to the existing documentation for versions 1 and 2.
 
 
 * Include the builder module: https://builder.yaas.io/public/js/builder_editors_v3.js<br>
