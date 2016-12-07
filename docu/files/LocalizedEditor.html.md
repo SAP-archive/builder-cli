@@ -10,12 +10,12 @@ The localized editor is a custom Angular directive in **builder_editors** with a
 
 ### Configure the localized editor
 
-As a Builder module developer, you need to complete a few simple tasks:
+As a Builder module developer, complete a few simple tasks:
 
 * Include one of these files:<br><br>```https://builder.yaas.io/public/js/builder_editors.js```<br>
 ```https://builder.yaas.io/public/js/builder_editors_v2.js```<br><br>  
-* Then, add the **builder_editors** module to your angular module.
-* The directive expects data in the example format:
+* Then, add the **builder_editors** module to your Angular module.
+* The directive expects data formatted as shown in this example:
 ```js
     /*simple string with localized property label */
     $scope.localizedLabel = 'Demo Label';
@@ -42,18 +42,18 @@ Remember that a list of languages (currencies) in which the property is localize
         <localized-text-editor data="localizedData" ng-form="someName2" builder-locale-type="currencies"></localized-text-editor>
     </div>
 ```
-The <b>builder-locale-type</b> attribute enables you to choose between a localized editor for languages and for currencies. You must set the value to `languages` or `currencies`, respectively. That attribute is required for a localized editor component. Please avoid configuration that will render your code invalid. For example, a multi-line currency editor is an example of configuration that is not supported.
+The <b>builder-locale-type</b> attribute enables you to choose between a localized editor for languages and for currencies. Set the value to `languages` or `currencies`, respectively. This attribute is required for a localized editor component. Avoid any configuration that will render your code invalid. For example, a multi-line currency editor is an example of configuration that is not supported.
 The <b>builder-editor-type</b> attribute defines the type of editor. If it is empty, that indicates a single-line editor. If it contains a tab, that indicates a multi-line editor with tabs for languages. For the multi-line editor, you can specify the number of rows using the <b>builder-editor-rows</b> attribute. The <b>localizedData</b> object is passed on the <b>data</b> attribute, and the localized field label is passed with the <b>label</b> attribute.
 
 ### Validate the localized editor
 
-If you want your localized editor to be validated, you need to add the <b>builder-validate-required-languages</b> attribute set as `true` to the definition of a localized editor. Every value of the localized property is validated.
+To validate your localized editor, add the <b>builder-validate-required-languages</b> attribute, set as `true`, to the definition of a localized editor. The system validates each value.
 
 There are two warning indicators used in the validation process:
 
 <ul>
-<li> **globe** - Informs indirectly that one or more fields with required language from the list is empty.</li>
-<li> **frame text box** - Informs directly which field from the required ones you need to fill in.</li>
+<li> **globe** - Warns that one or more fields with required language from the list is empty.</li>
+<li> **frame text box** - Indicates which field to fill in from among the required ones.</li>
 </ul>
 The validation process consists of two stages. You can find more detailed information about each of them below:
 
