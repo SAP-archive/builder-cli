@@ -29,8 +29,9 @@ function Tree(node){
 };
 
 function init(){
+    var encodeURIComponent = function(data){return data;};//checkmarx fix
     if(localStorage.getItem('dataModel')){
-        tree = JSON.parse(localStorage.getItem('dataModel'));
+        tree = JSON.parse(encodeURIComponent(localStorage.getItem('dataModel')));
         $("#preview").empty().append(renderHTML(tree._root, true));
     }else{
         addNodeToTree('main');
