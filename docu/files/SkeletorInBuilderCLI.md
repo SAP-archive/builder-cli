@@ -20,7 +20,7 @@ To run and use Skeletor:
 4. Enter the URL http://localhost:8082 in a browser.  The Skeletor design interface will appear. 
 5. To design a UI, drag and drop the components from the left of the screen onto the main screen. Organize the components as they should appear in the Builder UI. 
 
-  <img src="img/skeletor_ui.png" style="width:600px" class="img-click-modal" alt="The Skeletor UI"/><br><br>
+  <img src="img/skeletor_ui_drag.png" style="width:600px" class="img-click-modal" alt="The Skeletor UI"/><br><br>
 6. After you have created the UI, export the code that Skeletor generates. To do this click on the brackets icon in the top right corner of the screen.
 
   <img src="img/skeletor_ui_menu.png" class="img-click-modal" alt="The Skeletor UI"/><br><br>
