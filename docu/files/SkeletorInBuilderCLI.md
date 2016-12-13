@@ -38,7 +38,7 @@ The Builder CLI features the Skeletor tool with which you can easily create view
   
 <h3>Component Settings</h3>
 
-You can adjust the settings for each component in the Skeletor. This allows you to assign customized text and and labelling to the component. For example, the <strong>Page Header</strong> component features a <strong>Back</strong> button, a long page title, as well as a <strong>Save</strong> and <strong>Cancel</strong> button by default. You can set the default text value of the title and rename each of the buttons.
+You can adjust the settings for each component in the Skeletor. This allows you to assign custom text and and labelling to the component. For example, the <strong>Page Header</strong> component features a <strong>Back</strong> button, a long page title, as well as a <strong>Save</strong> and <strong>Cancel</strong> button by default. You can set the default text of the title and rename each of the buttons.
 
 
 <br>
