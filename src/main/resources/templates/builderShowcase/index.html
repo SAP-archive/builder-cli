@@ -7,117 +7,228 @@
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/angular-translate/angular-translate.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
         <script src="https://builder.yaas.io/public/js/builder.js"></script>
-        <script src="https://builder.yaas.io/public/js/builder_editors_v2.js"></script>
+        <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder_editors_v3.js"></script>
         <title>The Simple One</title>
     </head>
     <body>
         <script>
-            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder_editors"]);
-        
+            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translateStatic"]);
+
             demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
                 $scope.widgetSettings = Builder.currentWidget.settings;
+                $scope.availableMarkets = Builder.currentWidget.settings.availableMarkets;
+                $scope.availableRegions = Builder.currentWidget.settings.availableRegions;
             });
-        
+
             demoUIModuleApp.controller('authCtrl', function($scope, $http) {
                 $scope.accessToken = Builder.authManager().getAccessToken();
                 $scope.currentAccountId = Builder.currentAccountId;
             });
-        
+
             demoUIModuleApp.controller('linkManagerCtrl', function($scope){
                 $scope.linkMng = Builder.linkManager().currentLocation();
                 $('#isPathExisting').prop('disabled', !Builder.linkManager().path('/Product Overview').exists());
             });
-            
+
             demoUIModuleApp.controller('notificationCtrl', function($scope){
-                
                 $scope.processing=function(){
-                    Builder.notificationManager.pushProcessing();    
+                    Builder.notificationManager.pushProcessing();
                     setTimeout(function(){
                     Builder.notificationManager.popProcessing();
                     },3000);
                 }
-                
+
             });
-        
-            demoUIModuleApp.controller('localizedCtrl', function($scope){
-                $scope.localizedLabel = 'Demo Label';
-        
-                $scope.localizedData = {
-                    en:"english text",
-                    de:"german text",
-                    pl:"polish text"};
+
+            demoUIModuleApp.controller('localizedCtrl' ,function($scope){
+                $scope.configuration = {
+                    'en': {'default': true, 'required': true},
+                    'de': {'default': false, 'required': false}
+                };
+                 $scope.localizedData = {
+                    'en': 'english text',
+                    'de': 'german text',
+                };
             });
+
+            demoUIModuleApp.controller('validationCtrl', ['$scope','inputValidator','$timeout','$translate',
+             function($scope, inputValidator, $timeout, $translate){
+            }]);
         </script>
-        <div class="wrapper" ng-App="demoUIModuleApp">
-            <div class="container-fluid" style="margin-left:10px;">
+        <div class="wrapper" ng-app="demoUIModuleApp">
+
+            <div class="container-fluid body-content">
                 <div class="row">
                     <div class="page-header">
                         <h1 id="header"></h1>
                     </div>
-                    <div id="token"></div>
-                    <div>
-                        <h3>NOTIFICATIONS</h3>
-                    </div>
-                    <div ng-controller="notificationCtrl">
-                        <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
-                        <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
-                        <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
-                        <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
-                        <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
-                        <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
-                    </div>
-                    <br>
-                    <div>
-                        <h3>LINKMANAGER</h3>
-                    </div>
-                    <div ng-controller="linkManagerCtrl">
-                        <div>
-                            <button class="btn btn-default" onclick="Builder.linkManager().path('/My Profile').open()">Show my Profile</button>
-                            <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/Projects/'+Builder.currentProjectId+'/parent/issue2').open()">Show widget two</button>
-                            <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
+                <div class="row">
+                    <!--<div id="token"></div>-->
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div>
+                                    <h3>NOTIFICATIONS</h3>
+                                </div>
+                                <div ng-controller="notificationCtrl">
+                                    <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
+                                    <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
+                                    <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
+                                    <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
+                                    <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
+                                    <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div>
-                        <h3>LOCALIZED EDITOR</h3>
-                    </div>
-                    <div ng-controller="localizedCtrl">
-                        <div class="panel-body" style="width:50%;">
-                            <h4>Multi Line Editor</h4>
-                            <localized-text-editor ng-form="someForm" builder-editor-type="tab" data="localizedData" label="localizedLabel"
-                            novalidate="novalidate" builder-validate-required-languages="false" builder-locale-type="languages"></localized-text-editor>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div>
+                                    <h3>LINKMANAGER</h3>
+                                </div>
+                                <div ng-controller="linkManagerCtrl">
+                                    <div>
+                                        <button class="btn btn-default" onclick="Builder.linkManager().path('/My Profile').open()">Show my Profile</button>
+                                        <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/Projects/'+Builder.currentProjectId+'/parent/issue2').open()">Show widget two</button>
+                                        <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div>
-                        <h3>SETTINGS</h3>
+                </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>Builder Editor v3</h3>
+                                    </div>
+                                    <div ng-controller="localizedCtrl">
+                                        <h3>Single line</h3>
+                                        <div>
+                                            <builder-tab-editor builder-locales="configuration" data="localizedData" ng-form="someName2" ></builder-tab-editor>
+                                        </div>
+                                        <div>Here you can find the
+                                            <a href="https://devportal.yaas.io/tools/buildersdk/index.html#ImplementationGuidefortheBuilderEditorModuleversion3" target="_blank"> builder-tab-editor</a>.
+                                        </div>
+                                        <div>Here you can find the previous
+                                            <a href="https://devportal.yaas.io/tools/buildersdk/index.html#ThelocalizededitorcomponentintheBuilder" target="_blank">  localized editor</a>.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div ng-controller="settingsCtrl">
-                        <div>EmailServiceUrl : {{widgetSettings.emailServiceUrl}}</div>
-                        <div>API Management Url : {{widgetSettings.apiManagementUrl}}</div>
-                        <div>Example Settings : {{widgetSettings.example_setting}}</div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>CLIENT-SIDE VALIDATION</h3>
+                                    </div>
+                                    <div ng-controller="validationCtrl">
+                                        <div class="row">
+                                            <form role="form" name="form" class="col-sm-6">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Customer Email</label>
+                                                        <input type="text" name="email" builder-input="email" class="form-control input-lg" ng-model="customer.email" required>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div>Here you can find more
+                                        <a href="https://devportal.yaas.io/tools/buildersdk/index.html#Client-sidefieldvalidationintheBuilder" target="_blank"> custom validation rules</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <div>
-                        <h3>AUTH MANAGER</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>SETTINGS</h3>
+                                    </div>
+                                    <div ng-controller="settingsCtrl">
+                                        <div>Media Service Url : {{widgetSettings.mediaServiceUrl}}</div>
+                                        <div>API Management Url : {{widgetSettings.apiManagementServiceUrl}}</div>
+                                        <div>Example Settings : {{widgetSettings.example_setting}}</div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h4>Available Markets</h4>
+                                                <div ng-repeat="market in availableMarkets">
+                                                    <div class="input-group col-sm-2">
+                                                        <span class="input-group-addon">{{market.id}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <h4>Available Regions</h4>
+                                                <div ng-repeat="region in availableRegions">
+                                                    <div class="input-group col-sm-1">
+                                                        <span class="input-group-addon">{{region}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div ng-controller="authCtrl">
-                        <div>Access Token = {{accessToken}}</div>
-                        <div>Current User : {{currentAccountId}}</div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>AUTH MANAGER</h3>
+                                    </div>
+                                    <div ng-controller="authCtrl">
+                                        <div>Access Token = {{accessToken}}</div>
+                                        <div>Current User : {{currentAccountId}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <div>
-                        <h3>RECOMMENDED STYLE SET</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>RECOMMENDED STYLE SET</h3>
+                                    </div>
+                                    <div>Here can you find the
+                                        <a href="https://techne.yaas.io" target="_blank"> recommended yaas styles</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>Here can you find the
-                        <a href="#" onclick="Builder.linkManager().path('/Home').open()"> recommended yaas styles</a>.
-                    </div>
-                    <div>
-                        <h3>Fullscreen mode</h3>
-                    </div>
-                    <div>
-                        <button class="btn btn-default" onclick="Builder.moduleFullScreen.turnOn();">fullscreen on</button>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>Fullscreen mode</h3>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-default" onclick="Builder.moduleFullScreen.turnOn();">fullscreen on</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
