@@ -17,7 +17,7 @@
     </head>
     <body>
         <script>
-            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translateStatic", 'builder.navbar']);
+            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translate", 'builder.navbar']);
 
             demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
                 $scope.widgetSettings = Builder.currentWidget.settings;
@@ -152,6 +152,20 @@
                                     </div>
                                     <div>Read more about the custom validation rules
                                         <a href="https://devportal.yaas.io/tools/buildersdk/index.html#Client-sidefieldvalidationintheBuilder" target="_blank"> here</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
                                     </div>
                                 </div>
                             </div>
