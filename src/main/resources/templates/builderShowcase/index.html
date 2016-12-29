@@ -12,11 +12,12 @@
         <script src="https://builder.yaas.io/public/js/builder.js"></script>
         <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
         <script src="https://builder.yaas.io/public/js/builder_editors_v3.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder_navbar.js"></script>
         <title>The Simple One</title>
     </head>
     <body>
         <script>
-            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translateStatic"]);
+            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translateStatic", 'builder.navbar']);
 
             demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
                 $scope.widgetSettings = Builder.currentWidget.settings;
@@ -62,6 +63,9 @@
         <div class="wrapper" ng-app="demoUIModuleApp">
 
             <div class="container-fluid body-content">
+                <builder-navbar
+                    navbar-title="Builder showcase module">
+                </builder-navbar>
                 <div class="row">
                     <div class="page-header">
                         <h1 id="header"></h1>
@@ -139,8 +143,8 @@
                                             <form role="form" name="form" class="col-sm-6">
                                                 <div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Customer Email</label>
-                                                        <input type="text" name="email" builder-input="email" class="form-control input-lg" ng-model="customer.email" required>
+                                                        <label class="control-label">Name</label>
+                                                        <input type="text" name="Wishlist Item Name" builder-input="email" class="form-control input-lg" ng-model="wishlistItem.name" required>
                                                     </div>
                                                 </div>
                                             </form>
