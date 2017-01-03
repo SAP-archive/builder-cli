@@ -822,7 +822,7 @@ All context variables are properties of the global JavaScript object called **Bu
 
 <br>
 
-##### Localization using the Builder.currentLanguage context variable
+##### Translation using the Builder.currentLanguage context variable
 
 
 <table>
