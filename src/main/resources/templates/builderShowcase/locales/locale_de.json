@@ -1,6 +1,7 @@
 {
     "SHOWCASE":{
         "DEFAULT_BUTTON" : "Drig'ens drauf!",
-        "EXAMPLE_TRANSLATION" : "Beispieluebersetzung"
+        "EXAMPLE_TRANSLATION" : "Beispieluebersetzung",
+        "CURRENT_LANGUAGE":"Aktuelle Sprache"
     }
 }

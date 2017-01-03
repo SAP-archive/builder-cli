@@ -23,6 +23,7 @@
                 $scope.widgetSettings = Builder.currentWidget.settings;
                 $scope.availableMarkets = Builder.currentWidget.settings.availableMarkets;
                 $scope.availableRegions = Builder.currentWidget.settings.availableRegions;
+                $scope.currLanguage = Builder.currentLanguage;
             });
 
             demoUIModuleApp.controller('authCtrl', function($scope, $http) {
@@ -160,10 +161,11 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="panel panel-default">
-                                <div class="panel-body">
+                                <div class="panel-body" ng-controller="settingsCtrl">
                                     <div>
                                         <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
                                     </div>
+                                    <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
                                     <div>
                                         <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
                                     </div>
