@@ -824,7 +824,6 @@ All context variables are properties of the global JavaScript object called **Bu
 
 ##### Localization using the Builder.currentLanguage context variable
 
-Use the context variable `currentLanguage` to determine the language to which the Builder module is currently set. 
 
 <table>
     <tr>
@@ -837,16 +836,66 @@ Use the context variable `currentLanguage` to determine the language to which th
     </tr>
 </table>
 
-Based on the information that this variable provides, developers select localized content that they have previously configured using the technology of their choice.
+Use the context variable `currentLanguage` to determine the current language set for the Builder module. Based on the information that this variable provides, developers select localized content that they have previously configured using the technology of their choice.<br><br>
 
-Here is an example illustrating angular translate module used in combination with the data returned from the currentLanguage parameter.
+<b>Example:</b>
 
-`````
-code goes here
+<b>1. Declare the context variable `currentLanguage` for the application scope.</b>
 
-````
+``` 
+<script>
 
-##### AngularJS module Restangular wrapper
+ var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translate", 'builder.navbar']);
+
+ demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
+  $scope.widgetSettings = Builder.currentWidget.settings;
+  $scope.availableMarkets = Builder.currentWidget.settings.availableMarkets;
+  $scope.availableRegions = Builder.currentWidget.settings.availableRegions;
+  $scope.currLanguage = Builder.currentLanguage;
+ });
+
+</script>
+
+```
+<br>
+<b>2. Include the directive in the view that binds to the controller. In this case, `ng-controller`.</b>
+
+```
+<div class="panel-body" ng-controller="settingsCtrl">
+
+```
+<br>
+<b>3. Create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as locale_de.json with this notation:
+
+```
+{
+
+    "SHOWCASE":{
+        "DEFAULT_BUTTON" : "Hier Klicken",
+        "EXAMPLE_TRANSLATION" : "Beispieluebersetzung",
+        "CURRENT_LANGUAGE" : "Aktuelle Sprache"
+    }
+}
+
+```
+<br>
+<b>4. Nest the translation keys into the view at the location where the ng-controller directive appears.</b>
+
+```
+<div class="panel-body" ng-controller="settingsCtrl">
+ <div>
+  <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
+ </div>
+ <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
+ <div>
+  <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
+ </div>
+</div>
+
+```
+<br>
+
+### AngularJS module Restangular wrapper
 
 If you are using AngularJS and Restangular, it is recommended that you add a dependency from the **Builder** module to your AngularJS modules:
 ```
