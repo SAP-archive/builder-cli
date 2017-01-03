@@ -865,7 +865,7 @@ Use the context variable `currentLanguage` to determine the current language set
 
 ```
 <br>
-<b>3. Create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as locale_de.json with this notation:
+<b>3. Create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as <b>locale_de.json</b> with this notation:
 
 ```
 {
