@@ -820,8 +820,33 @@ All context variables are properties of the global JavaScript object called **Bu
     </tr>
 </table>
 
+<br>
 
-#### AngularJS module Restangular wrapper
+##### Localization using the Builder.currentLanguage context variable
+
+Use the context variable `currentLanguage` to determine the language to which the Builder module is currently set. 
+
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Builder.currentLanguage</td>
+        <td>Indicates the current language set in the Builder module</td>
+    </tr>
+</table>
+
+Based on the information that this variable provides, developers select localized content that they have previously configured using the technology of their choice.
+
+Here is an example illustrating angular translate module used in combination with the data returned from the currentLanguage parameter.
+
+`````
+code goes here
+
+````
+
+##### AngularJS module Restangular wrapper
 
 If you are using AngularJS and Restangular, it is recommended that you add a dependency from the **Builder** module to your AngularJS modules:
 ```
