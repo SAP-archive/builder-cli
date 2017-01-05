@@ -845,12 +845,9 @@ Use the context variable `currentLanguage` to determine the current language set
 ``` 
 <script>
 
- var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translate", 'builder.navbar']);
+ var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.translate"]);
 
  demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
-  $scope.widgetSettings = Builder.currentWidget.settings;
-  $scope.availableMarkets = Builder.currentWidget.settings.availableMarkets;
-  $scope.availableRegions = Builder.currentWidget.settings.availableRegions;
   $scope.currLanguage = Builder.currentLanguage;
  });
 
@@ -865,7 +862,7 @@ Use the context variable `currentLanguage` to determine the current language set
 
 ```
 <br>
-<b>3. Create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as <b>locale_de.json</b> with this notation:
+<b>3. Create a directory called locales. In this directory create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as <b>locale_de.json</b> with this notation:
 
 ```
 {
