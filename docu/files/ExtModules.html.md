@@ -820,8 +820,79 @@ All context variables are properties of the global JavaScript object called **Bu
     </tr>
 </table>
 
+<br>
 
-#### AngularJS module Restangular wrapper
+##### Translation using the Builder.currentLanguage context variable
+
+
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Builder.currentLanguage</td>
+        <td>Indicates the current language set in the Builder module</td>
+    </tr>
+</table>
+
+Use the context variable `currentLanguage` to determine the current language set for the Builder module. Based on the information that this variable provides, developers select localized content that they have previously configured using the technology of their choice.<br><br>
+
+<b>Example:</b>
+
+<b>1. Declare the context variable `currentLanguage` for the application scope.</b>
+
+``` 
+<script>
+
+ var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.translate"]);
+
+ demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
+  $scope.currLanguage = Builder.currentLanguage;
+ });
+
+</script>
+
+```
+<br>
+<b>2. Include the directive in the view that binds to the controller. In this case, `ng-controller`.</b>
+
+```
+<div class="panel-body" ng-controller="settingsCtrl">
+
+```
+<br>
+<b>3. Create a directory called locales. In this directory create a JSON file for each language that you would like to translate.</b> In this example, there is a file for German and English.  The file containing German content has a name such as <b>locale_de.json</b> with this notation:
+
+```
+{
+
+    "SHOWCASE":{
+        "DEFAULT_BUTTON" : "Hier Klicken",
+        "EXAMPLE_TRANSLATION" : "Beispieluebersetzung",
+        "CURRENT_LANGUAGE" : "Aktuelle Sprache"
+    }
+}
+
+```
+<br>
+<b>4. Nest the translation keys into the view at the location where the ng-controller directive appears.</b>
+
+```
+<div class="panel-body" ng-controller="settingsCtrl">
+ <div>
+  <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
+ </div>
+ <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
+ <div>
+  <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
+ </div>
+</div>
+
+```
+<br>
+
+### AngularJS module Restangular wrapper
 
 If you are using AngularJS and Restangular, it is recommended that you add a dependency from the **Builder** module to your AngularJS modules:
 ```
