@@ -35,6 +35,7 @@ public class CLIRunner
     private String mvnOpts;
     private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
     private static final int TIMEOUT_VALUE = 5000;
+    private static final int SIZE_OF_BUFFER = 2048;
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
@@ -380,13 +381,16 @@ public class CLIRunner
      */
     protected String getString(InputStream inputStream) throws IOException
     {
-        int ch;
-        StringBuilder sb = new StringBuilder();
-        while((ch = inputStream.read())!= -1)
-        {
-            sb.append((char) ch);
+        final char[] buffer = new char[SIZE_OF_BUFFER];
+        final StringBuilder stringBuilder = new StringBuilder();
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        for (;;) {
+            int numberOfChar = reader.read(buffer, 0, buffer.length);
+            if (numberOfChar < 0)
+                break;
+            stringBuilder.append(buffer, 0, numberOfChar);
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
     /**
