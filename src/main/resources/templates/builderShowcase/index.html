@@ -2,7 +2,6 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <!-- custom stylesheets -->
         <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
@@ -43,7 +42,6 @@
                     Builder.notificationManager.popProcessing();
                     },3000);
                 }
-
             });
 
             demoUIModuleApp.controller('localizedCtrl' ,function($scope){
@@ -62,60 +60,60 @@
             }]);
         </script>
         <div class="wrapper" ng-app="demoUIModuleApp">
-
             <div class="container-fluid body-content">
                 <builder-navbar
                     navbar-title="Builder showcase module">
                 </builder-navbar>
-                <div class="row">
-                    <div class="page-header">
-                        <h1 id="header"></h1>
-                    </div>
-                <div class="row">
-                    <!--<div id="token"></div>-->
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div>
-                                    <h3>NOTIFICATIONS</h3>
-                                </div>
-                                <div ng-controller="notificationCtrl">
-                                    <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
-                                    <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
-                                    <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
-                                    <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
-                                    <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
-                                    <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="page-header">
+                    <h1 id="header"></h1>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div>
-                                    <h3>LINKMANAGER</h3>
-                                </div>
-                                <div ng-controller="linkManagerCtrl">
-                                    <div>
-                                        <button class="btn btn-default" onclick="Builder.linkManager().path('/My Profile').open()">Show my Profile</button>
-                                        <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/Projects/'+Builder.currentProjectId+'/parent/issue2').open()">Show widget two</button>
-                                        <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
-                                    </div>
-                                </div>
+                    <div class="col-sm-6">
+                        <section>
+                            <div class="section-header">
+                                <h3>Notifications</h3>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                    <div class="row">
-                        <div class="col-sm-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>Builder Editor v3</h3>
+                                    <div ng-controller="notificationCtrl">
+                                        <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
+                                        <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
+                                        <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
+                                        <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
+                                        <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
+                                        <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
                                     </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-sm-6">
+                        <section>
+                            <div class="section-header">
+                                <h3>Linkmanager</h3>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div ng-controller="linkManagerCtrl">
+                                        <div>
+                                            <button class="btn btn-default" onclick="Builder.linkManager().path('/My Account/My Profile/Account Settings').open()">Show my Profile</button>
+                                            <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/'+Builder.currentOrganizationId+'/Projects/'+Builder.currentProjectId+'/parent/settingsExample1').open()">Show widget two</button>
+                                            <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+               <div class="row">
+                   <div class="col-sm-6">
+                       <section>
+                            <div class="section-header">
+                                <h3>Builder Editor v3</h3>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
                                     <div ng-controller="localizedCtrl">
                                         <h3>Single line</h3>
                                         <div>
@@ -130,15 +128,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                       </section>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <section>
+                            <div class="section-header">
+                                <h3>Client-Side Validation</h3>
+                            </div>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>CLIENT-SIDE VALIDATION</h3>
-                                    </div>
                                     <div ng-controller="validationCtrl">
                                         <div class="row">
                                             <form role="form" name="form" class="col-sm-6">
@@ -156,30 +154,34 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body" ng-controller="settingsCtrl">
-                                    <div>
-                                        <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
-                                    </div>
-                                    <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
-                                    <div>
-                                        <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
-                                    </div>
-                                </div>
+                </div>
+                <div class="row">
+                     <div class="col-sm-6" ng-controller="settingsCtrl">
+                        <section>
+                            <div class="section-header">
+                                <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>SETTINGS</h3>
-                                    </div>
+                                <div>
+                                    <h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4>
+                                </div>
+                                <div>
+                                    <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
+                                </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-sm-6">
+                       <section>
+                            <div class="section-header">
+                                <h3>Settings</h3>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
                                     <div ng-controller="settingsCtrl">
                                         <div>Media Service Url : {{widgetSettings.mediaServiceUrl}}</div>
                                         <div>API Management Url : {{widgetSettings.apiManagementServiceUrl}}</div>
@@ -205,50 +207,52 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                       </section>
+                     </div>
+                </div>
+                <div class="row">
+                   <div class="col-sm-6">
+                       <section>
+                            <div class="section-header">
+                                <h3>Auth Manager</h3>
+                            </div>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>AUTH MANAGER</h3>
-                                    </div>
                                     <div ng-controller="authCtrl">
                                         <div>Access Token = {{accessToken}}</div>
                                         <div>Current User : {{currentAccountId}}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                       </section>
+                   </div>
+                   <div class="col-sm-6">
+                       <section>
+                            <div class="section-header">
+                                <h3>Recommended Style Set</h3>
+                            </div>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>RECOMMENDED STYLE SET</h3>
-                                    </div>
                                     <div>Here can you find the
                                         <a href="https://techne.yaas.io" target="_blank"> recommended YaaS styles</a>.
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                       </section>
+                   </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <section>
+                            <div class="section-header">
+                                <h3>Fullscreen mode</h3>
+                            </div>
                             <div class="panel panel-default">
                                 <div class="panel-body">
-                                    <div>
-                                        <h3>Fullscreen mode</h3>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-default" onclick="Builder.moduleFullScreen.turnOn();">fullscreen on</button>
-                                    </div>
+                                    <button class="btn btn-default" onclick="Builder.moduleFullScreen.turnOn();">fullscreen on</button>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
