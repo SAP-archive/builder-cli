@@ -1,7 +1,7 @@
 {
     "SHOWCASE":{
-        "DEFAULT_BUTTON" : "Drig'ens drauf!",
-        "EXAMPLE_TRANSLATION" : "Beispieluebersetzung",
+        "DEFAULT_BUTTON" : "Btn macht nix!",
+        "EXAMPLE_TRANSLATION" : "Beispielübersetzung",
         "CURRENT_LANGUAGE":"Aktuelle Sprache"
     }
 }
