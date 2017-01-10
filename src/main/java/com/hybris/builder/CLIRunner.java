@@ -35,7 +35,6 @@ public class CLIRunner
     private String mvnOpts;
     private static final String VERSION_URL = "https://raw.githubusercontent.com/SAP/builder-cli/master/version.txt";
     private static final int TIMEOUT_VALUE = 5000;
-    private static final int SIZE_OF_BUFFER = 2048;
 
     private boolean networkConnection = true;
     private boolean appendToLog = false;
@@ -381,7 +380,7 @@ public class CLIRunner
      */
     protected String getString(InputStream inputStream) throws IOException
     {
-        final char[] buffer = new char[SIZE_OF_BUFFER];
+        final char[] buffer = new char[2048];
         final StringBuilder stringBuilder = new StringBuilder();
         Reader reader = new InputStreamReader(inputStream, "UTF-8");
         for (;;) {
