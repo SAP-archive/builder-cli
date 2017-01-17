@@ -1,6 +1,6 @@
 {
     "SHOWCASE":{
-        "DEFAULT_BUTTON" : "Btn macht nix!",
+        "DEFAULT_BUTTON" : "inaktiver Btn!",
         "EXAMPLE_TRANSLATION" : "Beispielübersetzung",
         "CURRENT_LANGUAGE":"Aktuelle Sprache"
     }
