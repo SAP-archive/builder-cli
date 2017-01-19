@@ -927,8 +927,8 @@ public class CLIRunner
      * Copies all skeletor files to USERHOME/.builder/skeletor
      */
     protected void copySkeletor(){
-        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "skeletor"));
-        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "skeletor"+ File.separator + "snippets"));
+        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "runSkeletor"));
+        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "runSkeletor"+ File.separator + "snippets"));
     }
 
     /**
