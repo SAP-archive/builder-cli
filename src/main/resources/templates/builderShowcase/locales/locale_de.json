@@ -1,0 +1,7 @@
+{
+    "SHOWCASE":{
+        "DEFAULT_BUTTON" : "inaktiver Btn!",
+        "EXAMPLE_TRANSLATION" : "Beispielübersetzung",
+        "CURRENT_LANGUAGE":"Aktuelle Sprache"
+    }
+}
