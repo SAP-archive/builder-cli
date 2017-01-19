@@ -380,13 +380,16 @@ public class CLIRunner
      */
     protected String getString(InputStream inputStream) throws IOException
     {
-        int ch;
-        StringBuilder sb = new StringBuilder();
-        while((ch = inputStream.read())!= -1)
-        {
-            sb.append((char) ch);
+        final char[] buffer = new char[2048];
+        final StringBuilder stringBuilder = new StringBuilder();
+        Reader reader = new InputStreamReader(inputStream, "UTF-8");
+        for (;;) {
+            int numberOfChar = reader.read(buffer, 0, buffer.length);
+            if (numberOfChar < 0)
+                break;
+            stringBuilder.append(buffer, 0, numberOfChar);
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
     /**
@@ -924,8 +927,8 @@ public class CLIRunner
      * Copies all skeletor files to USERHOME/.builder/skeletor
      */
     protected void copySkeletor(){
-        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "skeletor"));
-        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "skeletor"+ File.separator + "snippets"));
+        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "runSkeletor"));
+        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "runSkeletor"+ File.separator + "snippets"));
     }
 
     /**
