@@ -22,3 +22,5 @@ target/
 .idea/vcs.xml
 .idea/scopes/scope_settings.xml
 jshint.xml
+javac-services.0.log
+javac-services.0.log.lck
