@@ -24,7 +24,7 @@ The Builder CLI features the Skeleton Creator tool, with which you can easily cr
 
   <img src="img/skeletor_ui_menu.png" width="35%" class="img-click-modal" alt="The Skeleton Creator UI"/><br>
 
-6. Export the code that Skeleton Creator generates by clicking on the show button to the right of the preview button.
+6. Export the code that the Skeleton Creator generates by clicking on the show button to the right of the preview button.
 
 Here is an example of a UI with its corresponding code preview:<br>
 
