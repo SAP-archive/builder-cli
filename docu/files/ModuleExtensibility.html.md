@@ -123,7 +123,7 @@ but pay special attention when defining redirect URIs.
 
 Since plug-in modules do not all have the same size, it is important that you have the ability to adjust the size of the iframe in which the plug-in should fit. For example, a plug-in that displays product ratings may require more space than one that simply displays a single button. 
 
-This example shows slot sizing into .js.  
+This example shows a function that resizes a plug-in and then triggers a resize request so the host module can react. 
 
 ```
 $scope.big = function() {
@@ -131,60 +131,9 @@ $scope.big = function() {
  $("body > div").css("width","500px");
  BuilderPlugin.requestResize();
     };
-
-$scope.small = function() {
- $("body > div").css("height","400px");
- $("body > div").css("width","300px");
- BuilderPlugin.requestResize();
-    };
     
 ```
 
-Notice the function `requestResize` which has been inheirited from the **builder_plugin.js** file. After the dimensions for the `<div>` tags are set, the function `requestResize` triggers the resizing.
+Notice the function `requestResize` which is included in the **builder_plugin.js** file. After the dimensions for the `<div>` tags are set, the function `requestResize` triggers the resizing. (Note: requestResize automatically executes upon the initialization of the plug-in module.)
 
-With the .js adapted, you can next introduce functionality into your view. In this example, clicking the buttons BIG and SMALL resize the plug-in frame. Clicking on the button <b>SMALL</b> resizes the frame to 400 x 300 pixels.  Clicking on the button <b>BIG</b> changes the dimensions to 600 x 500 pixels.
-
-
-<img src="img/plugin_example.png" style="width:538px" max-width: 538px class="img-click-modal" alt="Plug-in"/>
-
-Here is the code:
-
-```
-<body style="padding: 0; height: auto;" ng-controller="PluginController">
-<div sizeElement style="width: 500px; height: 600px; overflow: hidden;">
-
-    <div class="row">
-        <div class="col-sm-6 col-xs-12">
-            <div class="form-group">
-                <label class="control-label">Token</label>
-                <p class="form-readonly-text form-readonly-text-lg 
-                ng-binding">{{token}}</p>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xs-12">
-            <div class="form-group">
-                <label class="control-label">Scope</label>
-                <p class="form-readonly-text 
-                form-readonly-text-lg ng-binding">{{scope}}</p>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xs-12">
-            <div class="form-group">
-                <label class="control-label">new project's description</label>
-                <input type="text" class="form-control input-lg" ng-model="project.description" name="description">
-                <button type="button" class="btn btn-warning" ng-click="updateProject()">UPDATE</button>
-            </div>
-        </div>
-
-        <button type="button" class="btn btn-warning" ng-click="big()">BIG</button>
-        <button type="button" class="btn btn-warning" ng-click="small()">SMALL</button>
-
-    </div>
-
-</div>
-</body>
-    
-```
 
