@@ -8,7 +8,7 @@ order: 10
 
 After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages.
 
-Imagine that subscriptions extend specific Builder UI modules. For example, a user subscribes to "package A". By doing this, the Builder "module A" is subsequently enabled. Module A contains an extension point called "slot A". The subscription to module A also triggers the declaration of an extension point in "slot A". Now, when the user subscribes to a "package B", the extension point of slot A enriches module A with a plug-in orginating from module B.
+The concept of extensibility applies not only to Builder, but also to Builder modules themselves. It's possible to extend Builder modules by means of plug-ins. For example, imagine a user subscribes to "package A". By doing this, the Builder "module A" is subsequently enabled. Module A contains an extension point called "slot A". The subscription to module A also triggers the declaration of an extension point in "slot A". Now, when the user subscribes to a "package B" that has a plug-in Builder module defined for display in module A, slot A, the extension point of slot A enriches module A with a plug-in from module B.
 
 <img src="img/extensibility.png" style="width:600px" class="img-click-modal" alt="Builder Module Extensibility"/>
 
