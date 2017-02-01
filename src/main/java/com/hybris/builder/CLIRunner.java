@@ -451,8 +451,8 @@ public class CLIRunner
                         System.out.println("\t\t\t\t\t" + ansi_white + arg+i + ansi_reset + ": " + cmdProps.getProperty("arg"+i));
                     }
                 }else {
-                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 8 ? "\t" : "")
-                            + "\t\t\t" + cmdProps.getProperty("description") + "\n");
+                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 15 ? "\t" : "")
+                            + "\t\t" + cmdProps.getProperty("description") + "\n");
                 }
             }
         }
@@ -751,8 +751,8 @@ public class CLIRunner
                 {
                     copyCommonResources();
                 }
-                if(cmdList.size() > 4 && "skeletor".equals(cmdList.get(4))){
-                    copySkeletor();
+                if(cmdList.size() > 3 && cmdList.get(3).contains("runSkeletonCreator")){
+                    copySkeletonCreator();
                 }
             }
 
@@ -924,11 +924,11 @@ public class CLIRunner
     }
 
     /**
-     * Copies all skeletor files to USERHOME/.builder/skeletor
+     * Copies all Skeleton Creation files to USERHOME/.builder/skeletonCreator
      */
-    protected void copySkeletor(){
-        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "runSkeletor"));
-        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "runSkeletor"+ File.separator + "snippets"));
+    protected void copySkeletonCreator(){
+        copyFiles("skeletoncreatorfiles", "skeletonCreatorResources/", new File(configFilePath, "runSkeletonCreator"));
+        copyFiles("skeletoncreatorcmpfiles", "skeletonCreatorResources/snippets/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "snippets"));
     }
 
     /**
