@@ -881,9 +881,9 @@ Use the context variable `currentLanguage` to determine the current language set
 ```
 <div class="panel-body" ng-controller="settingsCtrl">
  <div>
-  <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
+  {{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}
  </div>
- <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
+ <div>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</div>
  <div>
   <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
  </div>
