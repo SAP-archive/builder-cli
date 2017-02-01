@@ -451,8 +451,8 @@ public class CLIRunner
                         System.out.println("\t\t\t\t\t" + ansi_white + arg+i + ansi_reset + ": " + cmdProps.getProperty("arg"+i));
                     }
                 }else {
-                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 8 ? "\t" : "")
-                            + "\t\t\t" + cmdProps.getProperty("description") + "\n");
+                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 15 ? "\t" : "")
+                            + "\t\t" + cmdProps.getProperty("description") + "\n");
                 }
             }
         }
