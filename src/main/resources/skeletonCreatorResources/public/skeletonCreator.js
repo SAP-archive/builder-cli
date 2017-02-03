@@ -163,7 +163,7 @@ function downloadSkeleton(){
         contentType: "application/json",
         url: 'http://localhost:8080/download',
         data: '{"skeleton" : "'+html+'"}',
-        success: function(){alert('File was saved!');},
+        success: function(){console.log("file successfully saved")},
         dataType: 'html'
     });
 }
