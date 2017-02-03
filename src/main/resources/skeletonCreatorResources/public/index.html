@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <title>Skeleton Creator</title>
         <link href="https://builder.yaas.io/public/css/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
-        <link href="skeletonCreator.css" media="screen, projection" rel="stylesheet" type="text/css">
+        <link href="./skeletonCreator.css" media="screen, projection" rel="stylesheet" type="text/css">
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js?v=1.16.3-243"></script>
         <script src="https://builder.yaas.io/public/js/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://builder.yaas.io/public/js/vendor/hyTechne/dist/js/select2.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/hyTechne/dist/js/select2.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
-        <script src="skeletonCreator.js"></script>
+        <script src="./skeletonCreator.js"></script>
         <script>
             function allowDrop(event) {
                 event.preventDefault();
@@ -62,7 +62,7 @@
                 <div class="container-fluid">
                     <div class="navbar-left">
                         <div class="y-headline">
-                            <h1>The Skeleton Creator</h1>
+                            <h1>The Skeletor</h1>
                         </div>
                     </div>
                     <div class="navbar-right">
@@ -73,7 +73,7 @@
                                 </button>
                             </div>
                              <div class="y-toolbar-cell">
-                                <button class="btn btn-link btn-lg navbar-btn btn-download" onclick="downloadHTML()" title="save view in html file">
+                                <button class="btn btn-link btn-lg navbar-btn btn-download" onclick="downloadSkeleton()" title="save view in html file">
                                     <span class="glyphicon glyphicon-download-alt"></span>
                                 </button>
                             </div>
@@ -101,15 +101,13 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="components">
                         <ul class="y-sidebar__list">
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="container">Container</li>
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="row">Row</li>
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="column">Column</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="pageheader">Page Header</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="panel">Panel</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="addbutton">Add Button</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="button">Button Primary</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="buttonsecondary">Button Secondary</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="backbutton">Back Button</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="buttoninputtype">Button (Input Type)</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="smalltoggle">Small Toggle</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="largetoggle">Large Toggle</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="table">Table</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="inputfield">Input</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="cards">Cards</li>
@@ -117,11 +115,21 @@
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="lists">Lists</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="leftalignedtabs">Left Algined Tabs</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="centeredtabs">Centred Tabs</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="loadingspinner">Loading Spinner</li>
                         </ul>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="settings">
                         <div class="y-settings"></div>
+                    </div>
+                    <br><br>
+                    <ul class="nav nav-tabs nav-tabs--responsive" role="tablist" id="sidebar-tabs">
+                        <li role="presentation" class="active"><a href="#components" role="tab" data-toggle="tab">Layout</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="components">
+                            <ul class="y-sidebar__list">
+                                <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="grid_template">Grid Template</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

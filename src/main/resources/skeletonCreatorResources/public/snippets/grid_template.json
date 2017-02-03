@@ -1,0 +1,20 @@
+{
+    "template" : true,
+    "type" : "container",
+    "children" : [
+        {
+            "type" : "row",
+            "children" : [
+                {
+                    "type" : "column"
+                },
+                {
+                    "type" : "column"
+                },
+                {
+                    "type" : "column"
+                }
+            ]
+        }
+    ]
+}

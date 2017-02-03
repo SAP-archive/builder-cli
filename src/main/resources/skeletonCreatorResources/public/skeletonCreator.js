@@ -2,7 +2,7 @@ var tree;
 var nodeIndex = 0;
 var editMode = true;
 var tmpCmp;
-var downloadAvailable = false
+var downloadAvailable = false;
 
 var rootNode = {
     "name": "rootNode",
@@ -29,9 +29,8 @@ function Tree(node){
 };
 
 function init(){
-    var encodeURIComponent = function(data){return data;};//checkmarx fix
     if(localStorage.getItem('dataModel')){
-        tree = JSON.parse(encodeURIComponent(localStorage.getItem('dataModel')));
+        tree = JSON.parse(localStorage.getItem('dataModel'));
         $("#preview").empty().append(renderHTML(tree._root, true));
     }else{
         addNodeToTree('main');
@@ -65,33 +64,55 @@ function updateView() {
     }
 };
 
+function createFromTemplate(parentNodeName, typeTree, callback) {
+    var id = addNodeTypeToTree(typeTree.type, parentNodeName, function() {});
+    if(typeTree.children) {
+        for(var i = 0; i < typeTree.children.length; i++) {
+            createFromTemplate(id, typeTree.children[i], function() {})
+        }
+    }
+    if(typeTree.template) {
+        callback();
+    }
+}
+
 function addNodeToTree(nodeType, parentNodeName){
+    addNodeTypeToTree(nodeType, parentNodeName, updateView);
+}
+
+function addNodeTypeToTree(nodeType, parentNodeName, callback){
     if(!tree){
         tree = new Tree(nodeType);
-        updateView();
+        callback();
     }else{
         if(parentNodeName){
             var newNode = new Node(nodeType);
             newNode.id = "" + tree._index++;
-            var parentNode = searchNode(tree._root, parentNodeName);
-            parentNode.children.push(newNode);
             if(newNode) {
                 $.ajax({
                     method : "GET",
                     url : "snippets/" + newNode.type + ".json",
                     async : false,
                     success : function(response) {
-                        newNode.settings = response;
-                        updateView();
+                        if(response.template) {
+                            createFromTemplate(parentNodeName, response, callback);
+                        } else {
+                            var parentNode = searchNode(tree._root, parentNodeName);
+                            parentNode.children.push(newNode);
+                            newNode.settings = response;
+                            callback();
+                        }
                     },
                     error : function(error){
                         console.log('Something went wrong');
-                        updateView();
+                        callback();
                     }
                 });
             }
+            return newNode.id;
         }
     }
+    return null;
 };
 
 function searchNode(tree, parentNodeName){
@@ -112,17 +133,17 @@ function searchNode(tree, parentNodeName){
     return null;
 };
 
- function downloadHTML() {
+function downloadHTML() {
     var html = renderHTML(tree._root);
     var htmlFileAsBlob = new Blob([html], {
-        type: 'text/html'
+        type: 'data:application/octet-stream,'
     });
-    var fileNameToSaveAs = "generatedView.html";
+    var fileNameToSaveAs = "index.html";
 
     var downloadLink = document.createElement("a");
     downloadLink.download = fileNameToSaveAs;
     downloadLink.innerHTML = "Download File";
-    if (window.webkitURL != null) {
+    if (window.webkitURL !== null) {
         //Chrome stuff
         downloadLink.href = window.webkitURL.createObjectURL(htmlFileAsBlob);
     } else {
@@ -133,6 +154,24 @@ function searchNode(tree, parentNodeName){
         document.body.appendChild(downloadLink);
     }
     downloadLink.click();
+}
+
+function downloadSkeleton(){
+    var html = encodeURIComponent(renderHTML(tree._root));
+    $.ajax({
+        method: "POST",
+        contentType: "application/json",
+        url: 'http://localhost:8080/download',
+        data: '{"skeleton" : "'+html+'"}',
+        success: function(){alert('File was saved!');},
+        dataType: 'html'
+    });
+}
+
+function saveAsFunction(){
+    var content = renderHTML(tree._root);
+    var uriContent = "data:application/octet-stream," + encodeUriComponent(content);
+    var newWindow = window.open(uriContent, 'neuesDokument');
 }
 
 function deleteClickedElement(event) {
@@ -277,20 +316,29 @@ function renderHTML(node, useEditMode){
         var childrenHtml ="";
         for(var i = 0; i < node.children.length; i++) {
             if(useEditMode){
-                childrenHtml += '<div class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>'
-                childrenHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>'
+                if(node.children[i].settings.SHOW_CMP_CTN !== false) {
+                    childrenHtml += '<div class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>';
+                    childrenHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>';
 
-                childrenHtml += '</button>'
-                childrenHtml += renderHTML(node.children[i], useEditMode);
+                    childrenHtml += '</button>';
+                    childrenHtml += renderHTML(node.children[i], useEditMode);
 
-                childrenHtml += '</div>'
+                    childrenHtml += '</div>';
+                } else {
+                    childrenHtml += renderHTML(node.children[i], useEditMode);
+
+                    var ghostHtml = '<div style="width:100%; height: 100%; position: absolute" class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>';
+                    ghostHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>';
+                    ghostHtml += '</button></div>';
+                    childrenHtml = childrenHtml.replace("{{GHOST_CMP}}", ghostHtml);
+                }
             }else{
                 childrenHtml += renderHTML(node.children[i], useEditMode);
             }
         }
 
         if(useEditMode) {
-            childrenHtml += '<div class="y-dropzone" ondrop="drop(event, \''+ node.id +'\')" ondragover="allowDrop(event)" id="slot'+(i+1)+'" ></div>'
+            childrenHtml += '<div style="clear:both" class="y-dropzone" ondrop="drop(event, \''+ node.id +'\')" ondragover="allowDrop(event)"></div>';
         }
 
         if(useEditMode && node.type==="main") {
@@ -303,6 +351,7 @@ function renderHTML(node, useEditMode){
         return html;
     }
 };
+
 
 function deleteDataModel(){
     localStorage.removeItem('dataModel');
