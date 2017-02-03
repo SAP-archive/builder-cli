@@ -754,11 +754,7 @@ public class CLIRunner
                 }
                 else if("npm".equals(cmdList.get(0)))
                 {
-                    try{
-                        copySkeletonCreator();
-                    }catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
+                    copySkeletonCreator();
                 }
             }
 
@@ -932,12 +928,7 @@ public class CLIRunner
     /**
      * Copies all Skeleton Creation files to USERHOME/.builder/skeletonCreator
      */
-    protected void copySkeletonCreator() throws Exception{
-        configProperties.setProperty("currentBuilderDir",System.getProperty("user.dir"));
-        FileOutputStream outputStream = addToStreamStack(new FileOutputStream(configFile));
-        configProperties.store(outputStream, "");
-        outputStream.flush();
-
+    protected void copySkeletonCreator(){
         copyFiles("skeletoncreatorconfig", "skeletonCreatorResources/", new File(configFilePath, "runSkeletonCreator"));
         copyFiles("skeletoncreatorfiles", "skeletonCreatorResources/public/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public"));
         copyFiles("skeletoncreatorcmpfiles", "skeletonCreatorResources/public/snippets/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public" + File.separator + "snippets"));
