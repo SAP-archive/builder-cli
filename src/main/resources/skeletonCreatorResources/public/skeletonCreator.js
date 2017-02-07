@@ -133,27 +133,17 @@ function searchNode(tree, parentNodeName){
     return null;
 };
 
-function downloadHTML() {
-    var html = renderHTML(tree._root);
-    var htmlFileAsBlob = new Blob([html], {
-        type: 'data:application/octet-stream,'
+function downloadSkeleton(){
+    var filename=$('#filename').val();
+    var html = encodeURIComponent(renderHTML(tree._root));
+    $.ajax({
+        method: "POST",
+        contentType: "application/json",
+        url: 'http://localhost:8080/download',
+        data: '{"skeleton" : "'+html+'", "filename" : "'+filename+'"}',
+        success: function(){console.log(filename+'.html was saved!');},
+        dataType: 'html'
     });
-    var fileNameToSaveAs = "index.html";
-
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    if (window.webkitURL !== null) {
-        //Chrome stuff
-        downloadLink.href = window.webkitURL.createObjectURL(htmlFileAsBlob);
-    } else {
-        //necessary for FF
-        downloadLink.href = window.URL.createObjectURL(htmlFileAsBlob);
-        downloadLink.onclick = deleteClickedElement;
-        downloadLink.style.display = "none";
-        document.body.appendChild(downloadLink);
-    }
-    downloadLink.click();
 }
 
 function downloadSkeleton(){

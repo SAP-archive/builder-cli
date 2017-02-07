@@ -73,9 +73,9 @@
                                 </button>
                             </div>
                              <div class="y-toolbar-cell">
-                                <button class="btn btn-link btn-lg navbar-btn btn-download" onclick="downloadSkeleton()" title="save view in html file">
-                                    <span class="glyphicon glyphicon-download-alt"></span>
-                                </button>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-link btn-lg navbar-btn btn-download" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-download-alt"></span></button>
+                                </div>
                             </div>
                             <div class="y-toolbar-cell">
                                 <button class="btn btn-link btn-lg navbar-btn btn-preview" onclick="preview()" title="view preview">
@@ -138,6 +138,23 @@
                     <div>
                         <div id="preview" class="y-editor-builder"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title">Safe file as</h1>
+                </div>
+                <div class="modal-body">
+                    <input id="filename" type="text" paceholder="name of the html file"> .html
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-subordinate" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-lg btn-primary" data-dismiss="modal" onclick="downloadSkeleton()">Save</button>
+                </div>
                 </div>
             </div>
         </div>

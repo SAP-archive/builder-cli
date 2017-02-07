@@ -15,12 +15,13 @@ app.get('/', function(req, res){
 });
 
 app.post('/download', function(req, res){
-    var html = decodeURIComponent(JSON.stringify(req.body.skeleton));
-    fs.writeFile(currentBuilderModuleURI+"/index.html", html, function(err) {
+var html = decodeURIComponent(req.body.skeleton);
+    var filename = decodeURIComponent(req.body.filename) + ".html";
+    fs.writeFile(filename, html, function(err) {
         if(err) {
             return console.log(err);
         }
-        console.log("index.html was saved to " + currentBuilderModuleURI);
+        console.log(filename + " was saved!");
     });
     res.end();
 });
