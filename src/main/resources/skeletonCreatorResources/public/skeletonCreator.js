@@ -131,7 +131,7 @@ function searchNode(tree, parentNodeName){
         return parentNode;
     }
     return null;
-};
+}
 
 function downloadSkeleton(){
     var filename=$('#filename').val();
@@ -139,21 +139,9 @@ function downloadSkeleton(){
     $.ajax({
         method: "POST",
         contentType: "application/json",
-        url: 'http://localhost:8080/download',
+        url: 'http://localhost:8082/download',
         data: '{"skeleton" : "'+html+'", "filename" : "'+filename+'"}',
         success: function(){console.log(filename+'.html was saved!');},
-        dataType: 'html'
-    });
-}
-
-function downloadSkeleton(){
-    var html = encodeURIComponent(renderHTML(tree._root));
-    $.ajax({
-        method: "POST",
-        contentType: "application/json",
-        url: 'http://localhost:8080/download',
-        data: '{"skeleton" : "'+html+'"}',
-        success: function(){console.log("file successfully saved")},
         dataType: 'html'
     });
 }

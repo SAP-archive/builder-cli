@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var url = require('url');
 var app = express();
+
+app.set('port', process.env.PORT || 8082);
 var currentBuilderModuleURI;
 app.use(express.static(__dirname + '/public'));
 
@@ -15,20 +17,19 @@ app.get('/', function(req, res){
 });
 
 app.post('/download', function(req, res){
-var html = decodeURIComponent(req.body.skeleton);
+    var html = decodeURIComponent(req.body.skeleton);
     var filename = decodeURIComponent(req.body.filename) + ".html";
-    fs.writeFile(filename, html, function(err) {
+    fs.writeFile(currentBuilderModuleURI+"/"+filename, html, function(err) {
         if(err) {
             return console.log(err);
         }
-        console.log(filename + " was saved!");
+        console.log(filename + " was saved to " + currentBuilderModuleURI);
     });
     res.end();
 });
 
-var server = app.listen(8080, function () {
+var server = app.listen(app.get('port'), function () {
     var host = 'localhost';
-    var port = 8080;
     currentBuilderModuleURI = process.argv[2];
-    console.log("Example app listening at http://%s:%s", host, port);
+    console.log("Example app listening at http://%s:%s", host, app.get('port'));
 });
