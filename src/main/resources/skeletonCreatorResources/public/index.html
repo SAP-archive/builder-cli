@@ -73,9 +73,7 @@
                                 </button>
                             </div>
                              <div class="y-toolbar-cell">
-                                <div class="form-group">
                                     <button type="button" class="btn btn-link btn-lg navbar-btn btn-download" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-download-alt"></span></button>
-                                </div>
                             </div>
                             <div class="y-toolbar-cell">
                                 <button class="btn btn-link btn-lg navbar-btn btn-preview" onclick="preview()" title="view preview">
@@ -148,8 +146,11 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h1 class="modal-title">Safe file as</h1>
                 </div>
-                <div class="modal-body">
-                    <input id="filename" type="text" paceholder="name of the html file"> .html
+                <div class="container-fluid">
+                    <div class="input-group">
+                        <input type="text" id="filename" class="form-control" placeholder="name of the html file" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">.html</span>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-subordinate" data-dismiss="modal">Cancel</button>
