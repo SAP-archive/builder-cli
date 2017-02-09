@@ -25,6 +25,13 @@ app.post('/download', function(req, res){
         }
         console.log(filename + " was saved to " + currentBuilderModuleURI);
     });
+
+    if (fs.existsSync(filename)) {
+        res.send('exists');
+    }else{
+        res.send('not exists');
+    }
+
     res.end();
 });
 

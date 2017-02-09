@@ -24,10 +24,6 @@
                 var data = event.dataTransfer.getData("text");
                 addNodeToTree(data, name);
             };
-
-            $(document).ready(function() {
-                init();
-            });
         </script>
         <script>hljs.initHighlightingOnLoad();</script>
     </head>
@@ -144,12 +140,17 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h1 class="modal-title">Safe file as</h1>
+                    <h1 class="modal-title">Save file as</h1>
                 </div>
-                <div class="container-fluid">
-                    <div class="input-group">
-                        <input type="text" id="filename" class="form-control" placeholder="name of the html file" aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">.html</span>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" id="filename" class="form-control input-lg" placeholder="name of the html file" aria-describedby="basic-addon2" value="index">
+                            <span class="input-group-addon" id="basic-addon2">.html</span>
+                        </div>
+                        <div class="help-block">
+                            <p>A valid filename is required</p>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

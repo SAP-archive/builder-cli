@@ -20,13 +20,13 @@ function Node(data){
         this.id = name;
     }
     this.children = [];
-};
+}
 
 function Tree(node){
     var rootNode = new Node(node);
     this._root = rootNode;
     this._index = 0;
-};
+}
 
 function init(){
     if(localStorage.getItem('dataModel')){
@@ -43,7 +43,7 @@ function init(){
     }
     $('.btn-download').hide();
 
-};
+}
 
 function updateView() {
     if(editMode) {
@@ -62,13 +62,13 @@ function updateView() {
             }
         }
     }
-};
+}
 
 function createFromTemplate(parentNodeName, typeTree, callback) {
     var id = addNodeTypeToTree(typeTree.type, parentNodeName, function() {});
     if(typeTree.children) {
         for(var i = 0; i < typeTree.children.length; i++) {
-            createFromTemplate(id, typeTree.children[i], function() {})
+            createFromTemplate(id, typeTree.children[i], function() {});
         }
     }
     if(typeTree.template) {
@@ -113,15 +113,15 @@ function addNodeTypeToTree(nodeType, parentNodeName, callback){
         }
     }
     return null;
-};
+}
 
 function searchNode(tree, parentNodeName){
     if(tree.id === parentNodeName) {
         return tree;
     }
-    if (tree.children != null){
+    if (tree.children !== null){
         var parentNode = null;
-        for(var i=0; parentNode == null && i < tree.children.length; i++){
+        for(var i=0; parentNode === null && i < tree.children.length; i++){
             if(tree.children[i].id === parentNodeName){
                 return tree.children[i];
             }else{
@@ -133,8 +133,12 @@ function searchNode(tree, parentNodeName){
     return null;
 }
 
-function downloadSkeleton(){
+function validateFilenname(){
     var filename=$('#filename').val();
+    console.log(filename.match(/[0-9a-zA-Z]/));
+}
+
+function downloadSkeleton(){
     var html = encodeURIComponent(renderHTML(tree._root));
     $.ajax({
         method: "POST",
@@ -187,7 +191,7 @@ function removeNode(nodeName, parentNode){
         }
         updateView();
     }
-};
+}
 
 function selectCmp(nodeId, parentNodeId){
     $('.cmpCtn').removeClass('cmpCtn--active');
@@ -199,7 +203,7 @@ function selectCmp(nodeId, parentNodeId){
         showSettings(node);
         $('#sidebar-tabs a[href="#settings"]').tab('show'); // Select tab by name
     }
-};
+}
 
 function showSettings(node) {
     var tmpSettings = JSON.parse(JSON.stringify(node.settings));
@@ -234,7 +238,7 @@ function showSettings(node) {
     else{
         $('.y-settings').append("<code>Koi Säddings ahwähiläbbl!</code>");
     }
-};
+}
 
 function preview() {
     if(editMode){
@@ -256,18 +260,18 @@ function preview() {
         $('.btn-preview .glyphicon').addClass('glyphicon glyphicon-eye-open');
         editMode = true;
     }
-};
+}
 
 function showHTMLCode(){
     $('.y-code-inspector').addClass('y-code-inspector--active');
     $('.y-code-inspector .y-code-inspector-content').text(renderHTML(tree._root));
     hljs.initHighlighting.called = false;
     hljs.initHighlighting();
-};
+}
 
 function closeHTMLCode(){
     $('.y-code-inspector').removeClass('y-code-inspector--active');
-};
+}
 
 function renderHTML(node, useEditMode){
     if(node){
@@ -328,7 +332,7 @@ function renderHTML(node, useEditMode){
         $('.y-editor-builder').removeClass('y-editor-builder--active');
         return html;
     }
-};
+}
 
 
 function deleteDataModel(){
@@ -337,4 +341,26 @@ function deleteDataModel(){
     $('.y-settings').empty();
     $('#sidebar-tabs a[href="#components"]').tab('show');
     addNodeToTree('main');
-};
+}
+
+$(document).ready(function() {
+    init();
+    //fix
+    $('.help-block').css('display','none');
+    $('#filename').on('input', function() {
+        var input=$(this);
+        var re =/^[a-zA-Z0-9_]+$/;
+        var is_filename=re.test(input.val());
+        if(is_filename){
+            input.removeClass("invalid").addClass("valid");
+            $('.help-block').css('display','none');
+            $('.form-group').removeClass('has-error');
+            $('#saveFileBtn').prop('disabled', false);
+        }else{
+            input.removeClass("valid").addClass("invalid");
+            $('.help-block').css('display','block');
+            $('.form-group').addClass('has-error');
+            $('#saveFileBtn').prop('disabled', true);
+        }
+    });
+});
