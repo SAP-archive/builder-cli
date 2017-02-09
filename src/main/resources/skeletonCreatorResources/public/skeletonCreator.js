@@ -139,6 +139,7 @@ function validateFilenname(){
 }
 
 function downloadSkeleton(){
+    var filename=$('#filename').val();
     var html = encodeURIComponent(renderHTML(tree._root));
     $.ajax({
         method: "POST",
@@ -343,23 +344,45 @@ function deleteDataModel(){
     addNodeToTree('main');
 }
 
+function is_file_exist(){
+    var fileExistSpan = '<div class="help-block fileexists"><p>File already exists. Do you want to override it?</p></div>';
+    $('.form-group.downloadModal').addClass('has-error');
+    $('.form-group.downloadModal').append(fileExistSpan);
+}
+
 $(document).ready(function() {
     init();
-    //fix
-    $('.help-block').css('display','none');
+    $('.help-block.validation').css('display','none');
+    $('#saveFileBtn').prop('disabled', false);
+    is_file_exist();
     $('#filename').on('input', function() {
         var input=$(this);
         var re =/^[a-zA-Z0-9_]+$/;
         var is_filename=re.test(input.val());
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: 'http://localhost:8082/checkFilename',
+            data: '{"filename" : "'+input.val()+'"}',
+            success: function(data){
+                if(data==='exist'){
+                    is_file_exist();
+                }else{
+                    $('.fileexists').remove();
+                }
+            },
+            dataType: 'html'
+        });
+
         if(is_filename){
             input.removeClass("invalid").addClass("valid");
-            $('.help-block').css('display','none');
-            $('.form-group').removeClass('has-error');
+            $('.validation').css('display','none');
+            $('.form-group.downloadModal').removeClass('has-error');
             $('#saveFileBtn').prop('disabled', false);
         }else{
             input.removeClass("valid").addClass("invalid");
-            $('.help-block').css('display','block');
-            $('.form-group').addClass('has-error');
+            $('.validation').css('display','block');
+            $('.form-group.downloadModal').addClass('has-error');
             $('#saveFileBtn').prop('disabled', true);
         }
     });

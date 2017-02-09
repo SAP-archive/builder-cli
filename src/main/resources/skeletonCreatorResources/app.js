@@ -25,13 +25,16 @@ app.post('/download', function(req, res){
         }
         console.log(filename + " was saved to " + currentBuilderModuleURI);
     });
+    res.end();
+});
 
+app.post('/checkFilename', function(req, res){
+    var filename = decodeURIComponent(req.body.filename) + ".html";
     if (fs.existsSync(filename)) {
-        res.send('exists');
+        res.send('exist');
     }else{
-        res.send('not exists');
+        res.send('not exist');
     }
-
     res.end();
 });
 
