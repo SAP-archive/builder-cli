@@ -54,7 +54,7 @@
             </pre>
         </div>
         <div class="wrapper">
-            <div class="navbar navbar-default y-navbar-centered y-navbar-lg navbar-fixed-top">
+            <div class="navbar navbar-default y-navbar-centered y-navbar-lg navbar-fixed-top top-nav--skeletor">
                 <div class="container-fluid">
                     <div class="navbar-left">
                         <div class="y-headline">
@@ -87,11 +87,9 @@
                 </div>
             </div>
             <div class="y-sidebar">
-                <ul class="nav nav-tabs nav-tabs--responsive" role="tablist" id="sidebar-tabs">
-                    <li role="presentation" class="active"><a href="#components" role="tab" data-toggle="tab">Components</a></li>
-                    <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
-                    <li class="nav-tabs-mobile-caret" data-toggle="dropdown" data-target="#demotabs" style="display:none;"><a class="pull-right" href="#"><span class="caret"></span></a></li>
-                </ul>
+                <div class="y-sidebar-header">
+                    <h3>Components</h3>
+                </div>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="components">
                         <ul class="y-sidebar__list">
@@ -111,13 +109,11 @@
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="centeredtabs">Centred Tabs</li>
                         </ul>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="settings">
-                        <div class="y-settings"></div>
+                    <br>
+                    <div class="y-sidebar-header">
+                        <h3>Layout</h3>
                     </div>
-                    <br><br>
-                    <ul class="nav nav-tabs nav-tabs--responsive" role="tablist" id="sidebar-tabs">
-                        <li role="presentation" class="active"><a href="#components" role="tab" data-toggle="tab">Layout</a></li>
-                    </ul>
+
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="components">
                             <ul class="y-sidebar__list">
@@ -132,6 +128,14 @@
                     <div>
                         <div id="preview" class="y-editor-builder"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="y-sidebar-right">
+            <div class="y-sidebar-right-wrapper">
+                <h3 class="y-sidebar-header">Settings</h3>
+                <div role="tabpanel" class="tab-panel" id="settings">
+                    <div class="y-settings"></div>
                 </div>
             </div>
         </div>
