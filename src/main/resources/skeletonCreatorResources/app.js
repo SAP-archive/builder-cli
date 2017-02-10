@@ -30,7 +30,7 @@ app.post('/download', function(req, res){
 
 app.post('/checkFilename', function(req, res){
     var filename = decodeURIComponent(req.body.filename) + ".html";
-    if (fs.existsSync(filename)) {
+    if (fs.existsSync(currentBuilderModuleURI+'/'+filename)) {
         res.send('exist');
     }else{
         res.send('not exist');

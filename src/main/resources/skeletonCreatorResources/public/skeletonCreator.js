@@ -344,17 +344,22 @@ function deleteDataModel(){
     addNodeToTree('main');
 }
 
-function is_file_exist(){
+function isFileExists(){
     var fileExistSpan = '<div class="help-block fileexists"><p>File already exists. Do you want to override it?</p></div>';
     $('.form-group.downloadModal').addClass('has-error');
     $('.form-group.downloadModal').append(fileExistSpan);
 }
 
+function isNotValidFilename(){
+    var isNotValid = '<div class="help-block validation"><p>A valid filename is required</p></div>';
+    $('.form-group.downloadModal').addClass('has-error');
+    $('.form-group.downloadModal').append(isNotValid);
+}
+
 $(document).ready(function() {
     init();
-    $('.help-block.validation').css('display','none');
     $('#saveFileBtn').prop('disabled', false);
-    is_file_exist();
+    isFileExists();
     $('#filename').on('input', function() {
         var input=$(this);
         var re =/^[a-zA-Z0-9_]+$/;
@@ -366,7 +371,7 @@ $(document).ready(function() {
             data: '{"filename" : "'+input.val()+'"}',
             success: function(data){
                 if(data==='exist'){
-                    is_file_exist();
+                    isFileExists();
                 }else{
                     $('.fileexists').remove();
                 }
@@ -376,13 +381,14 @@ $(document).ready(function() {
 
         if(is_filename){
             input.removeClass("invalid").addClass("valid");
-            $('.validation').css('display','none');
+            $('.validation').remove();
             $('.form-group.downloadModal').removeClass('has-error');
             $('#saveFileBtn').prop('disabled', false);
         }else{
             input.removeClass("valid").addClass("invalid");
-            $('.validation').css('display','block');
-            $('.form-group.downloadModal').addClass('has-error');
+            if($('.validation').length===0){
+                isNotValidFilename();
+            }
             $('#saveFileBtn').prop('disabled', true);
         }
     });
