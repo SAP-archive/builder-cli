@@ -2,7 +2,7 @@ var tree;
 var nodeIndex = 0;
 var editMode = true;
 var tmpCmp;
-var downloadAvailable = false
+var downloadAvailable = false;
 
 var rootNode = {
     "name": "rootNode",
@@ -20,18 +20,17 @@ function Node(data){
         this.id = name;
     }
     this.children = [];
-};
+}
 
 function Tree(node){
     var rootNode = new Node(node);
     this._root = rootNode;
     this._index = 0;
-};
+}
 
 function init(){
-    var encodeURIComponent = function(data){return data;};//checkmarx fix
     if(localStorage.getItem('dataModel')){
-        tree = JSON.parse(encodeURIComponent(localStorage.getItem('dataModel')));
+        tree = JSON.parse(localStorage.getItem('dataModel'));
         $("#preview").empty().append(renderHTML(tree._root, true));
     }else{
         addNodeToTree('main');
@@ -44,7 +43,7 @@ function init(){
     }
     $('.btn-download').hide();
 
-};
+}
 
 function updateView() {
     if(editMode) {
@@ -63,44 +62,66 @@ function updateView() {
             }
         }
     }
-};
+}
+
+function createFromTemplate(parentNodeName, typeTree, callback) {
+    var id = addNodeTypeToTree(typeTree.type, parentNodeName, function() {});
+    if(typeTree.children) {
+        for(var i = 0; i < typeTree.children.length; i++) {
+            createFromTemplate(id, typeTree.children[i], function() {});
+        }
+    }
+    if(typeTree.template) {
+        callback();
+    }
+}
 
 function addNodeToTree(nodeType, parentNodeName){
+    addNodeTypeToTree(nodeType, parentNodeName, updateView);
+}
+
+function addNodeTypeToTree(nodeType, parentNodeName, callback){
     if(!tree){
         tree = new Tree(nodeType);
-        updateView();
+        callback();
     }else{
         if(parentNodeName){
             var newNode = new Node(nodeType);
             newNode.id = "" + tree._index++;
-            var parentNode = searchNode(tree._root, parentNodeName);
-            parentNode.children.push(newNode);
             if(newNode) {
                 $.ajax({
                     method : "GET",
                     url : "snippets/" + newNode.type + ".json",
                     async : false,
                     success : function(response) {
-                        newNode.settings = response;
-                        updateView();
+                        if(response.template) {
+                            createFromTemplate(parentNodeName, response, callback);
+                        } else {
+                            var parentNode = searchNode(tree._root, parentNodeName);
+                            parentNode.children.push(newNode);
+                            newNode.settings = response;
+                            callback();
+                        }
                     },
                     error : function(error){
                         console.log('Something went wrong');
-                        updateView();
+                        callback();
                     }
                 });
             }
+            return newNode.id;
         }
     }
-};
+    return null;
+}
 
 function searchNode(tree, parentNodeName){
     if(tree.id === parentNodeName) {
         return tree;
     }
-    if (tree.children != null){
+    if (tree.children !== null){
         var parentNode = null;
-        for(var i=0; parentNode == null && i < tree.children.length; i++){
+        for(var i=0; parentNode === null && i < tree.children.length; i++){
             if(tree.children[i].id === parentNodeName){
                 return tree.children[i];
             }else{
@@ -110,29 +131,33 @@ function searchNode(tree, parentNodeName){
         return parentNode;
     }
     return null;
-};
+}
 
- function downloadHTML() {
+function validateFilenname(){
+    var filename=$('#filename').val();
+    console.log(filename.match(/[0-9a-zA-Z]/));
+}
+
+function downloadSkeleton(){
+    var filename=$('#filename').val();
     var html = renderHTML(tree._root);
-    var htmlFileAsBlob = new Blob([html], {
-        type: 'text/html'
+    var data = {};
+    data.skeleton = html;
+    data.filename = filename;
+    $.ajax({
+        method: "POST",
+        contentType: "application/json",
+        url: 'http://localhost:8082/download',
+        data: JSON.stringify(data),
+        success: function(){console.log(filename+'.html was saved!');},
+        dataType: 'html'
     });
-    var fileNameToSaveAs = "generatedView.html";
+}
 
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileNameToSaveAs;
-    downloadLink.innerHTML = "Download File";
-    if (window.webkitURL != null) {
-        //Chrome stuff
-        downloadLink.href = window.webkitURL.createObjectURL(htmlFileAsBlob);
-    } else {
-        //necessary for FF
-        downloadLink.href = window.URL.createObjectURL(htmlFileAsBlob);
-        downloadLink.onclick = deleteClickedElement;
-        downloadLink.style.display = "none";
-        document.body.appendChild(downloadLink);
-    }
-    downloadLink.click();
+function saveAsFunction(){
+    var content = renderHTML(tree._root);
+    var uriContent = "data:application/octet-stream," + encodeUriComponent(content);
+    var newWindow = window.open(uriContent, 'neuesDokument');
 }
 
 function deleteClickedElement(event) {
@@ -170,7 +195,7 @@ function removeNode(nodeName, parentNode){
         }
         updateView();
     }
-};
+}
 
 function selectCmp(nodeId, parentNodeId){
     $('.cmpCtn').removeClass('cmpCtn--active');
@@ -182,7 +207,7 @@ function selectCmp(nodeId, parentNodeId){
         showSettings(node);
         $('#sidebar-tabs a[href="#settings"]').tab('show'); // Select tab by name
     }
-};
+}
 
 function showSettings(node) {
     var tmpSettings = JSON.parse(JSON.stringify(node.settings));
@@ -217,7 +242,7 @@ function showSettings(node) {
     else{
         $('.y-settings').append("<code>Koi Säddings ahwähiläbbl!</code>");
     }
-};
+}
 
 function preview() {
     if(editMode){
@@ -239,18 +264,18 @@ function preview() {
         $('.btn-preview .glyphicon').addClass('glyphicon glyphicon-eye-open');
         editMode = true;
     }
-};
+}
 
 function showHTMLCode(){
     $('.y-code-inspector').addClass('y-code-inspector--active');
     $('.y-code-inspector .y-code-inspector-content').text(renderHTML(tree._root));
     hljs.initHighlighting.called = false;
     hljs.initHighlighting();
-};
+}
 
 function closeHTMLCode(){
     $('.y-code-inspector').removeClass('y-code-inspector--active');
-};
+}
 
 function renderHTML(node, useEditMode){
     if(node){
@@ -277,20 +302,29 @@ function renderHTML(node, useEditMode){
         var childrenHtml ="";
         for(var i = 0; i < node.children.length; i++) {
             if(useEditMode){
-                childrenHtml += '<div class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>'
-                childrenHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>'
+                if(node.children[i].settings.SHOW_CMP_CTN !== false) {
+                    childrenHtml += '<div class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>';
+                    childrenHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>';
 
-                childrenHtml += '</button>'
-                childrenHtml += renderHTML(node.children[i], useEditMode);
+                    childrenHtml += '</button>';
+                    childrenHtml += renderHTML(node.children[i], useEditMode);
 
-                childrenHtml += '</div>'
+                    childrenHtml += '</div>';
+                } else {
+                    childrenHtml += renderHTML(node.children[i], useEditMode);
+
+                    var ghostHtml = '<div style="width:100%; height: 100%; position: absolute" class="cmpCtn y-name-'+ node.children[i].id+'" onclick="selectCmp(' + node.children[i].id + ','+ node.id + '); event.stopPropagation(); return false;"><div class="cmp-ghost"></div>';
+                    ghostHtml += '<button class="btn btn-link cmp-btn" onclick="removeNode(' + node.children[i].id + ','+ node.id + ')"><span class="hyicon hyicon-remove"></span>';
+                    ghostHtml += '</button></div>';
+                    childrenHtml = childrenHtml.replace("{{GHOST_CMP}}", ghostHtml);
+                }
             }else{
                 childrenHtml += renderHTML(node.children[i], useEditMode);
             }
         }
 
         if(useEditMode) {
-            childrenHtml += '<div class="y-dropzone" ondrop="drop(event, \''+ node.id +'\')" ondragover="allowDrop(event)" id="slot'+(i+1)+'" ></div>'
+            childrenHtml += '<div style="clear:both" class="y-dropzone" ondrop="drop(event, \''+ node.id +'\')" ondragover="allowDrop(event)"></div>';
         }
 
         if(useEditMode && node.type==="main") {
@@ -302,7 +336,8 @@ function renderHTML(node, useEditMode){
         $('.y-editor-builder').removeClass('y-editor-builder--active');
         return html;
     }
-};
+}
+
 
 function deleteDataModel(){
     localStorage.removeItem('dataModel');
@@ -310,4 +345,56 @@ function deleteDataModel(){
     $('.y-settings').empty();
     $('#sidebar-tabs a[href="#components"]').tab('show');
     addNodeToTree('main');
-};
+}
+
+function isFileExists(){
+    var fileExistSpan = '<div class="help-block fileexists"><p>File already exists. Do you want to override it?</p></div>';
+    $('.form-group.downloadModal').addClass('has-error');
+    $('.form-group.downloadModal').append(fileExistSpan);
+}
+
+function isNotValidFilename(){
+    var isNotValid = '<div class="help-block validation"><p>A valid filename is required</p></div>';
+    $('.form-group.downloadModal').addClass('has-error');
+    $('.form-group.downloadModal').append(isNotValid);
+}
+
+$(document).ready(function() {
+    init();
+    $('#saveFileBtn').prop('disabled', false);
+    isFileExists();
+    $('#filename').on('input', function() {
+        var input=$(this);
+        var re =/^[a-zA-Z0-9_]+$/;
+        var is_filename=re.test(input.val());
+        if(is_filename){
+            var data = {};
+            data.filename = input.val();
+            $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                url: 'http://localhost:8082/checkFilename',
+                data: JSON.stringify(data),
+                success: function(data){
+                    if(data==='exist'){
+                        isFileExists();
+                    }else{
+                        $('.fileexists').remove();
+                    }
+                },
+                dataType: 'html'
+            });
+
+            input.removeClass("invalid").addClass("valid");
+            $('.validation').remove();
+            $('.form-group.downloadModal').removeClass('has-error');
+            $('#saveFileBtn').prop('disabled', false);
+        }else{
+            input.removeClass("valid").addClass("invalid");
+            if($('.validation').length===0){
+                isNotValidFilename();
+            }
+            $('#saveFileBtn').prop('disabled', true);
+        }
+    });
+});

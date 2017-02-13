@@ -1,0 +1,19 @@
+{
+  "name": "skeletoncreator",
+  "version": "1.0.0",
+  "description": "Written by: Team Swinka",
+  "main": "index.html",
+  "scripts": {
+    "start":"node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://jsdoberer@stash.hybris.com/scm/swinka/skeletor.git"
+  },
+  "author": "Team Swinka",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.2.x",
+    "body-parser":"^1.8.1"
+   }
+}

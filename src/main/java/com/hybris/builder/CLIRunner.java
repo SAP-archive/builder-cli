@@ -700,6 +700,7 @@ public class CLIRunner
     {
         try {
             String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin == null ? "" : mvnBin)
+                    .replace("${CWD}",  System.getProperty("user.dir"))
                     .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm())
                     .replace("${CFGDIR_SEP}", configFilePath + File.separator).replace("${SEP}", File.separator);
             for (Map.Entry<String, String> entry : depsMap.entrySet()) {
@@ -751,7 +752,8 @@ public class CLIRunner
                 {
                     copyCommonResources();
                 }
-                if(cmdList.size() > 3 && cmdList.get(3).contains("runSkeletonCreator")){
+                else if("npm".equals(cmdList.get(0)))
+                {
                     copySkeletonCreator();
                 }
             }
@@ -927,8 +929,9 @@ public class CLIRunner
      * Copies all Skeleton Creation files to USERHOME/.builder/skeletonCreator
      */
     protected void copySkeletonCreator(){
-        copyFiles("skeletoncreatorfiles", "skeletonCreatorResources/", new File(configFilePath, "runSkeletonCreator"));
-        copyFiles("skeletoncreatorcmpfiles", "skeletonCreatorResources/snippets/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "snippets"));
+        copyFiles("skeletoncreatorconfig", "skeletonCreatorResources/", new File(configFilePath, "runSkeletonCreator"));
+        copyFiles("skeletoncreatorfiles", "skeletonCreatorResources/public/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public"));
+        copyFiles("skeletoncreatorcmpfiles", "skeletonCreatorResources/public/snippets/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public" + File.separator + "snippets"));
     }
 
     /**

@@ -143,17 +143,32 @@
 
 .y-dropzone{
     position: relative;
-
     width:100%;
     height:50px;
-
     border: 1px #5f7084 dashed;
     color: #5f7084;
-
     margin: 10px 0;
 }
 
+
 .y-dropzone:after{
+    content: 'Drop compontent here';
+    position: absolute;
+    color: currentColor;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.y-grid-dropzone{
+    position: relative;
+    height:50px;
+    border: 1px #5f7084 dashed;
+    color: #5f7084;
+    margin: 10px 0;
+}
+
+.y-grid-dropzone:after{
     content: 'Drop compontent here';
     position: absolute;
     color: currentColor;
