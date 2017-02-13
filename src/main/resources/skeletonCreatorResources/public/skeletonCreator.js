@@ -200,6 +200,10 @@ function removeNode(nodeName, parentNode){
 function selectCmp(nodeId, parentNodeId){
     $('.cmpCtn').removeClass('cmpCtn--active');
     $('.y-editor-builder').addClass('y-editor-builder--active');
+    var viewportWidth = $(window).width();
+    if (viewportWidth < 1440) {
+        $('.y-sidebar-right').addClass('y-settings--active');
+    }
     var node = searchNode(tree._root, "" + nodeId);
     var nodeClass='.y-name-'+nodeId;
     $(nodeClass).addClass('cmpCtn--active');
@@ -237,10 +241,25 @@ function showSettings(node) {
             node.settings = tmpSettings;
             updateView();
             $('#sidebar-tabs a[href="#components"]').tab('show');
+            var viewportWidth = $(window).width();
+            if (viewportWidth < 1440) {
+                $('.y-sidebar-right').removeClass('y-settings--active');
+            }
+            if (viewportWidth > 1440) {
+                $('.y-sidebar-right').removeClass('y-settings--active');
+            }
         });
     }
     else{
-        $('.y-settings').append("<code>Koi Säddings ahwähiläbbl!</code>");
+        $('.y-settings').append("<code style='margin-bottom:10px;'>Koi Säddings ahwähiläbbl!</code>");
+        var viewportWidth = $(window).width();
+        if (viewportWidth < 1440) {
+            $('.y-settings').append('<br><button class="btn btn-primary btn-lg btn-block settings-ok-button">OK</button>');
+            $('.y-settings .btn').click(function() {
+                $('.y-sidebar-right').removeClass('y-settings--active');
+                $('.settings-ok-button').remove();
+            });
+        }
     }
 }
 
