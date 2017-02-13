@@ -140,12 +140,15 @@ function validateFilenname(){
 
 function downloadSkeleton(){
     var filename=$('#filename').val();
-    var html = encodeURIComponent(renderHTML(tree._root));
+    var html = renderHTML(tree._root);
+    var data = {};
+    data.skeleton = html;
+    data.filename = filename;
     $.ajax({
         method: "POST",
         contentType: "application/json",
         url: 'http://localhost:8082/download',
-        data: '{"skeleton" : "'+html+'", "filename" : "'+filename+'"}',
+        data: JSON.stringify(data),
         success: function(){console.log(filename+'.html was saved!');},
         dataType: 'html'
     });
@@ -383,22 +386,24 @@ $(document).ready(function() {
         var input=$(this);
         var re =/^[a-zA-Z0-9_]+$/;
         var is_filename=re.test(input.val());
-        $.ajax({
-            method: "POST",
-            contentType: "application/json",
-            url: 'http://localhost:8082/checkFilename',
-            data: '{"filename" : "'+input.val()+'"}',
-            success: function(data){
-                if(data==='exist'){
-                    isFileExists();
-                }else{
-                    $('.fileexists').remove();
-                }
-            },
-            dataType: 'html'
-        });
-
         if(is_filename){
+            var data = {};
+            data.filename = input.val();
+            $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                url: 'http://localhost:8082/checkFilename',
+                data: JSON.stringify(data),
+                success: function(data){
+                    if(data==='exist'){
+                        isFileExists();
+                    }else{
+                        $('.fileexists').remove();
+                    }
+                },
+                dataType: 'html'
+            });
+
             input.removeClass("invalid").addClass("valid");
             $('.validation').remove();
             $('.form-group.downloadModal').removeClass('has-error');
