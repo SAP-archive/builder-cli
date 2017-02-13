@@ -17,8 +17,8 @@ app.get('/', function(req, res){
 });
 
 app.post('/download', function(req, res){
-    var html = decodeURIComponent(req.body.skeleton);
-    var filename = decodeURIComponent(req.body.filename) + ".html";
+    var html = req.body.skeleton;
+    var filename = req.body.filename + ".html";
     fs.writeFile(currentBuilderModuleURI+"/"+filename, html, function(err) {
         if(err) {
             return console.log(err);
