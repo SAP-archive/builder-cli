@@ -25,7 +25,7 @@ $ builder createModule host
 Available templates:
 
 0. simple - Only the bare minimum needed for a Builder module
-1. builderShowcase - Contains many examples of various features
+1. demo - Contains many examples of various features
 2. list - A view displaying a list, already prepared for making calls to an API via Restangular
 3. uiExtensibilityHost - Contains a view capable of including plug-in modules
 4. uiExtensibilityPlugin - Plug-in module example
