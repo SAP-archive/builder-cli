@@ -135,7 +135,6 @@ function searchNode(tree, parentNodeName){
 
 function validateFilenname(){
     var filename=$('#filename').val();
-    console.log(filename.match(/[0-9a-zA-Z]/));
 }
 
 function downloadSkeleton(){
@@ -201,7 +200,7 @@ function selectCmp(nodeId, parentNodeId){
     $('.cmpCtn').removeClass('cmpCtn--active');
     $('.y-editor-builder').addClass('y-editor-builder--active');
     var viewportWidth = $(window).width();
-    if (viewportWidth < 1440) {
+    if (viewportWidth <= 1440) {
         $('.y-sidebar-right').addClass('y-settings--active');
     }
     var node = searchNode(tree._root, "" + nodeId);
@@ -242,7 +241,7 @@ function showSettings(node) {
             updateView();
             $('#sidebar-tabs a[href="#components"]').tab('show');
             var viewportWidth = $(window).width();
-            if (viewportWidth < 1440) {
+            if (viewportWidth <= 1440) {
                 $('.y-sidebar-right').removeClass('y-settings--active');
             }
             if (viewportWidth > 1440) {
@@ -253,7 +252,7 @@ function showSettings(node) {
     else{
         $('.y-settings').append("<code style='margin-bottom:10px;'>Koi Säddings ahwähiläbbl!</code>");
         var viewportWidth = $(window).width();
-        if (viewportWidth < 1440) {
+        if (viewportWidth <= 1440) {
             $('.y-settings').append('<br><button class="btn btn-primary btn-lg btn-block settings-ok-button">OK</button>');
             $('.y-settings .btn').click(function() {
                 $('.y-sidebar-right').removeClass('y-settings--active');
@@ -367,9 +366,16 @@ function deleteDataModel(){
 }
 
 function isFileExists(){
-    var fileExistSpan = '<div class="help-block fileexists"><p>File already exists. Do you want to override it?</p></div>';
-    $('.form-group.downloadModal').addClass('has-error');
-    $('.form-group.downloadModal').append(fileExistSpan);
+    var fileExistsCheckbox = '<div class="checkbox fileexists"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">Overwrite file</label></div>';
+    $('.form-group.downloadModal').append(fileExistsCheckbox);
+}
+
+function overwriteFile(){
+    if($('#fileexistsCheck').is( ":checked" )){
+        $('#saveFileBtn').prop('disabled', false);
+    }else{
+        $('#saveFileBtn').prop('disabled', true);
+    }
 }
 
 function isNotValidFilename(){
@@ -380,8 +386,8 @@ function isNotValidFilename(){
 
 $(document).ready(function() {
     init();
-    $('#saveFileBtn').prop('disabled', false);
     isFileExists();
+    $('#saveFileBtn').prop('disabled', true);
     $('#filename').on('input', function() {
         var input=$(this);
         var re =/^[a-zA-Z0-9_]+$/;
@@ -407,7 +413,9 @@ $(document).ready(function() {
             input.removeClass("invalid").addClass("valid");
             $('.validation').remove();
             $('.form-group.downloadModal').removeClass('has-error');
-            $('#saveFileBtn').prop('disabled', false);
+            if($('#fileexistsCheck').is( ":checked" )){
+                $('#saveFileBtn').prop('disabled', false);
+            }
         }else{
             input.removeClass("valid").addClass("invalid");
             if($('.validation').length===0){
