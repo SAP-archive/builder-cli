@@ -36,13 +36,6 @@ function init(){
         addNodeToTree('main');
     }
     var downloadLink = document.createElement("a");
-    if(downloadLink.download !== undefined){
-        downloadAvailable=true;
-    }else{
-        downloadAvailable=false;
-    }
-    $('.btn-download').hide();
-
 }
 
 function updateView() {
@@ -140,6 +133,7 @@ function validateFilenname(){
 function downloadSkeleton(){
     var filename=$('#filename').val();
     var html = renderHTML(tree._root);
+    $('#fileexistsCheck').prop('checked', false);
     var data = {};
     data.skeleton = html;
     data.filename = filename;
@@ -202,6 +196,7 @@ function selectCmp(nodeId, parentNodeId){
     var viewportWidth = $(window).width();
     if (viewportWidth <= 1440) {
         $('.y-sidebar-right').addClass('y-settings--active');
+        $('.sidebar_mask').addClass('sidebar_mask--active');
     }
     var node = searchNode(tree._root, "" + nodeId);
     var nodeClass='.y-name-'+nodeId;
@@ -218,7 +213,7 @@ function showSettings(node) {
 
     var keys = Object.keys(tmpSettings);
     $('.y-settings').append("<h3>"+ node.type + "("+ node.id +")" +" - Settings</h3><br/>");
-
+    $('.y-sidebar_mask').addClass('y-sidebar_mask--active');
     if(keys.length > 0) {
 
         for(var i = 0; i < keys.length; i++) {
@@ -243,9 +238,11 @@ function showSettings(node) {
             var viewportWidth = $(window).width();
             if (viewportWidth <= 1440) {
                 $('.y-sidebar-right').removeClass('y-settings--active');
+                $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
             }
             if (viewportWidth > 1440) {
                 $('.y-sidebar-right').removeClass('y-settings--active');
+                $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
             }
         });
     }
@@ -257,6 +254,7 @@ function showSettings(node) {
             $('.y-settings .btn').click(function() {
                 $('.y-sidebar-right').removeClass('y-settings--active');
                 $('.settings-ok-button').remove();
+                $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
             });
         }
     }
@@ -267,16 +265,10 @@ function preview() {
         $('.y-editor-builder').addClass('y-editor-builder--preview');
         $('.btn-preview .glyphicon').removeClass('glyphicon-eye-open');
         $('.btn-preview .glyphicon').addClass('glyphicon-eye-close');
-        $('.btn-trash').hide();
-        if(downloadAvailable){
-            $('.btn-download').show();
-        }
         $('#treeString').hide();
         editMode = false;
     }else{
         $('#treeString').show();
-        $('.btn-download').hide();
-        $('.btn-trash').show();
         $('.y-editor-builder').removeClass('y-editor-builder--preview');
         $('.btn-preview .glyphicon').removeClass('glyphicon-eye-close');
         $('.btn-preview .glyphicon').addClass('glyphicon glyphicon-eye-open');
@@ -424,4 +416,17 @@ $(document).ready(function() {
             $('#saveFileBtn').prop('disabled', true);
         }
     });
+
+    $('.y-sidebar_mask').click(function(e){
+        $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
+        $('.y-sidebar-right').removeClass('y-settings--active');
+    });
+});
+
+$(window).resize(function() {
+    var viewportWidth = $(window).width();
+    if (viewportWidth > 1440) {
+        $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
+        $('.y-sidebar-right').removeClass('y-settings--active');
+    }
 });

@@ -347,7 +347,7 @@
 .y-sidebar-right-wrapper{
     overflow-x: hidden;
     overflow-y: auto;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -381,4 +381,22 @@
 
 .settings-ok-button{
     margin-top: 10px;
+}
+
+
+@media (max-width: 1440px){
+    .y-sidebar_mask{
+        display:none;
+    }
+    .y-sidebar_mask.y-sidebar_mask--active{
+        height: 100%;
+        width: 80%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.2;
+        z-index: 2002;
+        background-color:grey;
+    }
 }
