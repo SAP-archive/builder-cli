@@ -26,7 +26,7 @@ With the Builder SDK CLI, you can:
 You can download the latest Builder SDK CLI version for Windows or UNIX/Linux/MacOS.
 
 <div class="panel note">
-The latest release version of the Builder SDK CLI is currently 3.10.0.
+The latest release version of the Builder SDK CLI is currently 3.14.0.
 </div>
 
 <style>
