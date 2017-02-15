@@ -235,15 +235,8 @@ function showSettings(node) {
             node.settings = tmpSettings;
             updateView();
             $('#sidebar-tabs a[href="#components"]').tab('show');
-            var viewportWidth = $(window).width();
-            if (viewportWidth <= 1440) {
-                $('.y-sidebar-right').removeClass('y-settings--active');
-                $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
-            }
-            if (viewportWidth > 1440) {
-                $('.y-sidebar-right').removeClass('y-settings--active');
-                $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
-            }
+            $('.y-sidebar-right').removeClass('y-settings--active');
+            $('.y-sidebar_mask').removeClass('y-sidebar_mask--active');
         });
     }
     else{
@@ -393,8 +386,11 @@ $(document).ready(function() {
                 url: 'http://localhost:8082/checkFilename',
                 data: JSON.stringify(data),
                 success: function(data){
+                    console.log('data: ' +data);
                     if(data==='exist'){
-                        isFileExists();
+                        if($('#fileexistsCheck').length===0){
+                            isFileExists();
+                        }
                     }else{
                         $('.fileexists').remove();
                     }
@@ -412,6 +408,7 @@ $(document).ready(function() {
             input.removeClass("valid").addClass("invalid");
             if($('.validation').length===0){
                 isNotValidFilename();
+                $('.fileexists').remove();
             }
             $('#saveFileBtn').prop('disabled', true);
         }

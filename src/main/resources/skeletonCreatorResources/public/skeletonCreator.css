@@ -91,7 +91,6 @@
     width: 300px;
     -webkit-transition: width .3s cubic-bezier(0.4,0.0,0.2,1);
     transition: width .3s cubic-bezier(0.4,0.0,0.2,1);
-
     background: #fff;
     color: #000;
     z-index: 1;
@@ -116,7 +115,6 @@
     padding: 15px 25px;
     cursor: move;
     margin: 0;
-
     border-bottom: 1px solid #d4d9e2;
 }
 
@@ -239,6 +237,107 @@
     border: none;
 }
 
+.y-logo{
+    height: 60px;
+    border-radius: 18px;
+    margin: 5px;
+    position: absolute;
+}
+
+.y-logo:hover {
+    height: 300px;
+}
+
+.y-logo:hover + .y-logo-content:after{
+    content: 'Proudly brought to you by Himbeerdoni, Dellè & Kratzer';
+    position: absolute;
+    color: #fff;
+    top: 280px;
+    left: 20px;
+}
+
+.y-headline{
+    padding-left:10px;
+}
+
+.y-sidebar-right{
+    border-right: 1px solid rgba(0,0,0,.14);
+    bottom: 0;
+    background: #fff;
+    color: #212121;
+    display: block;
+    right: 0;
+    position: fixed;
+    top: 73px;
+    width: 15%;
+    z-index: 2004;
+    transform-style: preserve-3d;
+    transition-delay: .1s;
+    transition-duration: .2s;
+    transition-property: transform,left;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    box-shadow: 5px 10px 15px rgba(0,0,0,0.8);
+    position: fixed;
+}
+
+.y-sidebar-right-wrapper{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.y-sidebar-header{
+    border-bottom: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    position: relative;
+    line-height: 22px;
+    color: #0486e0;
+    margin: 0 atuo;
+    padding: 12px 0px 12px 24px;
+}
+
+@media (max-width: 1440px){
+    .y-sidebar-right{
+        width: 0%;
+    }
+
+    .y-content{
+        width:100%
+    }
+}
+
+.y-settings--active{
+    width: 20%;
+    z-index: 2004;
+    top:0px;
+}
+
+.settings-ok-button{
+    margin-top: 10px;
+}
+
+.y-settings-content{
+    width:100%;
+}
+
+
+@media (max-width: 1440px){
+    .y-sidebar_mask{
+        display:none;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+    }
+    .y-sidebar_mask.y-sidebar_mask--active{
+        height: 100%;
+        width: 100%;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0.2;
+        z-index: 1999;
+        background-color:#000;
+    }
+}
 
 /* Code Theme */
 
@@ -300,103 +399,4 @@
 
 .hljs-emphasis {
   font-style: italic;
-}
-
-.y-logo{
-    height: 60px;
-    border-radius: 18px;
-    margin: 5px;
-    position: absolute;
-}
-
-.y-logo:hover {
-    height: 300px;
-}
-
-.y-logo:hover + .y-logo-content:after{
-    content: 'Proudly brought to you by Himbeerdoni, Dellè & Kratzer';
-    position: absolute;
-    color: #fff;
-    top: 280px;
-    left: 20px;
-}
-
-.y-headline{
-    padding-left:10px;
-}
-
-.y-sidebar-right{
-    border-right: 1px solid rgba(0,0,0,.14);
-    bottom: 0;
-    background: #fff;
-    color: #212121;
-    display: block;
-    right: 0;
-    position: fixed;
-    top: 73px;
-    width: 15%;
-    z-index: 2000;
-    transform-style: preserve-3d;
-    transition-delay: .1s;
-    transition-duration: .2s;
-    transition-property: transform,left;
-    transition-timing-function: cubic-bezier(.4,0,.2,1);
-    box-shadow: 5px 10px 15px rgba(0,0,0,0.8)
-}
-
-.y-sidebar-right-wrapper{
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.y-sidebar-header{
-    border-bottom: 1px solid #e0e0e0;
-    box-sizing: border-box;
-    position: relative;
-    line-height: 22px;
-    color: #0486e0;
-    margin: 0 atuo;
-    padding: 12px 0px 12px 24px;
-}
-
-@media (max-width: 1440px){
-    .y-sidebar-right{
-        width: 0%;
-    }
-
-    .y-content{
-        width:100%
-    }
-}
-
-.y-settings--active{
-    width: 20%;
-    z-index: 2000;
-}
-
-.settings-ok-button{
-    margin-top: 10px;
-}
-
-
-@media (max-width: 1440px){
-    .y-sidebar_mask{
-        display:none;
-    }
-    .y-sidebar_mask.y-sidebar_mask--active{
-        height: 100%;
-        width: 80%;
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0.2;
-        z-index: 2002;
-        background-color:grey;
-    }
 }
