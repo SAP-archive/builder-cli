@@ -388,7 +388,7 @@ $(document).ready(function() {
                 data: JSON.stringify(data),
                 success: function(data){
                     if(data==='exist'){
-                        if($('#fileexistsCheck').length===0){
+                        if($('.file_exists_checkbox').length===0){
                             appendFileExistsCheckbox(input.val());
                             $('#saveFileBtn').prop('disabled', true);
                         }
@@ -403,9 +403,9 @@ $(document).ready(function() {
             input.removeClass("invalid").addClass("valid");
             $('.validation').remove();
             $('.form-group.downloadModal').removeClass('has-error');
-            if($('#fileexistsCheck').length===0){
+            if($('.file_exists_checkbox').length===0){
                 $('#saveFileBtn').prop('disabled', false);
-            }else if($('#fileexistsCheck').is( ":checked" )){
+            }else if($('.file_exists_checkbox').is( ":checked" )){
                 $('#saveFileBtn').prop('disabled', false);
             }
         }else{
