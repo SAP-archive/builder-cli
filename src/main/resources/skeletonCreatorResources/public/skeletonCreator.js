@@ -350,8 +350,9 @@ function deleteDataModel(){
     addNodeToTree('main');
 }
 
-function isFileExists(){
-    var fileExistsCheckbox = '<div class="checkbox fileexists"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">Overwrite file</label></div>';
+function appendFileExistsCheckbox(filename){
+    var fileName = filename?filename:"index";
+    var fileExistsCheckbox = '<div class="checkbox file_exists_checkbox"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">' + fileName + '.html already exists. Do you want to overwrite this file?</label></div>';
     $('.form-group.downloadModal').append(fileExistsCheckbox);
 }
 
@@ -363,7 +364,7 @@ function overwriteFile(){
     }
 }
 
-function isNotValidFilename(){
+function appendNotValidFilenameMsg(){
     var isNotValid = '<div class="help-block validation"><p>A valid filename is required</p></div>';
     $('.form-group.downloadModal').addClass('has-error');
     $('.form-group.downloadModal').append(isNotValid);
@@ -371,7 +372,7 @@ function isNotValidFilename(){
 
 $(document).ready(function() {
     init();
-    isFileExists();
+    appendFileExistsCheckbox(name);
     $('#saveFileBtn').prop('disabled', true);
     $('#filename').on('input', function() {
         var input=$(this);
@@ -386,13 +387,14 @@ $(document).ready(function() {
                 url: 'http://localhost:8082/checkFilename',
                 data: JSON.stringify(data),
                 success: function(data){
-                    console.log('data: ' +data);
                     if(data==='exist'){
                         if($('#fileexistsCheck').length===0){
-                            isFileExists();
+                            appendFileExistsCheckbox(input.val());
+                            $('#saveFileBtn').prop('disabled', true);
                         }
                     }else{
-                        $('.fileexists').remove();
+                        $('.file_exists_checkbox').remove();
+                        $('#saveFileBtn').prop('disabled', false);
                     }
                 },
                 dataType: 'html'
@@ -401,14 +403,16 @@ $(document).ready(function() {
             input.removeClass("invalid").addClass("valid");
             $('.validation').remove();
             $('.form-group.downloadModal').removeClass('has-error');
-            if($('#fileexistsCheck').is( ":checked" )){
+            if($('#fileexistsCheck').length===0){
+                $('#saveFileBtn').prop('disabled', false);
+            }else if($('#fileexistsCheck').is( ":checked" )){
                 $('#saveFileBtn').prop('disabled', false);
             }
         }else{
             input.removeClass("valid").addClass("invalid");
             if($('.validation').length===0){
-                isNotValidFilename();
-                $('.fileexists').remove();
+                appendNotValidFilenameMsg();
+                $('.file_exists_checkbox').remove();
             }
             $('#saveFileBtn').prop('disabled', true);
         }
