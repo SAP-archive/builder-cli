@@ -351,9 +351,16 @@ function deleteDataModel(){
     addNodeToTree('main');
 }
 
-function isFileExists(){
-    var fileExistsCheckbox = '<div class="checkbox fileexists"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">Overwrite file</label></div>';
-    $('.form-group.downloadModal').append(fileExistsCheckbox);
+function appendFileExistsCheckbox(filename){
+    if($('.file_exists_checkbox').length===0){
+        var fileName = filename?filename:"index";
+        var fileExistsCheckbox = '<div class="checkbox file_exists_checkbox"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">' + fileName + '.html already exists. Do you want to overwrite this file?</label></div>';
+        $('.form-group.downloadModal').append(fileExistsCheckbox);
+    }
+}
+
+function removeFileExistsCheckbox(){
+    $('.file_exists_checkbox').remove();
 }
 
 function overwriteFile(){
@@ -364,53 +371,68 @@ function overwriteFile(){
     }
 }
 
-function isNotValidFilename(){
-    var isNotValid = '<div class="help-block validation"><p>A valid filename is required</p></div>';
-    $('.form-group.downloadModal').addClass('has-error');
-    $('.form-group.downloadModal').append(isNotValid);
+function appendNotValidFilenameMsg(){
+    if($('.validation').length===0){
+        var isNotValid = '<div class="help-block validation"><p>A valid filename is required</p></div>';
+        $('.form-group.downloadModal').addClass('has-error');
+        $('.form-group.downloadModal').append(isNotValid);
+    }
+}
+
+function checkFileExists(name, callback){
+    $.ajax({
+        method: "POST",
+        contentType: "application/json",
+        url: 'http://localhost:8082/checkFilename',
+        data: JSON.stringify({filename:name}),
+        success: function(data){
+            callback(data==="exist");
+        },
+        dataType: 'html'
+    });
+}
+
+function removeErrorMsg(input){
+    input.removeClass("invalid").addClass("valid");
+    $('.validation').remove();
+    $('.form-group.downloadModal').removeClass('has-error');
+}
+
+function addErrorMsg(input){
+    input.removeClass("valid").addClass("invalid");
+    appendNotValidFilenameMsg();
+}
+
+function openSaveModal(){
+    $('#filename').trigger('input');
+    $('#myModal').modal('show');
 }
 
 $(document).ready(function() {
     init();
-    isFileExists();
-    $('#saveFileBtn').prop('disabled', true);
     $('#filename').on('input', function() {
         var input=$(this);
         var re =/^[a-zA-Z0-9_]+$/;
         var is_filename=re.test(input.val());
         if(is_filename){
-            var data = {};
-            data.filename = input.val();
-            $.ajax({
-                method: "POST",
-                contentType: "application/json",
-                url: 'http://localhost:8082/checkFilename',
-                data: JSON.stringify(data),
-                success: function(data){
-                    console.log('data: ' +data);
-                    if(data==='exist'){
-                        if($('#fileexistsCheck').length===0){
-                            isFileExists();
-                        }
-                    }else{
-                        $('.fileexists').remove();
-                    }
-                },
-                dataType: 'html'
-            });
+            checkFileExists(input.val(),function(exists){
+                if(exists){
+                    appendFileExistsCheckbox(input.val());
 
-            input.removeClass("invalid").addClass("valid");
-            $('.validation').remove();
-            $('.form-group.downloadModal').removeClass('has-error');
-            if($('#fileexistsCheck').is( ":checked" )){
-                $('#saveFileBtn').prop('disabled', false);
-            }
+                    $('#saveFileBtn').prop('disabled', true);
+                    if($('.file_exists_checkbox').is( ":checked" )){
+                        $('#saveFileBtn').prop('disabled', false);
+                    }
+                }else{
+                    removeFileExistsCheckbox();
+
+                    $('#saveFileBtn').prop('disabled', false);
+                }
+                removeErrorMsg(input);
+            });
         }else{
-            input.removeClass("valid").addClass("invalid");
-            if($('.validation').length===0){
-                isNotValidFilename();
-                $('.fileexists').remove();
-            }
+            removeFileExistsCheckbox();
+            addErrorMsg(input);
             $('#saveFileBtn').prop('disabled', true);
         }
     });
