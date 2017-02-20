@@ -323,6 +323,7 @@ function renderHTML(node, useEditMode){
                 }
             }else{
                 childrenHtml += renderHTML(node.children[i], useEditMode);
+                childrenHtml = childrenHtml.replace("{{GHOST_CMP}}", "");
             }
         }
 
