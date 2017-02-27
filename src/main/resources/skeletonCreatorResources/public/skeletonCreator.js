@@ -204,6 +204,9 @@ function selectCmp(nodeId, parentNodeId){
     if(node) {
         showSettings(node);
         $('#sidebar-tabs a[href="#settings"]').tab('show'); // Select tab by name
+    }else{
+        $('.y-sidebar-right').removeClass('y-settings--active');
+        $('.sidebar_mask').removeClass('sidebar_mask--active');
     }
 }
 
