@@ -999,7 +999,7 @@ The Notification Manager allows you to show notifications in the Builder.
         <ul>
             <li> **notification** - notification object; These are the possible properties of the notification object:
                <ul>
-                  <li> **id** (optional) - unique ID of the notification; if provided, the notification with matching ID will be removed .</li>
+                  <li> **id** (optional) - unique ID of the notification; if provided, the notification with matching ID will be removed</li>
                   <li> **title** (optional) - navigation title</li>
                   <li> **message** (optional) - navigation message</li>
                   <li> **origin** (optional) - Builder navigation path of the origin of this notification; if not provided the current Builder navigation path will be used as origin of this notification</li>
@@ -1014,7 +1014,7 @@ The Notification Manager allows you to show notifications in the Builder.
         <td>Adds all provided notifications and removes all existing (except for the provided ones) with ID matching the provided **idPattern** regular expression object. Parameters:
         <ul>
             <li> **idPattern** - a RegExp Object used to match IDs of notifications to be removed from the notification center</li>
-            <li> **notifications** - array of notification objects (as described in the **AddNotificationToCenter** function) to be added to the notification center; can be empty.</li>
+            <li> **notifications** - array of notification objects (as described in the **AddNotificationToCenter** function) to be added to the notification center. Can be empty.</li>
         </ul>
         </td>
     </tr>
