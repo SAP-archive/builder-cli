@@ -278,6 +278,7 @@
     transition-timing-function: cubic-bezier(.4,0,.2,1);
     box-shadow: 5px 10px 15px rgba(0,0,0,0.8);
     position: fixed;
+    overflow: auto;
 }
 
 .y-sidebar-right-wrapper{

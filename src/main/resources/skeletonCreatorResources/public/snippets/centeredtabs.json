@@ -2,5 +2,9 @@
     "CENTERED_TABS1" : "Home",
     "CENTERED_TABS2" : "Profile",
     "CENTERED_TABS3" : "Account",
-    "CENTERED_TABS4" : "Settings"
+    "CENTERED_TABS4" : "Settings",
+    "CENTERED_TABSCONTENT1" : "Content for the HOME tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "CENTERED_TABSCONTENT2" : "Content for the PROFILE tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "CENTERED_TABSCONTENT3" : "Content for the ACCOUNT tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "CENTERED_TABSCONTENT4" : "Content for the SETTINGS tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
 }
