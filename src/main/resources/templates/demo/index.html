@@ -35,7 +35,10 @@
                 $('#isPathExisting').prop('disabled', !Builder.linkManager().path('/Product Overview').exists());
             });
 
-            demoUIModuleApp.controller('notificationCtrl', function($scope){
+            demoUIModuleApp.controller('notificationCtrl', function($scope, notificationManager){
+                $scope.notificationManager = notificationManager;
+                $scope.mynotification = {id:'testId',title:'Test Title',message:'Test Message'};
+
                 $scope.processing=function(){
                     Builder.notificationManager.pushProcessing();
                     setTimeout(function(){
@@ -82,6 +85,7 @@
                                         <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
                                         <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
                                         <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
+                                        <button class="btn btn-warning" ng-click="notificationManager.addNotificationToCenter(mynotification)">Add Notifications!</button>
                                     </div>
                                 </div>
                             </div>
