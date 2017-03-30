@@ -3,6 +3,8 @@ var nodeIndex = 0;
 var editMode = true;
 var tmpCmp;
 var downloadAvailable = false;
+var fileName;
+var fileExistsCheckbox;
 
 var rootNode = {
     "name": "rootNode",
@@ -355,11 +357,16 @@ function deleteDataModel(){
 }
 
 function appendFileExistsCheckbox(filename){
-    if($('.file_exists_checkbox').length===0){
-        var fileName = filename?filename:"index";
-        var fileExistsCheckbox = '<div class="checkbox file_exists_checkbox"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">' + fileName + '.html already exists. Do you want to overwrite this file?</label></div>';
-        $('.form-group.downloadModal').append(fileExistsCheckbox);
-    }
+    checkFileExists(filename, function(exist){
+        if(exist){
+            if(fileName!==filename){
+                removeFileExistsCheckbox();
+            }
+            fileName = filename?filename:"index";
+            fileExistsCheckbox = '<div class="checkbox file_exists_checkbox"><input type="checkbox" id="fileexistsCheck" value="fileexistsCheck" onclick="overwriteFile()"><label for="fileexistsCheck" class="control-label">' + fileName + '.html already exists. Do you want to overwrite this file?</label></div>';
+            $('.form-group.downloadModal').append(fileExistsCheckbox);
+        }
+    });
 }
 
 function removeFileExistsCheckbox(){
