@@ -18,7 +18,7 @@ To begin, you must:
     <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
 ```
 
-Keep in mind that **builder.inputs** uses **angular-translate** module internally to provide localized error and help messages. If you don't use it in your Builder module, you will need to include two additional files **before** `builderInputs.js`:
+Keep in mind that **builder.inputs** uses the **angular-translate** module internally to provide localized error and help messages. If you don't use it in your Builder module, you will need to include two additional files **before** `builderInputs.js`:
 
 ```html
     <script src="https://builder.yaas.io/public/js/vendor/angular-translate/angular-translate.js"></script>
