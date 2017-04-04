@@ -3,7 +3,7 @@ title: 'Design a Builder UI with Skeleton Creator'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: -
+order: 3
 ---
 
 The Builder CLI features the Skeleton Creator tool, with which you can easily create views just by dragging and dropping UI components. <br><br>

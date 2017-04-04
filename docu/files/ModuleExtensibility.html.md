@@ -3,7 +3,7 @@ title: 'Builder Module Extensibility'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 10
+order: 11
 ---
 
 After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages.
@@ -46,21 +46,21 @@ Generated files of the plug-in module also contain some features related to the 
  - The **auth.html** file was generated to serve as a dedicated resource that captures the access token for the plug-in after successful authorization.
  - The **plugin.html** file includes the **builder_plugin.js** file, which is a dedicated JavaScript API, to enable integration of the plug-in module with host.
  - The **.js** file uses the supporting API _BuilderPlugin_.
- 
+
 ### Builder module plug-in integration
 
 When the user opens a project in the Builder, all of the packages subscribed to by the project are examined, and the included modules become available in the Builder's navigation.
-At that time, all subscribed plug-in modules are combined with matching subscribed hosts, so that when the host module is shown to the user, the Builder already knows all of its currently available extensions and assigns them to their target slots. 
+At that time, all subscribed plug-in modules are combined with matching subscribed hosts, so that when the host module is shown to the user, the Builder already knows all of its currently available extensions and assigns them to their target slots.
 
 #### Context of the plug-in module
- 
+
 Even though a plug-in module is embedded in the host module, it doesn't share the authorization context with the host. Plug-ins have their own, completely isolated authorization context, which is not accessible by the host module (and vice versa).
 When the Builder examines the available module plug-ins, it issues an authorization request for each of them, requesting scopes as defined in the module definition.
-The authorization success redirection is captured by the plug-in (via a dedicated resource hosted by the plug-in, **/builder/auth.html**) so that it keeps the access token private. 
+The authorization success redirection is captured by the plug-in (via a dedicated resource hosted by the plug-in, **/builder/auth.html**) so that it keeps the access token private.
 
 #### Host initialization
- 
-When the host module is loaded, it calls: 
+
+When the host module is loaded, it calls:
 ```
 BuilderExtensible.injectExtensions();
 ```
@@ -69,20 +69,20 @@ As a result, an iframe element is appended to every extension slot for which a m
 
 #### Plug-in initialization
 
-When the plug-in module is loaded in the iframe, it declares a callback function that should be called when the context of the plug-in is ready: 
+When the plug-in module is loaded in the iframe, it declares a callback function that should be called when the context of the plug-in is ready:
 ```
  BuilderPlugin.ready(function() {
         $scope.token = BuilderPlugin.authorizationData.accessToken;
         $scope.scope = decodeURIComponent(BuilderPlugin.authorizationData.scope);
         $scope.tenantId = BuilderPlugin.authorizationData.tenantId;
         $scope.clientId = BuilderPlugin.authorizationData.clientId;
-        
+
         //do what you need to do once the plug-in has its context ready...
     });
 ```
 
 Additionally, when the plug-in's document within the host's slot is ready, the plug-in sends an event to the host informing it about the resulting height and width.
-This way, it requests a resize operation of its target slot so that it fits the plug-in. 
+This way, it requests a resize operation of its target slot so that it fits the plug-in.
 
 #### General purpose events
 
@@ -100,7 +100,7 @@ BuilderPlugin.on('myHostEvent', function(data) {
 });
 ```
 
-Use the following example to transfer data from the plug-in to the host: 
+Use the following example to transfer data from the plug-in to the host:
 ```
 BuilderPlugin.sendEvent('myPluginEvent', data);
 ```
@@ -115,9 +115,9 @@ BuilderExtensible.on('myPluginEvent', function(data) {
 ### Register host and plug-in modules
 
 Extensible hosts and plug-in modules, just like all other Builder modules, must be registered in YaaS.
-So, after you have implemented and deployed them, use the Builder to register the modules in YaaS and include them in the target packages that your project provides.   
+So, after you have implemented and deployed them, use the Builder to register the modules in YaaS and include them in the target packages that your project provides.
 
-Defining a host module is no different from defining any other Builder module. 
+Defining a host module is no different from defining any other Builder module.
 When registering a plug-in module, you should complete the same tasks as for other modules:
  - Provide a URL for the **module.json** file where it was deployed.
  - Specify what the plug-in can do on behalf of the tenant (the *authorization scopes* of the module),

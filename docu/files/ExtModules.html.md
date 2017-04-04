@@ -3,7 +3,7 @@ title: 'Integrate a Builder module'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 3
+order: 4
 ---
 
 The Builder is a tool in which you can manage your account, projects, services, clients, and packages. It is also a container in which you can integrate your own Builder module to manage your services. The Builder module must be an HTML-based view registered with a package providing the URL pointing to the module.
@@ -842,7 +842,7 @@ Use the context variable `currentLanguage` to determine the current language set
 
 <b>1. Declare the context variable `currentLanguage` for the application scope.</b>
 
-``` 
+```
 <script>
 
  var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.translate"]);
@@ -1066,7 +1066,7 @@ The Notification Manager allows you to show notifications in the Builder.
 
 #### Notification manager: The data parameter
 
-The **data** parameter used in the various Notification manager functions allows you to inject additional data into the message provided as the first parameter of the function call. Currently, only the Builder links are supported as a data type. 
+The **data** parameter used in the various Notification manager functions allows you to inject additional data into the message provided as the first parameter of the function call. Currently, only the Builder links are supported as a data type.
 
 The **data** parameter must be an object. You can use every property of that object as a placeholder in the message and the system replaces the placeholder with the processed value of the property.
 
@@ -1074,7 +1074,7 @@ This example demonstrates the use of the Notification manager by showing an info
 
 ```
 Builder.notificationManager.showInfo(
-    'The new product was created succesfully. Go to {catLink} to attach it to a category.', 
+    'The new product was created succesfully. Go to {catLink} to attach it to a category.',
     {
         catLink: {type: "link", url:"/Home/org1/Projects/pro1/categories", text: "Category Management"}
     }
@@ -1085,7 +1085,7 @@ The result is this message:
 
 ![Info message with a link](img/info_message_w_link.png)
 
-The link is clickable and navigates to the Builder path as specified in the data object. You can have more than one links or placeholders in a single message. 
+The link is clickable and navigates to the Builder path as specified in the data object. You can have more than one links or placeholders in a single message.
 
 To build a link to a specified part of the Builder, you can use the **linkManager** as shown:
 

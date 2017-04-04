@@ -3,10 +3,10 @@ title: 'Builder First Contact Tour for Navigation Nodes'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 9
+order: 10
 ---
 
-Using the Builder first contact tour for navigation nodes, you can define a step-by-step walkthrough for the navigation nodes of your Builder module that displays whenever a user enters a project with the module for the first time. This helps to orient new users and improves their user experience in the Builder. 
+Using the Builder first contact tour for navigation nodes, you can define a step-by-step walkthrough for the navigation nodes of your Builder module that displays whenever a user enters a project with the module for the first time. This helps to orient new users and improves their user experience in the Builder.
 
 In this tutorial, you will learn more about how to define the first contact tour for the navigation nodes of your Builder module.
 
