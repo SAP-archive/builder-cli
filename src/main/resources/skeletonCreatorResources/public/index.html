@@ -2,14 +2,14 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Skeletor</title>
+        <title>Skeleton Creator</title>
         <link href="https://builder.yaas.io/public/css/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
-        <link href="skeletor.css" media="screen, projection" rel="stylesheet" type="text/css">
+        <link href="./skeletonCreator.css" media="screen, projection" rel="stylesheet" type="text/css">
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js?v=1.16.3-243"></script>
         <script src="https://builder.yaas.io/public/js/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://builder.yaas.io/public/js/vendor/hyTechne/dist/js/select2.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/hyTechne/dist/js/select2.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>
-        <script src="skeletor.js"></script>
+        <script src="./skeletonCreator.js"></script>
         <script>
             function allowDrop(event) {
                 event.preventDefault();
@@ -24,10 +24,6 @@
                 var data = event.dataTransfer.getData("text");
                 addNodeToTree(data, name);
             };
-
-            $(document).ready(function() {
-                init();
-            });
         </script>
         <script>hljs.initHighlightingOnLoad();</script>
     </head>
@@ -58,24 +54,17 @@
             </pre>
         </div>
         <div class="wrapper">
-            <div class="navbar navbar-default y-navbar-centered y-navbar-lg navbar-fixed-top">
+            <div class="navbar navbar-default y-navbar-centered y-navbar-lg navbar-fixed-top top-nav--skeletor">
                 <div class="container-fluid">
                     <div class="navbar-left">
                         <div class="y-headline">
-                            <h1>The Skeletor</h1>
+                            <h1>The Skeleton Creator</h1>
                         </div>
                     </div>
                     <div class="navbar-right">
                         <div class="y-toolbar">
-                            <div class="y-toolbar-cell">
-                                <button class="btn btn-link btn-lg navbar-btn btn-trash" onclick="deleteDataModel()" title="delete view">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </div>
                              <div class="y-toolbar-cell">
-                                <button class="btn btn-link btn-lg navbar-btn btn-download" onclick="downloadHTML()" title="save view in html file">
-                                    <span class="glyphicon glyphicon-download-alt"></span>
-                                </button>
+                                    <button type="button" class="btn btn-link btn-lg navbar-btn btn-download"  onclick="openSaveModal()"><span class="glyphicon glyphicon-download-alt"></span></button>
                             </div>
                             <div class="y-toolbar-cell">
                                 <button class="btn btn-link btn-lg navbar-btn btn-preview" onclick="preview()" title="view preview">
@@ -88,28 +77,29 @@
                                     <span class="glyphicon glyphicon-menu-right"></span>
                                 </button>
                             </div>
+                            <div class="y-toolbar-cell">
+                                <button class="btn btn-link btn-lg navbar-btn btn-trash" onclick="deleteDataModel()" title="delete view">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="y-sidebar">
-                <ul class="nav nav-tabs nav-tabs--responsive" role="tablist" id="sidebar-tabs">
-                    <li role="presentation" class="active"><a href="#components" role="tab" data-toggle="tab">Components</a></li>
-                    <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
-                    <li class="nav-tabs-mobile-caret" data-toggle="dropdown" data-target="#demotabs" style="display:none;"><a class="pull-right" href="#"><span class="caret"></span></a></li>
-                </ul>
+                <div class="y-sidebar-header">
+                    <h3>Components</h3>
+                </div>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="components">
                         <ul class="y-sidebar__list">
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="container">Container</li>
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="row">Row</li>
+                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="column">Column</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="pageheader">Page Header</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="panel">Panel</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="addbutton">Add Button</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="button">Button Primary</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="buttonsecondary">Button Secondary</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="backbutton">Back Button</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="buttoninputtype">Button (Input Type)</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="smalltoggle">Small Toggle</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="largetoggle">Large Toggle</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="table">Table</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="inputfield">Input</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="cards">Cards</li>
@@ -117,11 +107,18 @@
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="lists">Lists</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="leftalignedtabs">Left Algined Tabs</li>
                             <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="centeredtabs">Centred Tabs</li>
-                            <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="loadingspinner">Loading Spinner</li>
                         </ul>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="settings">
-                        <div class="y-settings"></div>
+                    <br>
+                    <div class="y-sidebar-header">
+                        <h3>Layout</h3>
+                    </div>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="layout">
+                            <ul class="y-sidebar__list">
+                                <li class="y-sidebar__list-item" draggable="true" ondragstart="drag(event)" componentType="grid_template">Grid Template</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,5 +130,38 @@
                 </div>
             </div>
         </div>
+        <div class="y-sidebar-right">
+                <div class="y-sidebar-right-wrapper">
+                    <div class="y-sidebar-header">
+                        <h3>Settings</h3>
+                    </div>
+                    <div class="y-settings-content" id="settings">
+                        <div class="y-settings"></div>
+                    </div>
+                </div>
+            </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title">Save file as</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group downloadModal">
+                        <div class="input-group">
+                            <input type="text" id="filename" class="form-control input-lg" placeholder="name of the html file" aria-describedby="basic-addon2" value="index">
+                            <span class="input-group-addon" id="basic-addon2">.html</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-subordinate" data-dismiss="modal">Cancel</button>
+                    <button id="saveFileBtn" class="btn btn-lg btn-primary" data-dismiss="modal" onclick="downloadSkeleton()">Save</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="y-sidebar_mask"></div>
     </body>
 </html>

@@ -3,7 +3,7 @@ title: 'Integrate a Builder module'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 3
+order: 4
 ---
 
 The Builder is a tool in which you can manage your account, projects, services, clients, and packages. It is also a container in which you can integrate your own Builder module to manage your services. The Builder module must be an HTML-based view registered with a package providing the URL pointing to the module.
@@ -842,7 +842,7 @@ Use the context variable `currentLanguage` to determine the current language set
 
 <b>1. Declare the context variable `currentLanguage` for the application scope.</b>
 
-``` 
+```
 <script>
 
  var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.translate"]);
@@ -881,9 +881,9 @@ Use the context variable `currentLanguage` to determine the current language set
 ```
 <div class="panel-body" ng-controller="settingsCtrl">
  <div>
-  <h3>{{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}</h3>
+  {{'SHOWCASE.EXAMPLE_TRANSLATION' | translate}}
  </div>
- <div><h4>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</h4></div>
+ <div>{{'SHOWCASE.CURRENT_LANGUAGE' | translate}}: {{currLanguage}}</div>
  <div>
   <button class="btn btn-default">{{'SHOWCASE.DEFAULT_BUTTON' | translate}}</button>
  </div>
@@ -958,6 +958,67 @@ The Notification Manager allows you to show notifications in the Builder.
         </td>
     </tr>
     <tr>
+        <td>Builder.notificationManager.addNotification(notification)</td>
+        <td>Shows a message in the notification area. Parameters:
+        <ul>
+            <li> **notification** - notification object; These are the possible properties of the notification object:
+               <ul>
+                  <li> **message** - message to be displayed</li>
+                  <li> **level** - type of the message. These are the possible values for this field:
+                    <ul>
+                       <li> **alert-success** - if the message is a success message</li>
+                       <li> **alert-danger** - if the message is an error message</li>
+                       <li> **alert-info** - if the message is an informational message</li>
+                    </ul>
+                  </li>
+                  <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+               </ul>
+            </li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.addNotificationToCenter(notification)</td>
+        <td>Adds a message to the notification center. Parameters:
+        <ul>
+            <li> **notification** - notification object; These are the possible properties of the notification object:
+               <ul>
+                  <li> **id** (optional) - unique ID of the notification; if provided and there is a notification with the same ID already in the notification area it will be replaced. This is also useful for removing of the notification later (see **removeNotificationFromCenter** and **addNotificationGroupToCenter** functions).</li>
+                  <li> **title** - title to be displayed</li>
+                  <li> **message** - message to be displayed</li>
+                  <li> **origin** (optional) - Builder navigation path of the origin of this notification; if not provided the current Builder navigation path will be used as origin of this notification</li>
+                  <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+               </ul>
+            </li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.removeNotificationFromCenter(notification)</td>
+        <td>Removes notification from the notification center. If **id** is provided, the notification with matching ID is removed, otherwise the notification with matching content (title, message, origin and data) is removed. Parameters:
+        <ul>
+            <li> **notification** - notification object; These are the possible properties of the notification object:
+               <ul>
+                  <li> **id** (optional) - unique ID of the notification; if provided, the notification with matching ID will be removed</li>
+                  <li> **title** (optional) - navigation title</li>
+                  <li> **message** (optional) - navigation message</li>
+                  <li> **origin** (optional) - The Builder navigation path of the origin of this notification. If empty, the current Builder navigation path takes over as the  origin of this notification</li>
+                  <li> **data** (optional) - data to inject into the message (See Notification manager: The data parameter)</li>
+               </ul>
+            </li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Builder.notificationManager.addNotificationGroupToCenter(idPattern, notifications)</td>
+        <td>Adds all provided notifications and removes all existing (except for the provided ones) with ID matching the provided **idPattern** regular expression object. Parameters:
+        <ul>
+            <li> **idPattern** - a RegExp Object used to match IDs of notifications for removal from the notification center</li>
+            <li> **notifications** - array of notification objects (as described in the **AddNotificationToCenter** function) to add to the notification center. Can be empty.</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
         <td>Builder.notificationManager.showConfirmation(title, message, onConfirmCallback, onCancelCallback, data)</td>
         <td>Shows a confirmation dialog with the provided title and message. It also contains a button to confirm or to cancel. The `onConfirmCallback` function is called when user confirms, the `onCancelCallback` function is called when the user presses **Cancel**. Parameters:
         <ul>
@@ -1005,7 +1066,7 @@ The Notification Manager allows you to show notifications in the Builder.
 
 #### Notification manager: The data parameter
 
-The **data** parameter used in the various Notification manager functions allows you to inject additional data into the message provided as the first parameter of the function call. Currently, only the Builder links are supported as a data type. 
+The **data** parameter used in the various Notification manager functions allows you to inject additional data into the message provided as the first parameter of the function call. Currently, only the Builder links are supported as a data type.
 
 The **data** parameter must be an object. You can use every property of that object as a placeholder in the message and the system replaces the placeholder with the processed value of the property.
 
@@ -1013,7 +1074,7 @@ This example demonstrates the use of the Notification manager by showing an info
 
 ```
 Builder.notificationManager.showInfo(
-    'The new product was created succesfully. Go to {catLink} to attach it to a category.', 
+    'The new product was created succesfully. Go to {catLink} to attach it to a category.',
     {
         catLink: {type: "link", url:"/Home/org1/Projects/pro1/categories", text: "Category Management"}
     }
@@ -1024,7 +1085,7 @@ The result is this message:
 
 ![Info message with a link](img/info_message_w_link.png)
 
-The link is clickable and navigates to the Builder path as specified in the data object. You can have more than one links or placeholders in a single message. 
+The link is clickable and navigates to the Builder path as specified in the data object. You can have more than one links or placeholders in a single message.
 
 To build a link to a specified part of the Builder, you can use the **linkManager** as shown:
 

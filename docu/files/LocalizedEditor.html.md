@@ -3,7 +3,7 @@ title: 'The localized editor component in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 4
+order: 5
 ---
 
 The localized editor is a custom Angular directive in **builder_editors** with a dependency to the **builder**.
@@ -13,7 +13,7 @@ The localized editor is a custom Angular directive in **builder_editors** with a
 As a Builder module developer, complete a few simple tasks:
 
 * Include one of these files:<br><br>```https://builder.yaas.io/public/js/builder_editors.js```<br>
-```https://builder.yaas.io/public/js/builder_editors_v2.js```<br><br>  
+```https://builder.yaas.io/public/js/builder_editors_v2.js```<br><br>
 * Then, add the **builder_editors** module to your Angular module.
 * The directive expects data formatted as shown in this example:
 ```js

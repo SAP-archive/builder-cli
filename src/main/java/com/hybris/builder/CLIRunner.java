@@ -451,8 +451,8 @@ public class CLIRunner
                         System.out.println("\t\t\t\t\t" + ansi_white + arg+i + ansi_reset + ": " + cmdProps.getProperty("arg"+i));
                     }
                 }else {
-                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 8 ? "\t" : "")
-                            + "\t\t\t" + cmdProps.getProperty("description") + "\n");
+                    System.out.println("\t" + ansi_white + cmd + ansi_reset + (cmd.length() < 15 ? "\t" : "")
+                            + "\t\t" + cmdProps.getProperty("description") + "\n");
                 }
             }
         }
@@ -700,6 +700,7 @@ public class CLIRunner
     {
         try {
             String cmd = command.replace("${JAVA}", javaBin).replace("${MVN}", mvnBin == null ? "" : mvnBin)
+                    .replace("${CWD}",  System.getProperty("user.dir"))
                     .replace("${CWD_URI}", new File(System.getProperty("user.dir")).toURI().toURL().toExternalForm())
                     .replace("${CFGDIR_SEP}", configFilePath + File.separator).replace("${SEP}", File.separator);
             for (Map.Entry<String, String> entry : depsMap.entrySet()) {
@@ -751,8 +752,9 @@ public class CLIRunner
                 {
                     copyCommonResources();
                 }
-                if(cmdList.size() > 4 && "skeletor".equals(cmdList.get(4))){
-                    copySkeletor();
+                else if("npm".equals(cmdList.get(0)))
+                {
+                    copySkeletonCreator();
                 }
             }
 
@@ -924,11 +926,12 @@ public class CLIRunner
     }
 
     /**
-     * Copies all skeletor files to USERHOME/.builder/skeletor
+     * Copies all Skeleton Creation files to USERHOME/.builder/skeletonCreator
      */
-    protected void copySkeletor(){
-        copyFiles("skeletorfiles", "skeletorResources/", new File(configFilePath, "runSkeletor"));
-        copyFiles("skeletorcmpfiles", "skeletorResources/snippets/", new File(configFilePath, "runSkeletor"+ File.separator + "snippets"));
+    protected void copySkeletonCreator(){
+        copyFiles("skeletoncreatorconfig", "skeletonCreatorResources/", new File(configFilePath, "runSkeletonCreator"));
+        copyFiles("skeletoncreatorfiles", "skeletonCreatorResources/public/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public"));
+        copyFiles("skeletoncreatorcmpfiles", "skeletonCreatorResources/public/snippets/", new File(configFilePath, "runSkeletonCreator"+ File.separator + "public" + File.separator + "snippets"));
     }
 
     /**

@@ -3,7 +3,7 @@ title: 'Client-side field validation in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 8
+order: 9
 ---
 
 The **builder.inputs** Angular module provides a mechanism for client-side field validation. The **builder.inputs** module contains the <b>builder-input</b> Angular directive, which allows you to validate any input or text area field.
@@ -16,6 +16,13 @@ To begin, you must:
 
 ```html
     <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
+```
+
+Keep in mind that **builder.inputs** uses the **angular-translate** module internally to provide localized error and help messages. If you don't use it in your Builder module, you will need to include two additional files **before** `builderInputs.js`:
+
+```html
+    <script src="https://builder.yaas.io/public/js/vendor/angular-translate/angular-translate.js"></script>
+    <script src="https://builder.yaas.io/public/js/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
 ```
 
 * Add **builder.inputs** to your module as shown:

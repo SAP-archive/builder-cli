@@ -3,7 +3,7 @@ title: 'Visibility Restrictions in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 7
+order: 8
 ---
 
 
@@ -99,7 +99,7 @@ This button should only be shown if the user that is currently signed in has the
 ```
 
 You can also use more than one scope and use logical operators to create more complex conditions like this:
- 
+
 ```html
 <button if-actions-allowed="hybris.wishlist_delete || hybris.wishlist_manage" ng-click="deleteWishlistItem()">Delete</button>
 ```
@@ -107,7 +107,7 @@ You can also use more than one scope and use logical operators to create more co
 In this case, the user that has any of the specified scopes (`hybris.wishlist_delete` or `hybris.wishlist_manage`, in this example) can delete a wishlist item.
 
 You can use these logical operators:
- 
+
 <ul>
 <li> && - logical AND</li>
 <li> || - logical OR</li>

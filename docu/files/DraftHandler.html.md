@@ -3,7 +3,7 @@ title: 'Draft and dirty state handling in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 6
+order: 7
 ---
 
 You can react on unsaved states in the Builder module you are developing using draft and dirty state handling in the Builder. This helps to prevent data loss and improve the user experience in the Builder. Draft and dirty state handling are two different terms, but they are interrelated:
@@ -42,7 +42,7 @@ To enable draft handling, you must specify exactly the place and data in the Bui
     Builder.notificationManager.addDraftHandler([DraftOptionsA, DraftOptionsB, ...], DraftHandlerCallback);
 ```
 
-You can only add one **DraftHandler** per view. For each draft you want to save, you must pass a **DraftOptions** object which must include the following properties:  
+You can only add one **DraftHandler** per view. For each draft you want to save, you must pass a **DraftOptions** object which must include the following properties:
 
 <ul>
 <li>**id** - The ID of the draft that should be saved.</li>
@@ -65,13 +65,13 @@ You can only add one **DraftHandler** per view. For each draft you want to save,
 
         Builder.notificationManager.markDirty(false);
 
-        /* Other things you have to do to apply a draft to your current Builder module state 
-        e.g. for AngularJS you have to digest the scope since we're in an asynchronous callback : 
-        
+        /* Other things you have to do to apply a draft to your current Builder module state
+        e.g. for AngularJS you have to digest the scope since we're in an asynchronous callback :
+
         $scope.$digest();
         or
-        $scope.$apply();        
-        
+        $scope.$apply();
+
         */
     });
 ```

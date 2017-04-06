@@ -1,0 +1,10 @@
+{
+    "LEFTALIGNED_TABS1" : "Home",
+    "LEFTALIGNED_TABS2" : "Profile",
+    "LEFTALIGNED_TABS3" : "Account",
+    "LEFTALIGNED_TABS4" : "Settings",
+    "LEFTALIGNED_TABSCONTENT1":"Content for the HOME tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "LEFTALIGNED_TABSCONTENT2":"Content for the PROFILE tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+    "LEFTALIGNED_TABSCONTENT3":"Content for the ACCOUNT tab. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "LEFTALIGNED_TABSCONTENT4":"Content for the SETTINGS tab. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+}
