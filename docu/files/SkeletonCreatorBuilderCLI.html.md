@@ -13,13 +13,13 @@ The Builder CLI features the Skeleton Creator tool, with which you can easily cr
 
 1. Open a terminal window.
 
- <img src="img/builder_cli_menu_runSkeletor.png"><br><br>
+ <img style="width:40%;" max-width: 500px vspace="20" src="img/builder_cli_menu_runSkeletor.png" class="img-click-modal" alt="runSkeletonCreator in the terminal window"><br><br>
 
 2. Run the command `builder runSkeletonCreator` to start the Skeleton Creator. The HTTP server starts locally.
 3. Enter the URL <b>http://localhost:8082</b> in a browser.  The Skeleton Creator design interface will appear.
 4. To design a view, drag and drop the components from the left of the screen onto the main screen. Organize the components as they should appear in the Builder UI.
 
-  <img src="img/skeletor_ui_drag.png" style="width:600px" class="img-click-modal" alt="The Skeleton Creator UI"/><br><br>
+  <img style="width:40%;" max-width: 500px vspace="20" src="img/skeletor_ui_drag.png" style="width:500px" class="img-click-modal" alt="The Skeleton Creator UI"/><br><br>
   5. After you create the view, click the preview button to the right of the delete button.  The browser immediately stores your view in the local cache. That means you will not loose the view until you delete it by explicitly clicking on the delete button.
 
   <img src="img/skeletor_ui_menu.png" width="35%" class="img-click-modal" alt="The Skeleton Creator UI"/><br>
@@ -28,8 +28,8 @@ The Builder CLI features the Skeleton Creator tool, with which you can easily cr
 
 Here is an example of a UI with its corresponding code preview:<br>
 
-  <img src="img/skeletor_ui_completed.png" class="img-click-modal" alt="The Skeleton Creator UI"/><br><br>
-  <img src="img/skeletor_code_sample.png" class="img-click-modal" alt="Code Preview"/><br><br>
+  <img style="width:40%;" max-width: 500px vspace="20" src="img/skeletor_ui_completed.png" class="img-click-modal" alt="The Skeleton Creator UI"/><br><br>
+  <img style="width:40%;" max-width: 500px vspace="20" src="img/skeletor_code_sample.png" class="img-click-modal" alt="Code Preview"/><br><br>
 
   If you are using Chrome or Firefox, a download button is available in preview mode allowing you to download the code to a file.
 
@@ -42,4 +42,4 @@ Here is an example of a UI with its corresponding code preview:<br>
 You can adjust the settings for each component in the Skeleton Creator. This allows you to assign custom text and and labeling to the component. For example, the <strong>Page Header</strong> component features a <strong>Back</strong> button, a long page title, as well as a <strong>Save</strong> and <strong>Cancel</strong> button by default. You can set the default text of the title and rename each of the buttons.
 
 <br>
-  <img src="img/component_settings.png" class="img-click-modal" alt="Code Preview"/>
+  <img style="width:40%;" max-width: 500px vspace="20" src="img/component_settings.png" class="img-click-modal" alt="Code Preview"/>
