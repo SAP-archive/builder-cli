@@ -22,7 +22,7 @@ The Builder CLI features the Skeleton Creator tool, with which you can easily cr
   <img style="width:40%;" max-width: 500px vspace="20" src="img/skeletor_ui_drag.png" style="width:500px" class="img-click-modal" alt="The Skeleton Creator UI"/><br><br>
   5. After you create the view, click the preview button to the right of the delete button.  The browser immediately stores your view in the local cache. That means you will not loose the view until you delete it by explicitly clicking on the delete button.
 
-  <img src="img/skeletor_ui_menu.png" width="35%" class="img-click-modal" alt="The Skeleton Creator UI"/><br>
+  <img style="width:50%;" src="img/skeletor_ui_menu.png" class="img-click-modal" alt="The Skeleton Creator UI"/><br>
 
 6. Export the code that the Skeleton Creator generates by clicking on the show button to the right of the preview button.
 
@@ -33,7 +33,7 @@ Here is an example of a UI with its corresponding code preview:<br>
 
   If you are using Chrome or Firefox, a download button is available in preview mode allowing you to download the code to a file.
 
-  <img src="img/skeletor_menu_download_button.png"  width="35%" class="img-click-modal" alt="The Skeleton Creator download button"/><br><br>
+  <img style="width:50%;" src="img/skeletor_menu_download_button.png"  class="img-click-modal" alt="The Skeleton Creator download button"/><br><br>
   Internext Explorer and Safari do not support the download button. Instead, you can copy the HTML code directly from the broswer. <br><br>
 
 
