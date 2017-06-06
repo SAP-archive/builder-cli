@@ -12,23 +12,8 @@ order: 2
 Before following these steps, you must download and install the Builder SDK CLI.
 </div>
 
-<!-- Outer div defines maximum space the player can take -->
-<div style="width: 50%;display: inline-block;position: relative;">
-    <!--  inner pusher div defines aspect ratio: in this case 16:9 ~ 56.25% -->
-    <div id="dummy" style="margin-top: 56.25%;"></div>
-    <!--  the player embed target, set to take up available absolute space   -->
-    <div id="kaltura_player_1398862018" style="position:absolute;top:0;left:0;left: 0;right: 0;bottom:0;">
-    </div>
-</div>
-<script src="https://cdnapisec.kaltura.com/p/1673981/sp/167398100/embedIframeJs/uiconf_id/32240031/partner_id/1673981"></script>
-<script>
-kWidget.embed({
-    'targetId': 'kaltura_player_1398862018',
-    'wid': '_1673981',
-    'uiconf_id' : '32240031',
-    'entry_id' : '1_w7nc7h2l'
-});
-</script>
+<%- @partial('video-kaltura', {video_id:'1_w7nc7h2l'}) %>
+
 <br>
 1. Change to a directory where you want to develop your new module, such as **${homeDir}/dev/myBuilderModules**.
 
