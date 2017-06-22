@@ -3,11 +3,14 @@
         "id" : "project_dashboard_widget",
         "title" : "Widget For Project Dashboard",
         "settings" : {
-            "viewUrl" : "widget.html"
+            "viewUrl" : "widget.html",
+            "serviceBasePath" : "{insert service URI}",
+            "countableEndpoint" : "{what to count}",
+            "bottomLink" : "{where to navigate within the project}"
         },
         "extends": {
             "id": "projectDashboard",
             "authUrl": "builder/auth.html"
-}
+        }
     }]
 }
