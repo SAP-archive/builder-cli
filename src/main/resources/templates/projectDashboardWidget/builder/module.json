@@ -1,0 +1,13 @@
+{
+    "widgets" : [{
+        "id" : "project_dashboard_widget",
+        "title" : "Widget For Project Dashboard",
+        "settings" : {
+            "viewUrl" : "widget.html"
+        },
+        "extends": {
+            "id": "projectDashboard",
+            "authUrl": "builder/auth.html"
+}
+    }]
+}
