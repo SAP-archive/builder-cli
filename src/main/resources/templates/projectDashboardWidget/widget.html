@@ -38,9 +38,12 @@
             </div>
         </div>
         <div sizeElement class="widget-container" ng-controller="WidgetCtrl">
-            <h4 ng-show="numberToDisplay">Widget title</h4>
-            <h1 class="numbotron-value">{{numberToDisplay}}</h1>
-            <button class="btn btn-link" class="widget-bottom-link" ng-click="goToSomewhere()">Go to ...</button>
+            <!--<h4>Label</h4>-->
+
+            <!-- if the widget should display total count of elements, uncomment the following line-->
+            <!--<h1 class="numbotron-value">{{totalCount}}</h1>-->
+
+            <!-- Otherwise, visualize {{data}} in a nice form, i.e chart -->
         </div>
     </body>
 </html>

@@ -1,25 +1,23 @@
-angular.module('widgetApp', ['builderPlugin']).
-    controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
-        $scope.numberToDisplay;
+angular.module('widgetApp', ['builderPlugin'])
+    .controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
+        //$scope.totalCount;
+        //$scope.data;
         BuilderPlugin.ready(function() {
+            $scope.currentProjectId = BuilderPlugin.authorizationData.tenantId
             Restangular
                 .setBaseUrl(BuilderPlugin.settings.serviceBasePath)
                 .withConfig(function(RestangularConfigurer) {
                     RestangularConfigurer.setFullResponse(true);
                 })
-                .one(BuilderPlugin.settings.countableEndpoint+"?pageNumber=1&pageSize=1&totalCount=true")
-                .getList()
+                .one("{{YOUR_ENDPOINT}}") // append &totalCount=true if you need totalCount in the response
+                .getList() // or get() if calling a single element resource
                 .then(function(response){
                     $("#spinner").remove();
-                    $scope.numberToDisplay = response.headers("Hybris-Count");
+                    //$scope.data = Restangular.stripRestangular(response.data);
+                    //$scope.totalCount = response.headers("Hybris-Count");
                 },function(error){
+                    $("#spinner").remove();
                     //handle error
                 }); 
        });
-
-       $scope.goToSomewhere = function(){
-           var link = window.parent.Builder.linkManager().currentProject();
-           link.path(BuilderPlugin.settings.bottomLink);
-           link.open(true);
-       }
     }]);
