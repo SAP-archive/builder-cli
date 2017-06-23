@@ -9,7 +9,7 @@ angular.module('widgetApp', ['builderPlugin'])
                 .withConfig(function(RestangularConfigurer) {
                     RestangularConfigurer.setFullResponse(true);
                 })
-                .one("{{YOUR_ENDPOINT}}") // append &totalCount=true if you need totalCount in the response
+                .one("{{YOUR_ENDPOINT}}") // append totalCount=true query parameter if you need totalCount in the response
                 .getList() // or get() if calling a single element resource
                 .then(function(response){
                     $("#spinner").remove();
