@@ -34,7 +34,7 @@ Here is an example of a UI with its corresponding code preview:<br>
 If you are using Chrome or Firefox, a download button is available in preview mode allowing you to download the code to a file.
 
 <img style="width: 30%;" max-width: 326px src="img/skeletor_menu_download_button.png"  width="35%" class="img-click-modal" alt="The Skeleton Creator download button"/><br><br>
-Internext Explorer and Safari do not support the download button. Instead, you can copy the HTML code directly from the broswer. <br><br>
+Internet Explorer and Safari do not support the download button. Instead, you can copy the HTML code directly from the broswer. <br><br>
 
 
 **Component settings**
