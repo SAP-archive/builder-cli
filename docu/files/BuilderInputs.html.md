@@ -3,7 +3,7 @@ title: 'Client-side field validation in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 9
+order: 10
 ---
 
 The **builder.inputs** Angular module provides a mechanism for client-side field validation. The **builder.inputs** module contains the <b>builder-input</b> Angular directive, which allows you to validate any input or text area field.

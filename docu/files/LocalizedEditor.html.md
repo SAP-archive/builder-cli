@@ -3,7 +3,7 @@ title: 'The localized editor component in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 5
+order: 6
 ---
 
 The localized editor is a custom Angular directive in **builder_editors** with a dependency to the **builder**.

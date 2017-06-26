@@ -3,7 +3,7 @@ title: 'Integrate a Builder module'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 4
+order: 5
 ---
 
 The Builder is a tool in which you can manage your account, projects, services, clients, and packages. It is also a container in which you can integrate your own Builder module to manage your services. The Builder module must be an HTML-based view registered with a package providing the URL pointing to the module.
