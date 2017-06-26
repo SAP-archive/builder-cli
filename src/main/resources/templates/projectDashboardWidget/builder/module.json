@@ -1,0 +1,14 @@
+{
+    "widgets" : [{
+        "id" : "project_dashboard_widget",
+        "title" : "{{YOUR_WIDGET_NAME}}",
+        "settings" : {
+            "viewUrl" : "widget.html",
+            "serviceBasePath" : "{{YOUR_SERVICE_URL}}"
+        },
+        "extends": {
+            "id": "projectDashboard",
+            "authUrl": "builder/auth.html"
+        }
+    }]
+}

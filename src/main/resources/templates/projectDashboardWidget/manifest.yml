@@ -1,0 +1,8 @@
+---
+applications:
+- name: project-dashboard-widget
+  host: project-dashboard-widget
+  buildpack: staticfile_buildpack
+  instances: 1
+  memory: 256M
+  domain: us-east.modules.yaas.io
