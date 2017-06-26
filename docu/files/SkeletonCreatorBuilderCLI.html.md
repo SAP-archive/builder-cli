@@ -1,5 +1,5 @@
 ---
-title: 'Advanced Features for developers'
+title: 'Advanced features for developers'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
