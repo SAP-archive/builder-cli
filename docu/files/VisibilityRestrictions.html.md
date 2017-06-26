@@ -3,7 +3,7 @@ title: 'Visibility Restrictions in the Builder'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 8
+order: 9
 ---
 
 
