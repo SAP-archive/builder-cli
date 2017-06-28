@@ -1,36 +1,44 @@
 ---
-title: 'How to implement widgets for Project Dashboard'
+title: 'How to implement widgets for the Project Dashboard'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
 order: 13
 ---
 
-Widgets are super cool. David, advertise the whole concept a bit..
+Widgets make retreiving data simple. They are the ideal tool for both developer and business user to obtain a quick glimpse of key information affecting their perspective tasks. The flexibility that widgets offer make it easy for developers to customize widgets to the needs of their project. Business users avoid an extended search for information found after several clicks.
 
-In this Tutorial we will create widget showing number of email templates.
+This tutorial is a guide to creating a widget that shows the total number of email templates. Familiarize yourself with the requirements and accessibility of your widget before following the steps to generate the necessary files for development.
 
-The widget would need to access velocity teamplates service to fetch and visualize the data. So the the project which would use the widget needs to be entitled to use
-https://api.us.yaas.io/hybris/velocity-template/v1 endpoint.
+### Requirements
 
-So before starting implementation, make sure that in your project you have a subscription to email package.
+#### Access to velocity templates
 
-Note, that subscribing to package from different markets would give you access to services deployed in defferent regions. In the following example we assume that subscription was made on US, or BETA market. If your Subscription comes from German market, please consume the data via 'eu' region.
+To fetch and visualize the data, the widget needs to access the <b>velocity templates</b> service. This means that the project using the widget needs to have permission to use this endpoint:  https://api.us.yaas.io/hybris/velocity-template/v1.
 
- ### If I implement and deploy a widget, who can use it?
+#### A subscripton to the email package
 
- - visible in my project if it was developed and registered as builder module in my project
- - visible to all projects who subscribe the package where the widget was included 
+Before starting the implementation, make sure that your project has a subscription to the email package.
 
- ### What resources can my widget access
+Subscribing to package from different markets gives you access to services deployed in different regions. In this guilde, we assume that the subscription is on the US or BETA market. If your subscription comes from the German market, consume data for the EU region.
 
- - Widget can consume what ever services are accessible for the given project where the widget is used (either services comming from subscriptions or own development)
- - Data access restrictions are defined via scopes (just as for regular builder modules.) 
+### Who can use widgets that I implement and deploy?
 
+ Your widgets is visible: 
+
+ - in your project if it is developed and registered as a builder module in the same project.
+ - to all projects subscribed to the package containing the widget. 
+
+### Which resources can a widget access?
+
+ - A widget can consume any services accessible to the project that the widget is used in. Accessible services can can be ones originating from subscriptions or from your own development.
+ - Scopes define data access restrictions only for regular builder modules. 
 
 ### Generate files
 
-Since widget, from technical point of view, is a builder module, use builder cli to create new builder module. 
+From a technical point of view, a widget is a builder module. So, use the Builder CLI to create a new builder module. 
+
+1. Run the command `$ builder createModule widget` from a command line.
 
     ```
     $ builder createModule widget
@@ -45,7 +53,8 @@ Since widget, from technical point of view, is a builder module, use builder cli
     5. projectDashboardWidget - Project Dashboard Widget example.
     ```
 
-Select Option 5. In the next step, you will be asked to provide some details about what data and from which API would your widget consume.
+2. Select Option 5. 
+3. Provide some details about the data your widget consumes.  Indicate the API from which your widget consumes data.
 
     ```
     Please enter name for your widget.
@@ -54,55 +63,55 @@ Select Option 5. In the next step, you will be asked to provide some details abo
     > https://api.us.yaas.io/hybris/velocity-template/v1
     Please enter resource for your widget to consume.
     > /templates
+
     ```
 
-Inspect the files that were generated.
-You see :
- - view (widget.html) and the controller (widgetApp.js) for the widget
- - module descriptor (module.json)
- - auth.html for the widget to consume its own authorization context
- - file supporting deployment (manifest.yml, nginx.conf) 
+4. Inspect the generated files. The files are:
 
+     - the widget view (widget.html) and the controller (widgetApp.js) 
+     - the module descriptor (module.json)
+     - auth.html. This file gives the widget the ability to consume its own authorization context
+     - manifest.yml and nginx.conf support deployment  
 
-### Implement
+### Implement the view and the controller
 
-Implement the view and the controller in a way that your widget consumes the _https://api.us.yaas.io/hybris/velocity-template/v1/{currentProject}/templates_
- endpoint and shows the total count of velocity templates defined in the current project.
+Implement the view and the controller so that your widget consumes the endpoint _https://api.us.yaas.io/hybris/velocity-template/v1/{currentProject}/templates_ and shows the total count of velocity templates defined in the current project.
 
-**widgetApp.js**
-    ```
-    angular.module('widgetApp', ['builderPlugin'])
-    .controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
-        $scope.totalCount;
-        BuilderPlugin.ready(function() {
-            $scope.currentProjectId = BuilderPlugin.authorizationData.tenantId
-            Restangular
-                .setBaseUrl(BuilderPlugin.settings.serviceBasePath)
-                .withConfig(function(RestangularConfigurer) {
-                    RestangularConfigurer.setFullResponse(true);
-                })
-                .one($scope.currentProjectId+"/templates?pageSize=1&pageNumber=1&totalCount=true") // append &totalCount=true if you need totalCount in the response
-                .getList()
-                .then(function(response){
-                    $("#spinner").remove();
-                    $scope.totalCount = response.headers("Hybris-Count");
-                },function(error){
-                    $("#spinner").remove();
-                    //handle error
-                }); 
-       });
-    }]);
-    ```
+    **widgetApp.js**
 
+        ```
+        angular.module('widgetApp', ['builderPlugin'])
+        .controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
+            $scope.totalCount;
+            BuilderPlugin.ready(function() {
+                $scope.currentProjectId = BuilderPlugin.authorizationData.tenantId
+                Restangular
+                    .setBaseUrl(BuilderPlugin.settings.serviceBasePath)
+                    .withConfig(function(RestangularConfigurer) {
+                        RestangularConfigurer.setFullResponse(true);
+                    })
+                    .one($scope.currentProjectId+"/templates?pageSize=1&pageNumber=1&totalCount=true") // append &totalCount=true if you need totalCount in the response
+                    .getList()
+                    .then(function(response){
+                        $("#spinner").remove();
+                        $scope.totalCount = response.headers("Hybris-Count");
+                    },function(error){
+                        $("#spinner").remove();
+                        //handle error
+                    }); 
+           });
+        }]);
+```
 
-**widget.html**
-    ```
+    **widget.html**
+
+```
     <!DOCTYPE html>
     <html>
         <head lang="en">
             <meta charset="UTF-8">
             <!-- custom stylesheets -->
-            <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
+            <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet"/>
             <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
             <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
             <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
@@ -115,24 +124,24 @@ Implement the view and the controller in a way that your widget consumes the _ht
             <div class="panel panel-default" id="spinner">
                 <div class="panel-body">
                     <div class="spinner">
-                    <div class="spinner-container spinner-container1">
-                        <div class="spinner-circle1"></div>
-                        <div class="spinner-circle2"></div>
-                        <div class="spinner-circle3"></div>
-                        <div class="circle4"></div>
-                    </div>
-                    <div class="spinner-container spinner-container2">
-                        <div class="spinner-circle1"></div>
-                        <div class="spinner-circle2"></div>
-                        <div class="spinner-circle3"></div>
-                        <div class="circle4"></div>
-                    </div>
-                    <div class="spinner-container spinner-container3">
-                        <div class="spinner-circle1"></div>
-                        <div class="spinner-circle2"></div>
-                        <div class="spinner-circle3"></div>
-                        <div class="circle4"></div>
-                    </div>
+                        <div class="spinner-container spinner-container1">
+                            <div class="spinner-circle1"></div>
+                            <div class="spinner-circle2"></div>
+                            <div class="spinner-circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="spinner-container spinner-container2">
+                            <div class="spinner-circle1"></div>
+                            <div class="spinner-circle2"></div>
+                            <div class="spinner-circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
+                        <div class="spinner-container spinner-container3">
+                            <div class="spinner-circle1"></div>
+                            <div class="spinner-circle2"></div>
+                            <div class="spinner-circle3"></div>
+                            <div class="circle4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,36 +151,38 @@ Implement the view and the controller in a way that your widget consumes the _ht
             </div>
         </body>
     </html>
-    ```
+
+```
 
 ### Run the widget locally
 
-Run it locally via CLI 
-    ```
-    $ builder runModule
-    ```
+Run the widget locally using the command line interface.
+
+```
+$ builder runModule
+
+```
 Go to https://localhost:8081/builder/module.json in your browser and accept the security exception. 
 
 ### Register local instance of your widget
 
-Defining a widget Builder Module is no different from defining any other Builder module.
-When registering a widget module, you should complete the same tasks as for other modules:
- - Provide a URL for the **module.json** file where it was deployed.(For locally running widget : `https://localhost:8081/builder/module.json`)
- - Specify what can it do on behalf of the tenant - 'Required scopes' (in our use case : 'hybris.email_view', 'hybris.velocitytemplate_admin')
- - Make sure that you define the redirect URI for the widget: `https://localhost:8081/builder/auth.html`. This endpoint is important for the widget to capture the access token that was granted for its authorization context.
+Defining a widget Builder Module is no different from defining any other Builder module. When registering a widget module, you should complete the same tasks as for other modules:
+
+ - Provide a URL for the **module.json** file indicating where the file was deployed.(For a locally running widget, use `https://localhost:8081/builder/module.json`)
+ - Specify what the module can do on behalf of the tenant. In this case, required scopes are <b>hybris.email_view</b> and <b>hybris.velocitytemplate_admin</b>.
+ - Make sure that you define the redirect URI for the widget: `https://localhost:8081/builder/auth.html`. This endpoint is important for the widget to capture the access token that grants its authorization context.
  - Enable 'Use this Builder Module for my project' option do enable the widget in your project.
 
 
 ### Review the widget
 
-Go to your project dashboard and see that your widget is now available in your project
+Go to your project dashboard and check that your widget is available in your project.
 
 <img style="width: 30%;" max-width: 326px src="img/addWidget.png" class="img-click-modal" alt="add widget"><br><br>
 
 <img style="width: 30%;" max-width: 326px src="img/widget.png" class="img-click-modal" alt="widget"><br><br>
 
-If you are happy with the result, its time to deploy the widget to a remote location.
-Once you do it, go to the builder module definition and adjust the URLs so that they point to the remote location where you deployed the widget:
+Now you can deploy the widget to a remote location. Once you deploy it, go to the builder module definition and adjust the URLs so that they point to the remote deployment location:
 
 - `https://{baseUrl of your widget}/builder/auth.html`
 - `https://{baseUrl of your widget}/builder/module.json`
