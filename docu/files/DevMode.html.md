@@ -13,7 +13,7 @@ Now that you have created your builder module, you can enable Developer Mode. Af
 
 To enable Developer Mode take the following steps:
 
-1. Navigate to the project home page and click on <b>Development</b>. 
+1. Navigate to the project home page and click <b>Development</b>. 
 2. Switch Developer Mode on. A dark gray action bar appears at the bottom of the screen from which you can access <b>Settings</b> or exit Developer Mode.
 3. Click <b>Settings</b> on the action bar.
 4. To show the locally developed Builder module, switch on the toggle <b>Show local module</b>.
