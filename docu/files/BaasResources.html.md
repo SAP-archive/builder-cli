@@ -3,7 +3,7 @@ title: 'Resources'
 service: 'Builder SDK'
 type: Resources
 layout: 'tools'
-order: 12
+order: 13
 ---
 
 ### Builder resources

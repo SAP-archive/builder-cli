@@ -3,7 +3,7 @@ title: 'Builder Module Extensibility'
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 11
+order: 12
 ---
 
 After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages.
