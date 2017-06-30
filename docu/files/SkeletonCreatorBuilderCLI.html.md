@@ -8,7 +8,7 @@ order: 3
 
 The Builder CLI features the Skeleton Creator tool, with which you can easily create views just by dragging and dropping UI components. Here are the steps to get started.<br>
 
-1. Open a terminal window.
+1. Open a terminal window. <br>
 
   <img style="width: 30%;" max-width: 326px src="img/builder_cli_menu_runSkeletor.png" class="img-click-modal" alt="Skeleton Creator"><br><br>
 
