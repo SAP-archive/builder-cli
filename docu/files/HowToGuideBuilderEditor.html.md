@@ -3,7 +3,7 @@ title: 'Implementation Guide for the Builder Editor Module version 3 '
 service: 'Builder SDK'
 area: 'Core'
 type: Tutorial
-order: 6
+order: 7
 ---
 
 This brief how-to guide uses version 3 of the builder_editors module (**builder_editor_v3.js**) to outline the necessary implementation steps. This page serves as an addition to the existing documentation for versions 1 and 2.
