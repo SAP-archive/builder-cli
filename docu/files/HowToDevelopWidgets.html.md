@@ -31,8 +31,8 @@ Subscribing to package from different markets gives you access to services deplo
 
 ### Which resources can a widget access?
 
- - A widget can consume any services accessible to the project that the widget is used in. Accessible services can can be ones originating from subscriptions or from your own development.
- - Scopes define data access restrictions only for regular builder modules. 
+ - A widget can consume any services accessible to the project that the widget is used in. Accessible services can be ones originating from subscriptions or from your own development.
+ - Scopes defined for widget restrict data access according to the same rules as those applying for regular builder modules. 
 
 ### Generate files
 
