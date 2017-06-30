@@ -8,8 +8,6 @@ order: 3
 
 The Builder CLI features the Skeleton Creator tool, with which you can easily create views just by dragging and dropping UI components. Here are the steps to get started.<br>
 
-1. Open a terminal window. <br>
-
 
 1. Open a terminal window.
 
@@ -35,7 +33,7 @@ The Builder CLI features the Skeleton Creator tool, with which you can easily cr
   If you are using Chrome or Firefox, a download button is available in preview mode allowing you to download the code to a file.
 
   <img style="width:50%;" src="img/skeletor_menu_download_button.png"  class="img-click-modal" alt="The Skeleton Creator download button"/><br><br>
-  Internext Explorer and Safari do not support the download button. Instead, you can copy the HTML code directly from the broswer. <br><br>
+  Internet Explorer and Safari do not support the download button. Instead, you can copy the HTML code directly from the broswer. <br><br>
 
 
 **Component settings**
