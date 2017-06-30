@@ -77,33 +77,33 @@ From a technical point of view, a widget is a builder module. So, use the Builde
 
 Implement the view and the controller so that your widget consumes the endpoint _https://api.us.yaas.io/hybris/velocity-template/v1/{currentProject}/templates_ and shows the total count of velocity templates defined in the current project.
 
-    **widgetApp.js**
+**widgetApp.js**
 
-        ```
-        angular.module('widgetApp', ['builderPlugin'])
-        .controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
-            $scope.totalCount;
-            BuilderPlugin.ready(function() {
-                $scope.currentProjectId = BuilderPlugin.authorizationData.tenantId
-                Restangular
-                    .setBaseUrl(BuilderPlugin.settings.serviceBasePath)
-                    .withConfig(function(RestangularConfigurer) {
-                        RestangularConfigurer.setFullResponse(true);
-                    })
-                    .one($scope.currentProjectId+"/templates?pageSize=1&pageNumber=1&totalCount=true") // append &totalCount=true if you need totalCount in the response
-                    .getList()
-                    .then(function(response){
-                        $("#spinner").remove();
-                        $scope.totalCount = response.headers("Hybris-Count");
-                    },function(error){
-                        $("#spinner").remove();
-                        //handle error
-                    }); 
-           });
-        }]);
+```
+    angular.module('widgetApp', ['builderPlugin'])
+    .controller('WidgetCtrl', ['$scope','Restangular',function($scope, Restangular){
+        $scope.totalCount;
+        BuilderPlugin.ready(function() {
+            $scope.currentProjectId = BuilderPlugin.authorizationData.tenantId
+            Restangular
+                .setBaseUrl(BuilderPlugin.settings.serviceBasePath)
+                .withConfig(function(RestangularConfigurer) {
+                    RestangularConfigurer.setFullResponse(true);
+                })
+                .one($scope.currentProjectId+"/templates?pageSize=1&pageNumber=1&totalCount=true") // append &totalCount=true if you need totalCount in the response
+                .getList()
+                .then(function(response){
+                    $("#spinner").remove();
+                    $scope.totalCount = response.headers("Hybris-Count");
+                },function(error){
+                    $("#spinner").remove();
+                    //handle error
+                }); 
+        });
+    }]);
 ```
 
-    **widget.html**
+**widget.html**
 
 ```
     <!DOCTYPE html>
