@@ -76,6 +76,7 @@ When the plug-in module is loaded in the iframe, it declares a callback function
         $scope.scope = decodeURIComponent(BuilderPlugin.authorizationData.scope);
         $scope.tenantId = BuilderPlugin.authorizationData.tenantId;
         $scope.clientId = BuilderPlugin.authorizationData.clientId;
+        $scope.currentAccountId = BuilderPlugin.currentAccountId;
 
         //do what you need to do once the plug-in has its context ready...
     });
