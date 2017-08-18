@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-csp>
     <head lang="en">
         <meta charset="UTF-8">
+        <title>The Simple Two</title>
         <!-- custom stylesheets -->
         <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/angular-translate/angular-translate.js"></script>
+        <script src="https://builder.yaas.io/public/js/vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
         <script src="https://builder.yaas.io/public/js/builder.js"></script>
-        <title>The Simple Two</title>
+        <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder_editors_v3.js"></script>
+        <script src="https://builder.yaas.io/public/js/builder_navbar.js"></script>
+        <script src="js/demoApp.js"></script>
     </head>
     <body>
         <div class="wrapper">
-            <div class="container-fluid" style="margin-left:10px;">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="page-header">
                         <h1 id="header"></h1>
@@ -34,17 +40,5 @@
                 </div>
             </div>
         </div>
-        <script>
-            Builder.initialize(function(){
-                $("#header").append("Welcome " + Builder.currentAccountId + "!");
-                if(Builder.currentWidget.settings.example_setting==='widget#2'){
-                    $("#Widget1").show();
-                    $("#Widget2").hide();
-                }else{
-                    $("#Widget1").hide();
-                    $("#Widget2").show();
-                }
-            });
-        </script>
     </body>
 </html>
