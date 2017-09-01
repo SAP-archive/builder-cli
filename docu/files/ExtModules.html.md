@@ -754,13 +754,14 @@ A set of static resources is provided by hybris, such as CSS styles and JavaScri
 
 #### Builder context
 
-For the view to render properly, the most important task is to get the Builder context. It contains the current account ID, project ID, authorization token, and widget settings. Include <b>builder.js</b>, <b>builder_v2.js</b>, and <b>builder_angular.js</b> in your view page. These files contain message handling routines necessary to receive the Builder context, as well as further communication with the Builder. For example:
+For the view to render properly, the most important task is to get the Builder context. It contains the current account ID, project ID, authorization token, and widget settings. Include <b>builder_v2.js</b> or <b>builder_angular.js</b> in your view page. These files contain message handling routines necessary to receive the Builder context, as well as further communication with the Builder. For example:
 
 ```
-<script src="https://builder.yaas.io/public/js/builder.js"></script>
 <script src="https://builder.yaas.io/public/js/builder_v2.js"></script>
 <script src="https://builder.yaas.io/public/js/builder_angular.js"></script>
 ```
+
+<b>builder_v2.js</b> accomodates developers of views based on frameworks other than Angular 1.2.x.
 
 ##### Initialization
 
