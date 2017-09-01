@@ -761,7 +761,7 @@ For the view to render properly, the most important task is to get the Builder c
 <script src="https://builder.yaas.io/public/js/builder_angular.js"></script>
 ```
 
-<b>builder_v2.js</b> accomodates developers of views based on frameworks other than Angular 1.2.x.
+Note that <b>builder_v2.js</b> is independent of any framework as it contains pure javascript. <b>builder_angular.js</b> provides support for Angular 1.2.x. It is useful if you are developing a builder module with the Angular framework. Use of <b>builder_angular.js</b> is optional.
 
 ##### Initialization
 
@@ -1170,6 +1170,11 @@ Using the **Link manager**, you can navigate in the Builder. Jump to a different
        </td>
     </tr>
 </table>
+
+The following image demonstrates the communication in the Builder using the Authentication Manager, the link manager and the notification manager.<br>
+
+<img style="width:40%;" max-width: 500px vspace="20" src="img/communication.png" class="img-click-modal" alt="Event to manager delegation"> 
+
 
 ### Help mode
 
