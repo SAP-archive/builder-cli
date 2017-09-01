@@ -128,6 +128,7 @@ When registering a plug-in module, you should complete the same tasks as for oth
 but pay special attention when defining redirect URIs.
  - Make sure that you define the redirect URI for the plug-in: `https://{baseURL of your plug-in}/builder/auth.html`. This endpoint is important for the plug-in to capture the access token that was granted for its authorization context.
  
- The image below illustrates the process of plugin authorization:
+
+The image below illustrates the process of plugin authorization:
  
 <img style="width:40%;" max-width: 500px vspace="20" src="img/plugin_auth.png" class="img-click-modal" alt="Plugin Authorization">
