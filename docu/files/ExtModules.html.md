@@ -760,7 +760,6 @@ For the view to render properly, the most important task is to get the Builder c
 <script src="https://builder.yaas.io/public/js/builder.js"></script>
 <script src="https://builder.yaas.io/public/js/builder_v2.js"></script>
 <script src="https://builder.yaas.io/public/js/builder_angular.js"></script>
-
 ```
 
 ##### Initialization
