@@ -6,7 +6,9 @@ type: Tutorial
 order: 12
 ---
 
-After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages.
+After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages. The following image illustrates the extension.
+
+<img style="width:40%;" max-width: 500px vspace="20" src="img/extensibility1.png" class="img-click-modal" alt="Package B extends Package A">
 
 Now, imagine that subscriptions could extend specific Builder UI modules themselves. Imagine that, when a user subscribes to "package A,"  the Builder "module A" is enabled. Additionally, the subscription triggers the declaration of an extension point in "slot A" of module A so that, when the user subscribes to package B, the extension point enriches module A by including a plug-in for module B in slot A.
 
@@ -51,6 +53,8 @@ Generated files of the plug-in module also contain some features related to the 
 
 When the user opens a project in the Builder, all of the packages subscribed to by the project are examined, and the included modules become available in the Builder's navigation.
 At that time, all subscribed plug-in modules are combined with matching subscribed hosts, so that when the host module is shown to the user, the Builder already knows all of its currently available extensions and assigns them to their target slots.
+
+<img style="width: 40%;" max-width: 326px src="img/extensions.png" class="img-click-modal" alt="Builder module plug-in integration">
 
 #### Context of the plug-in module
 
@@ -123,3 +127,7 @@ When registering a plug-in module, you should complete the same tasks as for oth
  - Specify what the plug-in can do on behalf of the tenant (the *authorization scopes* of the module),
 but pay special attention when defining redirect URIs.
  - Make sure that you define the redirect URI for the plug-in: `https://{baseURL of your plug-in}/builder/auth.html`. This endpoint is important for the plug-in to capture the access token that was granted for its authorization context.
+ 
+ The image below illustrates the process of plugin authorization:
+ 
+<img style="width:40%;" max-width: 500px vspace="20" src="img/plugin_auth.png" class="img-click-modal" alt="Plugin Authorization">
