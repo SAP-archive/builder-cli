@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html ng-csp>
     <head lang="en">
         <meta charset="UTF-8">
+        <title>The Simple One</title>
         <link href="https://builder.yaas.io/public/css/styles.css" rel="stylesheet" />
+        <link href="https://builder.yaas.io/vendor/angular/angular-csp.css" rel="stylesheet" />
         <script src="https://builder.yaas.io/public/js/vendor/jquery/dist/jquery.min.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/underscore/underscore.js"></script>
         <script src="https://builder.yaas.io/public/js/vendor/angular/angular.js"></script>
@@ -12,65 +14,10 @@
         <script src="https://builder.yaas.io/public/js/builderInputs.js"></script>
         <script src="https://builder.yaas.io/public/js/builder_editors_v3.js"></script>
         <script src="https://builder.yaas.io/public/js/builder_navbar.js"></script>
-        <title>The Simple One</title>
+        <script src="js/demoApp.js"></script>
     </head>
-    <body>
-        <script>
-            var demoUIModuleApp = angular.module('demoUIModuleApp', ["builder", "builder.inputs", "builder_editors", "builder.translate", 'builder.navbar']);
-
-            demoUIModuleApp.controller('settingsCtrl', function($scope, $http) {
-                $scope.widgetSettings = Builder.currentWidget.settings;
-                $scope.availableMarkets = Builder.currentWidget.settings.availableMarkets;
-                $scope.availableRegions = Builder.currentWidget.settings.availableRegions;
-                $scope.currLanguage = Builder.currentLanguage;
-            });
-
-            demoUIModuleApp.controller('authCtrl', function($scope, $http) {
-                $scope.accessToken = Builder.authManager().getAccessToken();
-                $scope.currentAccountId = Builder.currentAccountId;
-            });
-
-            demoUIModuleApp.controller('linkManagerCtrl', function($scope){
-                $scope.linkMng = Builder.linkManager().currentLocation();
-                $('#isPathExisting').prop('disabled', !Builder.linkManager().path('/Product Overview').exists());
-            });
-
-            demoUIModuleApp.controller('notificationCtrl', function($scope, notificationManager){
-                $scope.notificationManager = notificationManager;
-
-                $scope.generateNotification = function() {
-                    return {id:'testNotification' + new Date().getTime(), title: 'Test', message: loremIpsum.split('. ')[Math.floor(Math.random() * 75)] + '.'};
-                };
-                $scope.getNotificationIdPattern = function() {
-                    return /testNotification.*/;
-                };
-
-                $scope.processing = function(){
-                    Builder.notificationManager.pushProcessing();
-                    setTimeout(function(){
-                    Builder.notificationManager.popProcessing();
-                    },3000);
-                };
-
-                var loremIpsum = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nullam accumsan lorem in dui. Cras ultricies mi eu turpis hendrerit fringilla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Sed aliquam ultrices mauris. Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris. Praesent adipiscing. Phasellus ullamcorper ipsum rutrum nunc. Nunc nonummy metus. Vestibulum volutpat pretium libero. Cras id dui. Aenean ut eros et nisl sagittis vestibulum. Nullam nulla eros, ultricies sit amet, nonummy id, imperdiet feugiat, pede. Sed lectus. Donec mollis hendrerit risus. Phasellus nec sem in justo pellentesque facilisis. Etiam imperdiet imperdiet orci. Nunc nec neque. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Curabitur ligula sapien, tincidunt non, euismod vitae, posuere imperdiet, leo. Maecenas malesuada. Praesent congue erat at massa. Sed cursus turpis vitae tortor. Donec posuere vulputate arcu. Phasellus accumsan cursus velit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed aliquam, nisi quis porttitor congue, elit erat euismod orci, ac placerat dolor lectus quis orci. Phasellus consectetuer vestibulum elit. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vestibulum fringilla pede sit amet augue. In turpis. Pellentesque posuere. Praesent turpis. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Donec elit libero, sodales nec, volutpat a, suscipit non, turpis. Nullam sagittis. Suspendisse pulvinar, augue ac venenatis condimentum, sem libero volutpat nibh, nec pellentesque velit pede quis nunc. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id purus. Ut varius tincidunt libero. Phasellus dolor. Maecenas vestibulum mollis";
-            });
-
-            demoUIModuleApp.controller('localizedCtrl' ,function($scope){
-                $scope.configuration = {
-                    'en': {'default': true, 'required': true},
-                    'de': {'default': false, 'required': false}
-                };
-                 $scope.localizedData = {
-                    'en': 'english text',
-                    'de': 'german text'
-                };
-            });
-
-            demoUIModuleApp.controller('validationCtrl', ['$scope','inputValidator','$timeout','$translate',
-             function($scope, inputValidator, $timeout, $translate){
-            }]);
-        </script>
-        <div class="wrapper" ng-app="demoUIModuleApp">
+    <body ng-app="demoUIModuleApp">
+        <div class="wrapper">
             <div class="container-fluid body-content">
                 <builder-navbar
                     navbar-title="Demo module">
@@ -87,11 +34,11 @@
                             <div class="panel panel-default">
                                 <div class="panel-body" ng-controller="notificationCtrl">
                                     <div>
-                                        <button class="btn btn-success" onclick="Builder.notificationManager.showSuccess('Success!')">Click it!</button>
-                                        <button class="btn btn-warning" onclick="Builder.notificationManager.showWarning('Warning!')">Warning</button>
-                                        <button class="btn btn-danger" onclick="Builder.notificationManager.showError('An Error occured')">Oh Snap!</button>
-                                        <button class="btn btn-info" onclick="Builder.notificationManager.showInfo('Heads up!')">Heads up!</button>
-                                        <button class="btn btn-info" onclick="Builder.notificationManager.showConfirmation('Confirmation','Please confirm', function(){alert('Great')})">Please confirm!</button>
+                                        <button class="btn btn-success" ng-click="showSuccess('Success!')">Click it!</button>
+                                        <button class="btn btn-warning" ng-click="showWarning('Warning!')">Warning</button>
+                                        <button class="btn btn-danger" ng-click="showError('An Error occured')">Oh Snap!</button>
+                                        <button class="btn btn-info" ng-click="showInfo('Heads up!')">Heads up!</button>
+                                        <button class="btn btn-info" ng-click="showConfirmation('Confirmation','Please confirm', confirmationCb)">Please confirm!</button>
                                         <button class="btn btn-warning" ng-click="processing()">I'm working!</button>
                                     </div>
                                 </div>
@@ -116,9 +63,9 @@
                                 <div class="panel-body">
                                     <div ng-controller="linkManagerCtrl">
                                         <div>
-                                            <button class="btn btn-default" onclick="Builder.linkManager().path('/My Account/My Profile/Account Settings').open()">Show my Profile</button>
-                                            <button class="btn btn-default" onclick="Builder.linkManager().path('/Home/'+Builder.currentOrganizationId+'/Projects/'+Builder.currentProjectId+'/parent/settingsExample1').open()">Show widget two</button>
-                                            <button class="btn btn-default" id="isPathExisting" onclick="Builder.linkManager().path('/Product Overview')">Link does not exist</button>
+                                            <button class="btn btn-default" ng-click="showProfile()">Show my Profile</button>
+                                            <button class="btn btn-default" ng-click="showWidgetTwo()">Show widget two</button>
+                                            <button class="btn btn-default" id="isPathExisting" ng-click="showProductOverview()">Link does not exist</button>
                                         </div>
                                     </div>
                                 </div>
@@ -268,8 +215,8 @@
                                 <h3>Fullscreen mode</h3>
                             </div>
                             <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <button class="btn btn-default" onclick="Builder.moduleFullScreen.turnOn();">fullscreen on</button>
+                                <div class="panel-body" ng-controller="fullScreenCtrl">
+                                    <button class="btn btn-default" ng-click="fullScreenMode()">fullscreen on</button>
                                 </div>
                             </div>
                         </section>
@@ -277,12 +224,5 @@
                 </div>
             </div>
         </div>
-        <script>
-            Builder.initialize(function(){
-                $("#header").append("Welcome " + Builder.currentAccountId + "!");
-                $("#location").append(Builder.currentLocation);
-                $("#token").append(Builder.authManager);
-            });
-        </script>
     </body>
 </html>

@@ -1,0 +1,10 @@
+.pluginCtn{
+    padding: 0;
+    height: auto;
+}
+
+.contentSize{
+    width: 900px;
+    height: 600px;
+    overflow: hidden;
+}

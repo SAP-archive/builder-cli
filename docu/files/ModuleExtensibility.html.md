@@ -6,7 +6,9 @@ type: Tutorial
 order: 12
 ---
 
-After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages.
+After you have implemented, deployed, and published your Builder UI module, it is visible in the Builder for tenants who subscribe to the package containing the module. In other words, the basic functionality of the Builder can be extended with additional modules when tenants subscribe to the related packages. The following image illustrates the extension.
+
+<img style="width:40%;" max-width: 500px vspace="20" src="img/extensibility1.png" class="img-click-modal" alt="Package B extends Package A">
 
 The concept of extensibility applies not only to the Builder, but also to the Builder modules themselves. It's possible to extend Builder modules by means of plug-ins. For example, imagine a user subscribes to "package A". This action enables the Builder "module A". Module A contains an extension point called "slot A". The subscription to module A also triggers the declaration of an extension point in "slot A". Now, when the user subscribes to a "package B" that has a plug-in Builder module defined for display in module A, slot A, the extension point of slot A enriches module A with a plug-in from module B.
 
@@ -49,6 +51,8 @@ Generated files of the plug-in module also contain some features related to the 
 ### Builder module plug-in integration
 
 When the user opens a project in the Builder, the system examines all of the subscribed packages that the project contains. Then, the included modules become available in the Builder's navigation. Next, the system combines all of the subscribed plug-in modules with matching subscribed hosts, so that when the host module displays to the user, the Builder already knows all of its currently available extensions and assigns them to their target slots. 
+
+<img style="width: 40%;" max-width: 326px src="img/extensions.png" class="img-click-modal" alt="Builder module plug-in integration">
 
 #### Context of the plug-in module
  
@@ -119,6 +123,12 @@ When registering a plug-in module, you should complete the same tasks as for oth
 but pay special attention when defining redirect URIs.
  - Make sure that you define the redirect URI for the plug-in: `https://{baseURL of your plug-in}/builder/auth.html`. This endpoint is important for the plug-in to capture the access token that was granted for its authorization context.
  
+
+The image below illustrates the process of plugin authorization:
+ 
+<img style="width:40%;" max-width: 500px vspace="20" src="img/plugin_auth.png" class="img-click-modal" alt="Plugin Authorization">
+
+
 ### Control slot size 
 
 Because all plug-in modules are not the same size, you need the ability to adjust the size of the iframe in which the plug-in fits. For example, a plug-in that displays product ratings might require more space than one that simply displays a single button.
