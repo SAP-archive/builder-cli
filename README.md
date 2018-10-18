@@ -1,3 +1,5 @@
+**Due to the retirement of YaaS, this repository is archived and will no longer be maintained.**
+
 # Builder-CLI
 Written by: Team Swinka
 
